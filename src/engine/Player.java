@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class Player {
 
@@ -12,9 +13,12 @@ public class Player {
 
 	private int x;
 	private int y;
-	private int dx;
-	private int dy;
+	private double dx;
+	private double dy;
+	private int mousex;
+	private int mousey;
 	private Image image;
+	public double rotation;
 
 	
 	public Player(){
@@ -22,6 +26,7 @@ public class Player {
 		y=0;
 		dx=0;
 		dy=0;
+		rotation=0;
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
 		
@@ -40,8 +45,19 @@ public class Player {
 		return image;
 	}
 	
+	private Rectangle getBorders(){
+		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+	}
+	
+	private Rectangle getWiderBorders(){
+		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+	}
+	
 	private Rectangle getBordersAfterMove(){
-		return new Rectangle(x+dx, y+dy, image.getWidth(null), image.getHeight(null));
+		Double a=Math.ceil(x+dx);
+		Double b=Math.ceil(y+dy);
+		
+		return new Rectangle(a.intValue(), b.intValue(), image.getWidth(null), image.getHeight(null));
 	}
 	
 	
@@ -49,9 +65,17 @@ public class Player {
 		checkBorders();
 		x+=dx;
 		y+=dy;
+		rotate();
 	}
 	
-	public void keyPressed(KeyEvent e){
+	private void rotate(){
+		double a=mousex-x;
+		double b=y-mousey;
+		if(b!=0)
+			rotation=Math.atan2(a,b);
+				
+	}
+	public void keyPressed(KeyEvent e){					//na wszelki wypadek zostawiam na razie strzalki
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {					
 		    dx=-MOVE_DELTA;   
 		}
@@ -63,6 +87,22 @@ public class Player {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 		    dy=MOVE_DELTA;    
+		}
+		if(e.getKeyCode() == KeyEvent.VK_W) {
+			Rectangle player=getBorders();
+			if(player.contains(mousex, mousey)){
+				dx=0;
+				dy=0;
+				System.out.println("contains");
+			}
+			else{
+			dx=MOVE_DELTA*Math.sin(rotation);
+			dy=-MOVE_DELTA*Math.cos(rotation);
+			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			dx=-MOVE_DELTA*Math.sin(rotation);
+			dy=MOVE_DELTA*Math.cos(rotation);
 		}
 		
 	}
@@ -79,7 +119,15 @@ public class Player {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 		    dy=0;    
-		}		
+		}
+		if(e.getKeyCode() == KeyEvent.VK_W) {
+			dx=0;
+			dy=0;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			dx=0;
+			dy=0;
+		}
 	}
 	
 	private void checkBorders(){
@@ -93,6 +141,17 @@ public class Player {
 			dx=0;
 			dy=0;
 		}
+		
+	}
+	
+	public void mouseDragged(MouseEvent e){
+		
+	}
+	
+	public void mouseMoved(MouseEvent e){
+		mousex=e.getX();
+		mousey=e.getY();
+			
 		
 	}
 	

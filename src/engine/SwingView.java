@@ -9,11 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
+import java.awt.event.MouseMotionListener;
 
 import engine.Player;
 
@@ -32,7 +33,8 @@ public class SwingView extends JPanel implements ActionListener{
 	private Timer timer;
 
 	public SwingView(){
-        addKeyListener(new TAdapter());
+        addKeyListener(new CustomKeyListener());
+        addMouseMotionListener(new CustomMouseListener());
 		setSize(WIDTH, HEIGHT);
 		setFocusable(true);
 		player = new Player();
@@ -47,9 +49,16 @@ public class SwingView extends JPanel implements ActionListener{
         Graphics2D g = (Graphics2D) g1;
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
-        g.drawImage(player.getImage(), player.getX(), player.getY(), this);       
-
-        Toolkit.getDefaultToolkit().sync();
+		
+		
+		int cx = player.getImage().getWidth(null) / 2;
+        int cy = player.getImage().getHeight(null) / 2;
+        //AffineTransform oldAT = g.getTransform();
+        g.rotate(player.rotation, cx+player.getX(), cy+player.getY());
+        g.drawImage(player.getImage(), player.getX(), player.getY(), null);
+        //g.setTransform(oldAT);
+        
+	    Toolkit.getDefaultToolkit().sync();
     }
 
     @Override
@@ -59,17 +68,43 @@ public class SwingView extends JPanel implements ActionListener{
         repaint();  
     }	
     
-    private class TAdapter extends KeyAdapter {
+       
+    private class CustomKeyListener implements KeyListener{
 
-        @Override
-        public void keyReleased(KeyEvent e) {
-            player.keyReleased(e);
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
+		@Override
+		public void keyPressed(KeyEvent e) {
             player.keyPressed(e);
-        }
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+            player.keyReleased(e);
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+    private class CustomMouseListener implements MouseMotionListener{
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			player.mouseDragged(e);
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			player.mouseMoved(e);
+			
+		}
+    	
     }
 
 }
