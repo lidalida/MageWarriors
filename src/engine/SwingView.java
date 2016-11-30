@@ -54,7 +54,7 @@ public class SwingView extends JPanel implements ActionListener{
 		int cx = player.getImage().getWidth(null) / 2;
         int cy = player.getImage().getHeight(null) / 2;
         //AffineTransform oldAT = g.getTransform();
-        g.rotate(player.rotation, cx+player.getX(), cy+player.getY());
+        g.rotate(player.getRotation(), cx+player.getX(), cy+player.getY());
         g.drawImage(player.getImage(), player.getX(), player.getY(), null);
         //g.setTransform(oldAT);
         

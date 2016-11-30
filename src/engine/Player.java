@@ -18,7 +18,8 @@ public class Player {
 	private int mousex;
 	private int mousey;
 	private Image image;
-	public double rotation;
+	private Collider collider;
+	private double rotation;
 
 	
 	public Player(){
@@ -29,6 +30,7 @@ public class Player {
 		rotation=0;
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
+		collider=new Collider(x,y,image.getWidth(null)/2);
 		
 	}
 	
@@ -36,9 +38,12 @@ public class Player {
 		return x;
 	}
 	
-	public int getY()
-	{
+	public int getY(){
 		return y;
+	}
+	
+	public double getRotation(){
+		return rotation;
 	}
 	
 	public Image getImage(){
@@ -66,6 +71,7 @@ public class Player {
 		x+=dx;
 		y+=dy;
 		rotate();
+		collider.update(x,y);
 	}
 	
 	private void rotate(){
@@ -75,7 +81,7 @@ public class Player {
 			rotation=Math.atan2(a,b);
 				
 	}
-	public void keyPressed(KeyEvent e){					//na wszelki wypadek zostawiam na razie strzalki
+	public void keyPressed(KeyEvent e){
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {					
 		    dx=-MOVE_DELTA;   
 		}
@@ -89,11 +95,9 @@ public class Player {
 		    dy=MOVE_DELTA;    
 		}
 		if(e.getKeyCode() == KeyEvent.VK_W) {
-			Rectangle player=getBorders();
-			if(player.contains(mousex, mousey)){
+			if(collider.checkMouseIn(mousex, mousey)){
 				dx=0;
 				dy=0;
-				System.out.println("contains");
 			}
 			else{
 			dx=MOVE_DELTA*Math.sin(rotation);
@@ -154,6 +158,5 @@ public class Player {
 			
 		
 	}
-	
 
 }
