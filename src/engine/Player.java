@@ -95,7 +95,7 @@ public class Player {
 		    dy=MOVE_DELTA;    
 		}
 		if(e.getKeyCode() == KeyEvent.VK_W) {
-			if(collider.checkMouseIn(mousex, mousey)){
+			if(collider.containsPoint(mousex, mousey)){
 				dx=0;
 				dy=0;
 			}
