@@ -4,8 +4,6 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -79,74 +77,60 @@ public class Player implements Model{
 		mousey=y;
 	}
 	
+	public void setDx(double x)
+	{
+		dx=x;
+	}
+	
+	public void setDy(double y)
+	{
+		dy=y;
+	}
+	
 	public void move(){
+		
+		if(collider.containsPoint(mousex, mousey)){
+			dx=0;
+			dy=0;
+		}
+		else{
+		dx=MOVE_DELTA*Math.sin(rotation);
+		dy=-MOVE_DELTA*Math.cos(rotation);
+		}
+		
 		checkBorders();
 		x+=dx;
 		y+=dy;
 		rotate();
 		collider.update(x,y);
+		firePropertyChange("x", x-dx, x);
+		firePropertyChange("y", y-dy, y);
+	}
+	
+	public void moveBack()
+	{
+		dx=-MOVE_DELTA*Math.sin(rotation);
+		dy=MOVE_DELTA*Math.cos(rotation);
+		
+		checkBorders();
+		x+=dx;
+		y+=dy;
+		rotate();
+		collider.update(x,y);
+		firePropertyChange("x", x-dx, x);
+		firePropertyChange("y", y-dy, y);
 	}
 	
 	public void rotate(){
+		double old_rotation=rotation;
 		double a=mousex-x;
 		double b=y-mousey;
 		if(b!=0)
 			rotation=Math.atan2(a,b);
-				
-	}
-	public void keyPressed(KeyEvent e){
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {					
-		    dx=-MOVE_DELTA;   
-		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			dx=MOVE_DELTA;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-		    dy=-MOVE_DELTA;    
-		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-		    dy=MOVE_DELTA;    
-		}
-		if(e.getKeyCode() == KeyEvent.VK_W) {
-			if(collider.containsPoint(mousex, mousey)){
-				dx=0;
-				dy=0;
-			}
-			else{
-			dx=MOVE_DELTA*Math.sin(rotation);
-			dy=-MOVE_DELTA*Math.cos(rotation);
-			}
-		}
-		if(e.getKeyCode() == KeyEvent.VK_S) {
-			dx=-MOVE_DELTA*Math.sin(rotation);
-			dy=MOVE_DELTA*Math.cos(rotation);
-		}
-		
+		firePropertyChange("rotation", old_rotation, rotation);				
 	}
 	
-	public void keyReleased(KeyEvent e){
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {					
-		    dx=0;   
-		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			dx=0;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-		    dy=0;    
-		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-		    dy=0;    
-		}
-		if(e.getKeyCode() == KeyEvent.VK_W) {
-			dx=0;
-			dy=0;
-		}
-		if(e.getKeyCode() == KeyEvent.VK_S) {
-			dx=0;
-			dy=0;
-		}
-	}
-	
+
 	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();
@@ -157,18 +141,8 @@ public class Player implements Model{
 		{
 			dx=0;
 			dy=0;
-		}
-		
-	}
-	
-	public void mouseDragged(MouseEvent e){
-		
-	}
-	
-	public void mouseMoved(MouseEvent e){
-		mousex=e.getX();
-		mousey=e.getY();					
-	}
+		}		
+	}	
 	
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener pcl)
