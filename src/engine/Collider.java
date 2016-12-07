@@ -10,6 +10,7 @@ public class Collider {
 		y=yy;
 		r=rr;
 	}
+	
 	public boolean collides(Collider otherCollider)
 	{
 		double dist = Math.sqrt(Math.pow(x-otherCollider.x, 2)+Math.pow(y-otherCollider.y, 2));
