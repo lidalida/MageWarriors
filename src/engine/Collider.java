@@ -21,8 +21,8 @@ public class Collider {
 	
 	public boolean containsPoint(int xx, int yy)
 	{
-		double a=Math.pow((xx-x), 2.0);
-		double b=Math.pow((yy-y), 2.0);
+		double a=Math.pow((xx-(x+r)), 2.0);
+		double b=Math.pow((yy-(y+r)), 2.0);
 		if(a+b<=Math.pow(r, 2.0))
 			return true;
 		return false;

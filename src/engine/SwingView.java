@@ -27,10 +27,11 @@ public class SwingView extends JPanel implements ActionListener, View{
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
-    private final int DELAY = 10;
+    private final int DELAY = 1000/60;
 
 	private GameController gameController;
 	List<Model> models = new ArrayList<Model>();
@@ -45,6 +46,7 @@ public class SwingView extends JPanel implements ActionListener, View{
 		setFocusable(true);
 		setController(new GameController());
 		player = new Player();
+			
 		gameController.addModel(player);
 		gameController.addView(this);
 		timer = new Timer(DELAY, this);
@@ -60,8 +62,7 @@ public class SwingView extends JPanel implements ActionListener, View{
 	}
 	
 	public void modelPropertyChange(final PropertyChangeEvent evt){
-		System.out.println("yup");
-		repaint();
+		//repaint();
 	}
 	
 	public void addModel(Model model){
@@ -87,15 +88,12 @@ public class SwingView extends JPanel implements ActionListener, View{
         int cy = player.getImage().getHeight(null) / 2;
         g.rotate(player.getRotation(), cx+player.getX(), cy+player.getY());
         g.drawImage(player.getImage(), player.getX(), player.getY(), null);
-        
 	    Toolkit.getDefaultToolkit().sync();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        //player.move();
-        repaint();  
+    				repaint();
     }	
     
        
@@ -103,13 +101,13 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-            gameController.keyPressed(e);
+			new Thread(new WorkerKey(e)).start();
             
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			//gameController.keyReleased(e);
+			gameController.keyReleased(e);
 			
 		}
 
@@ -131,10 +129,39 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			gameController.mouseMoved(e);
+			new Thread(new WorkerMouse(e)).start();
 			
 		}
     	
     }
+    private class WorkerKey implements Runnable{
+
+    	KeyEvent e;
+		public WorkerKey(KeyEvent ee)
+		{
+			this.e=ee;
+		}
+		@Override
+		public void run() {
+            gameController.keyPressed(e);
+		}
+		
+	}
+	
+	private class WorkerMouse implements Runnable{
+
+		MouseEvent e;
+		public WorkerMouse(MouseEvent ee)
+		{
+			this.e=ee;
+		}
+		@Override
+		public void run() {
+			gameController.mouseMoved(e);
+		}
+		
+	}
+	
+	
 
 }

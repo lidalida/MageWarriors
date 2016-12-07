@@ -31,15 +31,24 @@ public class GameController implements Controller, PropertyChangeListener{
 	public void keyPressed(KeyEvent e){
 		
 		if(e.getKeyCode() == KeyEvent.VK_W) {
-			System.out.println("yup2");
-			player.move();
-			System.out.println("yup3");
+			
+			player.setIsMoving(1);
 		}
 		if(e.getKeyCode() == KeyEvent.VK_S) {
-			player.moveBack();
+			player.setIsMoving(2);
 		}
 		
 	}	
+	
+	public void keyReleased(KeyEvent e){
+		if(e.getKeyCode() == KeyEvent.VK_W) {			
+			player.setIsMoving(0);
+		}
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			player.setIsMoving(0);
+		}
+	}
+	
 	public void mouseMoved(MouseEvent e){
 		player.setMouseX(e.getX());
 		player.setMouseY(e.getY());

@@ -2,15 +2,20 @@ package engine;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class Player implements Model{
+public class Player implements Model, ActionListener{
 
 	public PropertyChangeSupport propertyChangeSupport;
 	public static final int MOVE_DELTA = 5;
+	public static final int DELAY = 10;
 
 	private int x;
 	private int y;
@@ -21,6 +26,10 @@ public class Player implements Model{
 	private Image image;
 	private Collider collider;
 	private double rotation;
+	private int is_moving; //0-nie, 1-do przodu, 2-do tylu
+	private int is_rotating; 
+	private Timer timer;
+
 
 	
 	public Player(){
@@ -33,6 +42,8 @@ public class Player implements Model{
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
 		propertyChangeSupport = new PropertyChangeSupport(this);
+		timer=new Timer(DELAY, this);
+		timer.start();
 	}
 	
 	public int getX(){
@@ -101,8 +112,12 @@ public class Player implements Model{
 		dy=y;
 	}
 	
+	public void setIsMoving(int i)
+	{
+		is_moving=i;
+	}
+	
 	public void move(){
-		System.out.println("move");
 		if(collider.containsPoint(mousex, mousey)){
 			dx=0;
 			dy=0;
@@ -115,9 +130,7 @@ public class Player implements Model{
 		checkBorders();
 		x+=dx;
 		y+=dy;
-		//rotate();
 		collider.update(x,y);
-		System.out.println("move10");
 		firePropertyChange("x", x-dx, x);
 		firePropertyChange("y", y-dy, y);
 	}
@@ -130,7 +143,6 @@ public class Player implements Model{
 		checkBorders();
 		x+=dx;
 		y+=dy;
-		//rotate();
 		collider.update(x,y);
 		firePropertyChange("x", x-dx, x);
 		firePropertyChange("y", y-dy, y);
@@ -142,9 +154,7 @@ public class Player implements Model{
 		double b=y-mousey;
 		if(b!=0)
 			rotation=Math.atan2(a,b);
-		System.out.println("rotate");
 		firePropertyChange("rotation", old_rotation, rotation);
-		System.out.println("rotate");
 	}
 	
 
@@ -170,6 +180,23 @@ public class Player implements Model{
 	@Override
 	public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(is_moving==1)
+		{
+			move();
+		}
+		else if(is_moving==2)
+		{
+			moveBack();
+		}
+		
+		if(is_rotating==1)
+		{
+			rotate();
+		}
 	}
 
 }
