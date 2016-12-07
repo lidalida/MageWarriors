@@ -1,5 +1,8 @@
 package engine;
 
+import java.beans.PropertyChangeListener;
+
 public interface Model {
-	void paintMe();
+	void addPropertyChangeListener(PropertyChangeListener l);
+	void firePropertyChange(String propertyName,Object oldValue, Object newValue);
 }

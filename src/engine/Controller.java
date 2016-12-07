@@ -1,8 +1,10 @@
 package engine;
 
+import java.beans.PropertyChangeEvent;
+
 public interface Controller {
-	void updateModel();
+	void addModel(Model model);
+	void addView(View view);
 	
-	void setModel(Model model);
-	void setView(View view);
+	void propertyChange(PropertyChangeEvent evt);
 }
