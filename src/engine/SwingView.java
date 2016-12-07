@@ -101,7 +101,7 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			new Thread(new WorkerKey(e)).start();
+            gameController.keyPressed(e);
             
 		}
 
@@ -129,39 +129,10 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			new Thread(new WorkerMouse(e)).start();
+			gameController.mouseMoved(e);
 			
 		}
     	
-    }
-    private class WorkerKey implements Runnable{
-
-    	KeyEvent e;
-		public WorkerKey(KeyEvent ee)
-		{
-			this.e=ee;
-		}
-		@Override
-		public void run() {
-            gameController.keyPressed(e);
-		}
-		
-	}
-	
-	private class WorkerMouse implements Runnable{
-
-		MouseEvent e;
-		public WorkerMouse(MouseEvent ee)
-		{
-			this.e=ee;
-		}
-		@Override
-		public void run() {
-			gameController.mouseMoved(e);
-		}
-		
-	}
-	
-	
+    }	
 
 }
