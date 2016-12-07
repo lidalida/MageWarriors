@@ -94,7 +94,7 @@ public class SwingView extends JPanel implements ActionListener, View{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        player.move();
+        //player.move();
         repaint();  
     }	
     
