@@ -69,12 +69,26 @@ public class Player implements Model{
 		
 	public void setMouseX(int x)
 	{
+		double old_rotation=rotation;
+		int old_mx=mousex;
 		mousex=x;
+		rotate();
+		firePropertyChange("mousex", old_mx, mousex);
+		firePropertyChange("rotation", old_rotation, rotation);
+
+
 	}
 	
 	public void setMouseY(int y)
 	{
+		double old_rotation=rotation;
+		int old_my=mousey;
 		mousey=y;
+		rotate();
+		firePropertyChange("mousey", old_my, mousey);
+		firePropertyChange("rotation", old_rotation, rotation);
+
+
 	}
 	
 	public void setDx(double x)
@@ -101,7 +115,7 @@ public class Player implements Model{
 		checkBorders();
 		x+=dx;
 		y+=dy;
-		rotate();
+		//rotate();
 		collider.update(x,y);
 		System.out.println("move10");
 		firePropertyChange("x", x-dx, x);
@@ -116,7 +130,7 @@ public class Player implements Model{
 		checkBorders();
 		x+=dx;
 		y+=dy;
-		rotate();
+		//rotate();
 		collider.update(x,y);
 		firePropertyChange("x", x-dx, x);
 		firePropertyChange("y", y-dy, y);
