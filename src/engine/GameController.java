@@ -3,8 +3,9 @@ package engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class GameController implements Controller{
+public class GameController implements Controller, PropertyChangeListener{
 	
 	public static final int PLAYER_MOVE_DELTA = 5;
 
@@ -19,6 +20,7 @@ public class GameController implements Controller{
 	public void addModel(Model model)
 	{
 		player=(Player)model;
+		model.addPropertyChangeListener(this);
 	}
 	
 	public void propertyChange(PropertyChangeEvent e)
@@ -29,7 +31,9 @@ public class GameController implements Controller{
 	public void keyPressed(KeyEvent e){
 		
 		if(e.getKeyCode() == KeyEvent.VK_W) {
+			System.out.println("yup2");
 			player.move();
+			System.out.println("yup3");
 		}
 		if(e.getKeyCode() == KeyEvent.VK_S) {
 			player.moveBack();

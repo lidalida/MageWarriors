@@ -32,7 +32,7 @@ public class Player implements Model{
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
-		
+		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
 	public int getX(){
@@ -88,7 +88,7 @@ public class Player implements Model{
 	}
 	
 	public void move(){
-		
+		System.out.println("move");
 		if(collider.containsPoint(mousex, mousey)){
 			dx=0;
 			dy=0;
@@ -103,6 +103,7 @@ public class Player implements Model{
 		y+=dy;
 		rotate();
 		collider.update(x,y);
+		System.out.println("move10");
 		firePropertyChange("x", x-dx, x);
 		firePropertyChange("y", y-dy, y);
 	}
@@ -127,7 +128,9 @@ public class Player implements Model{
 		double b=y-mousey;
 		if(b!=0)
 			rotation=Math.atan2(a,b);
-		firePropertyChange("rotation", old_rotation, rotation);				
+		System.out.println("rotate");
+		firePropertyChange("rotation", old_rotation, rotation);
+		System.out.println("rotate");
 	}
 	
 
@@ -152,7 +155,7 @@ public class Player implements Model{
 
 	@Override
 	public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);		
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
 }

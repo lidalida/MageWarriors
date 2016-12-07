@@ -8,4 +8,6 @@ public interface View {
 	void setController(Controller controller);
 	
 	void modelPropertyChange(final PropertyChangeEvent evt);
+	
+	void addModel(Model model);
 }

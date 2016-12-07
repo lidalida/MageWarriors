@@ -15,10 +15,14 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import engine.Player;
 
-public class SwingView extends JPanel implements ActionListener{
+public class SwingView extends JPanel implements ActionListener, View{
 	
 	/**
 	 * 
@@ -28,6 +32,8 @@ public class SwingView extends JPanel implements ActionListener{
 	public static final int WIDTH = 800;
     private final int DELAY = 10;
 
+	private GameController gameController;
+	List<Model> models = new ArrayList<Model>();
 	
 	private Player player;
 	private Timer timer;
@@ -37,9 +43,29 @@ public class SwingView extends JPanel implements ActionListener{
         addMouseMotionListener(new CustomMouseListener());
 		setSize(WIDTH, HEIGHT);
 		setFocusable(true);
+		setController(new GameController());
 		player = new Player();
+		gameController.addModel(player);
+		gameController.addView(this);
 		timer = new Timer(DELAY, this);
         timer.start();     
+	}
+	
+	public void paintView(){
+		repaint();
+	}
+	
+	public void setController(Controller controller){
+		gameController = (GameController)controller;
+	}
+	
+	public void modelPropertyChange(final PropertyChangeEvent evt){
+		System.out.println("yup");
+		repaint();
+	}
+	
+	public void addModel(Model model){
+		models.add(model);
 	}
 	
 	@Override
@@ -50,13 +76,17 @@ public class SwingView extends JPanel implements ActionListener{
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
+		/*for (Model it: models){
+			int cx = player.getImage().getWidth(null) / 2;
+	        int cy = player.getImage().getHeight(null) / 2;
+	        g.rotate(player.getRotation(), cx+player.getX(), cy+player.getY());
+	        g.drawImage(player.getImage(), player.getX(), player.getY(), null);
+		}*/
 		
 		int cx = player.getImage().getWidth(null) / 2;
         int cy = player.getImage().getHeight(null) / 2;
-        //AffineTransform oldAT = g.getTransform();
         g.rotate(player.getRotation(), cx+player.getX(), cy+player.getY());
         g.drawImage(player.getImage(), player.getX(), player.getY(), null);
-        //g.setTransform(oldAT);
         
 	    Toolkit.getDefaultToolkit().sync();
     }
@@ -73,13 +103,13 @@ public class SwingView extends JPanel implements ActionListener{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-            player.keyPressed(e);
-			
+            gameController.keyPressed(e);
+            
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-            player.keyReleased(e);
+			//gameController.keyReleased(e);
 			
 		}
 
@@ -95,13 +125,13 @@ public class SwingView extends JPanel implements ActionListener{
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			player.mouseDragged(e);
+			//gameController.mouseDragged(e);
 			
 		}
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			player.mouseMoved(e);
+			gameController.mouseMoved(e);
 			
 		}
     	
