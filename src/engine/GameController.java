@@ -30,8 +30,7 @@ public class GameController implements Controller, PropertyChangeListener{
 	
 	public void keyPressed(KeyEvent e){
 		
-		if(e.getKeyCode() == KeyEvent.VK_W) {
-			
+		if(e.getKeyCode() == KeyEvent.VK_W) {			
 			player.setIsMoving(1);
 		}
 		if(e.getKeyCode() == KeyEvent.VK_S) {
@@ -41,6 +40,7 @@ public class GameController implements Controller, PropertyChangeListener{
 	}	
 	
 	public void keyReleased(KeyEvent e){
+		
 		if(e.getKeyCode() == KeyEvent.VK_W) {			
 			player.setIsMoving(0);
 		}
@@ -52,5 +52,6 @@ public class GameController implements Controller, PropertyChangeListener{
 	public void mouseMoved(MouseEvent e){
 		player.setMouseX(e.getX());
 		player.setMouseY(e.getY());
+		player.setIsRotating(1);
 	}
 }

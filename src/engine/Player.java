@@ -80,26 +80,27 @@ public class Player implements Model, ActionListener{
 		
 	public void setMouseX(int x)
 	{
-		double old_rotation=rotation;
 		int old_mx=mousex;
 		mousex=x;
-		rotate();
 		firePropertyChange("mousex", old_mx, mousex);
-		firePropertyChange("rotation", old_rotation, rotation);
+		
 
 
 	}
 	
 	public void setMouseY(int y)
 	{
-		double old_rotation=rotation;
 		int old_my=mousey;
 		mousey=y;
-		rotate();
 		firePropertyChange("mousey", old_my, mousey);
-		firePropertyChange("rotation", old_rotation, rotation);
 
 
+	}
+	
+	public void setPosition(int xx, int yy)
+	{
+		x=xx;
+		y=yy;
 	}
 	
 	public void setDx(double x)
@@ -115,6 +116,10 @@ public class Player implements Model, ActionListener{
 	public void setIsMoving(int i)
 	{
 		is_moving=i;
+	}
+	public void setIsRotating(int i)
+	{
+		is_rotating=i;
 	}
 	
 	public void move(){
@@ -195,7 +200,10 @@ public class Player implements Model, ActionListener{
 		
 		if(is_rotating==1)
 		{
+			double old_rotation=rotation;
 			rotate();
+			is_rotating=0;
+			firePropertyChange("rotation", old_rotation, rotation);
 		}
 	}
 
