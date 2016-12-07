@@ -6,9 +6,12 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
-public class Player {
+public class Player implements Model{
 
+	public PropertyChangeSupport propertyChangeSupport;
 	public static final int MOVE_DELTA = 5;
 
 	private int x;
@@ -50,21 +53,31 @@ public class Player {
 		return image;
 	}
 	
-	private Rectangle getBorders(){
+	public Rectangle getBorders(){
 		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
 	}
 	
-	private Rectangle getWiderBorders(){
+	public Rectangle getWiderBorders(){
 		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
 	}
 	
-	private Rectangle getBordersAfterMove(){
+	public Rectangle getBordersAfterMove(){
 		Double a=Math.ceil(x+dx);
 		Double b=Math.ceil(y+dy);
 		
 		return new Rectangle(a.intValue(), b.intValue(), image.getWidth(null), image.getHeight(null));
 	}
 	
+		
+	public void setMouseX(int x)
+	{
+		mousex=x;
+	}
+	
+	public void setMouseY(int y)
+	{
+		mousey=y;
+	}
 	
 	public void move(){
 		checkBorders();
@@ -74,7 +87,7 @@ public class Player {
 		collider.update(x,y);
 	}
 	
-	private void rotate(){
+	public void rotate(){
 		double a=mousex-x;
 		double b=y-mousey;
 		if(b!=0)
@@ -134,7 +147,7 @@ public class Player {
 		}
 	}
 	
-	private void checkBorders(){
+	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();
 		Rectangle gamescene = new Rectangle(0, 0, SwingView.WIDTH, SwingView.HEIGHT);
@@ -154,9 +167,18 @@ public class Player {
 	
 	public void mouseMoved(MouseEvent e){
 		mousex=e.getX();
-		mousey=e.getY();
-			
-		
+		mousey=e.getY();					
+	}
+	
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener pcl)
+	{
+		propertyChangeSupport.addPropertyChangeListener(pcl);
+	}
+
+	@Override
+	public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);		
 	}
 
 }
