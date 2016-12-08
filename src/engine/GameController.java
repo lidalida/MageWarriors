@@ -4,6 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController implements Controller, PropertyChangeListener{
 	
@@ -11,6 +13,7 @@ public class GameController implements Controller, PropertyChangeListener{
 
 	public View view;
 	public Player player;
+	List<Model> models = new ArrayList<Model>();
 	
 	public void addView(View view)
 	{
@@ -19,7 +22,9 @@ public class GameController implements Controller, PropertyChangeListener{
 	
 	public void addModel(Model model)
 	{
-		player=(Player)model;
+		models.add(model);
+		if(models.size()==1)
+			player = (Player)model;
 		model.addPropertyChangeListener(this);
 	}
 	

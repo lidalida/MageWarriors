@@ -46,7 +46,10 @@ public class SwingView extends JPanel implements ActionListener, View{
 		setFocusable(true);
 		setController(new GameController());
 		player = new Player();
-			
+		models.add(player);
+		gameController.addModel(player);
+		player = new Player();
+		models.add(player);
 		gameController.addModel(player);
 		gameController.addView(this);
 		timer = new Timer(DELAY, this);
@@ -77,17 +80,15 @@ public class SwingView extends JPanel implements ActionListener, View{
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		/*for (Model it: models){
-			int cx = player.getImage().getWidth(null) / 2;
-	        int cy = player.getImage().getHeight(null) / 2;
-	        g.rotate(player.getRotation(), cx+player.getX(), cy+player.getY());
-	        g.drawImage(player.getImage(), player.getX(), player.getY(), null);
-		}*/
+		for (Model it: models){
+			g = (Graphics2D) g1.create();
+			int cx = it.getImage().getWidth(null) / 2;
+	        int cy = it.getImage().getHeight(null) / 2;
+	        g.rotate(it.getRotation(), cx+it.getX(), cy+it.getY());
+	        g.drawImage(it.getImage(), it.getX(), it.getY(), null);
+		}
 		
-		int cx = player.getImage().getWidth(null) / 2;
-        int cy = player.getImage().getHeight(null) / 2;
-        g.rotate(player.getRotation(), cx+player.getX(), cy+player.getY());
-        g.drawImage(player.getImage(), player.getX(), player.getY(), null);
+		
 	    Toolkit.getDefaultToolkit().sync();
     }
 
