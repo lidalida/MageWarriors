@@ -34,7 +34,7 @@ public class SwingView extends JPanel implements ActionListener, View{
     private final int DELAY = 1000/60;
 
 	private GameController gameController;
-	List<Model> models = new ArrayList<Model>();
+	public List<Model> models = new ArrayList<Model>();
 	
 	private Player player;
 	private Timer timer;
@@ -45,9 +45,9 @@ public class SwingView extends JPanel implements ActionListener, View{
 		setSize(WIDTH, HEIGHT);
 		setFocusable(true);
 		setController(new GameController());
-		player = new Player();
+		/*player = new Player();
 		models.add(player);
-		gameController.addModel(player);
+		gameController.addModel(player);*/
 		player = new Player();
 		models.add(player);
 		gameController.addModel(player);

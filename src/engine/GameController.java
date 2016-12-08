@@ -13,6 +13,7 @@ public class GameController implements Controller, PropertyChangeListener{
 
 	public View view;
 	public Player player;
+	public Missile missile;
 	List<Model> models = new ArrayList<Model>();
 	
 	public void addView(View view)
@@ -25,6 +26,8 @@ public class GameController implements Controller, PropertyChangeListener{
 		models.add(model);
 		if(models.size()==1)
 			player = (Player)model;
+		if(models.size()>2)
+			missile = (Missile)model;
 		model.addPropertyChangeListener(this);
 	}
 	
@@ -37,6 +40,10 @@ public class GameController implements Controller, PropertyChangeListener{
 		
 		if(e.getKeyCode() == KeyEvent.VK_W) {			
 			player.setIsMoving(1);
+			missile = new Missile(player);
+			addModel(missile);
+			view.addModel(missile);
+			System.out.println(models.size());
 		}
 		if(e.getKeyCode() == KeyEvent.VK_S) {
 			player.setIsMoving(2);
@@ -55,6 +62,19 @@ public class GameController implements Controller, PropertyChangeListener{
 	}
 	
 	public void mouseMoved(MouseEvent e){
+		for(Model it: models){
+			if(it.getClass()==player.getClass())
+				continue;
+			missile = (Missile)it;
+			if(missile != null)
+				if(missile.IsToDelete()){
+					models.remove(missile);
+					((SwingView)view).models.remove(missile);
+					missile = null;
+					break;
+				}
+		}
+			
 		player.setMouseX(e.getX());
 		player.setMouseY(e.getY());
 		player.setIsRotating(1);

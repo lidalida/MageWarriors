@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 public class Missile implements Model, ActionListener {
@@ -25,7 +26,15 @@ public class Missile implements Model, ActionListener {
 	private Timer timer;
 	
 	
-	public Missile(){
+	public Missile(Player player){
+		x=(int) (player.getX()+player.getImage().getWidth(null)/2+player.getImage().getWidth(null)/2*Math.sin(player.getRotation()));
+		y=(int) (player.getY()+player.getImage().getHeight(null)/2-player.getImage().getHeight(null)/2*Math.cos(player.getRotation()));
+		dx=0;
+		dy=0;
+		rotation=player.getRotation();
+		ImageIcon ii = new ImageIcon("src/res/missile.png");
+		image=ii.getImage();
+		collider=new Collider(x,y,image.getWidth(null)/2);
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		timer=new Timer(DELAY, this);
 		timer.start();
@@ -49,6 +58,19 @@ public class Missile implements Model, ActionListener {
 		return image;
 	}
 	
+	public boolean IsToDelete(){
+		return toDelete;
+	}
+	
+	
+	public void move(){
+		x+=10*Math.sin(rotation);
+		y-=10*Math.cos(rotation);
+		collider.update(x,y);
+		firePropertyChange("x", x-dx, x);
+		firePropertyChange("y", y-dy, y);
+	}
+	
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener pcl)
 	{
@@ -65,6 +87,7 @@ public class Missile implements Model, ActionListener {
 		lifetime++;
 		if(lifetime>=100)
 			toDelete = true;
+		move();
 	}
 	
 }
