@@ -19,7 +19,7 @@ public class Missile implements Model, ActionListener {
 	private double dx;
 	private double dy;
 	private Image image;
-	private Collider collider;
+	public Collider collider;
 	private double rotation;
 	private int lifetime;
 	private boolean toDelete;

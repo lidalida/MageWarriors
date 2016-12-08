@@ -24,7 +24,7 @@ public class Player implements Model, ActionListener{
 	private int mousex;
 	private int mousey;
 	private Image image;
-	private Collider collider;
+	public Collider collider;
 	private double rotation;
 	private int is_moving; //0-nie, 1-do przodu, 2-do tylu
 	private int is_rotating; 
@@ -101,6 +101,7 @@ public class Player implements Model, ActionListener{
 	{
 		x=xx;
 		y=yy;
+		collider.update(x, y);
 	}
 	
 	public void setDx(double x)

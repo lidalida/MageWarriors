@@ -36,7 +36,7 @@ public class SwingView extends JPanel implements ActionListener, View{
 	private GameController gameController;
 	public List<Model> models = new ArrayList<Model>();
 	
-	private Player player;
+	private Player player, enemy;
 	private Timer timer;
 
 	public SwingView(){
@@ -49,8 +49,12 @@ public class SwingView extends JPanel implements ActionListener, View{
 		models.add(player);
 		gameController.addModel(player);*/
 		player = new Player();
+		enemy = new Player();
+		enemy.setPosition(100, 100);
 		models.add(player);
+		models.add(enemy);
 		gameController.addModel(player);
+		gameController.addModel(enemy);
 		gameController.addView(this);
 		timer = new Timer(DELAY, this);
         timer.start();     
