@@ -103,10 +103,8 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 				Model m = it.next();
 				if(m.getClass()==Missile.class)	
 				{
-					System.out.println("it jest pociskiem");
 					if(enemy.collider.collides(((Missile)m).collider))	//kolizja enemy z missile
 					{
-						System.out.println("pocisk koliduje z enemy");
 
 						it.remove();
 						missile=(Missile)m;
@@ -117,13 +115,19 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 				}
 				else if(m.getClass()==player.getClass())
 				{
-					System.out.println("it jest playerem(enemy)");
 
 					if(player.collider.collides(((Player)m).collider))	//kolizja playera z playerem
 					{
 						System.out.println("playerzy koliduja");
+						double a=m.getX()+m.getImage().getWidth(null)/2-player.getX()-player.getImage().getWidth(null)/2;
+						double b=player.getY()+player.getImage().getWidth(null)/2-m.getY()-m.getImage().getWidth(null)/2;
+						double rot=Math.atan2(a, b);
+						//System.out.println(rot);
+						player.setForbiddenRotation(rot);
 
 					}
+					else
+						player.setForbiddenRotation(1000);				
 				}
 			}
 		

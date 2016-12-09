@@ -29,6 +29,7 @@ public class Player implements Model, ActionListener{
 	private int is_moving; //0-nie, 1-do przodu, 2-do tylu
 	private int is_rotating; 
 	private Timer timer;
+	private double forbidden_rotation=1000;
 
 
 	
@@ -127,22 +128,30 @@ public class Player implements Model, ActionListener{
 		is_rotating=i;
 	}
 	
+	public void setForbiddenRotation(double r)
+	{
+		forbidden_rotation=r;
+	}
+	
 	public void move(){
-		if(collider.containsPoint(mousex, mousey)){
+		if(checkRotation())
+		{
+			if(collider.containsPoint(mousex, mousey)){
 			dx=0;
 			dy=0;
+			}
+			else{
+			dx=MOVE_DELTA*Math.sin(rotation);
+			dy=-MOVE_DELTA*Math.cos(rotation);
+			}
+			
+			checkBorders();
+			x+=dx;
+			y+=dy;
+			collider.update(x,y);
+			firePropertyChange("x", x-dx, x);
+			firePropertyChange("y", y-dy, y);
 		}
-		else{
-		dx=MOVE_DELTA*Math.sin(rotation);
-		dy=-MOVE_DELTA*Math.cos(rotation);
-		}
-		
-		checkBorders();
-		x+=dx;
-		y+=dy;
-		collider.update(x,y);
-		firePropertyChange("x", x-dx, x);
-		firePropertyChange("y", y-dy, y);
 	}
 	
 	public void moveBack()
@@ -160,8 +169,8 @@ public class Player implements Model, ActionListener{
 	
 	public void rotate(){
 		double old_rotation=rotation;
-		double a=mousex-x;
-		double b=y-mousey;
+		double a=mousex-x-image.getWidth(null)/2;
+		double b=y+image.getWidth(null)/2-mousey;
 		if(b!=0)
 			rotation=Math.atan2(a,b);
 		firePropertyChange("rotation", old_rotation, rotation);
@@ -180,6 +189,47 @@ public class Player implements Model, ActionListener{
 			dy=0;
 		}		
 	}	
+	
+	public boolean checkRotation()
+	{
+		if(forbidden_rotation!=1000)
+		{
+			forbidden_rotation=Math.toDegrees(forbidden_rotation);
+			if(forbidden_rotation<0)
+				forbidden_rotation=360+forbidden_rotation;
+			System.out.println("forbidden " + forbidden_rotation);
+
+			
+		
+			double r=(forbidden_rotation+90);
+			double l=(forbidden_rotation-90);
+			if(r<0)
+				r+=360;
+			if(l<0)
+				l+=360;
+			r=r%360;
+			l=l%360;
+			double rot=Math.toDegrees(rotation);
+			if(rot<0)
+				rot+=360;
+			System.out.println(rot);
+
+			if(forbidden_rotation>270 || forbidden_rotation<90)
+			{
+				if(rot>l || rot<r)
+					return false;			
+			}
+			else
+			{
+				if(rot>l && rot<r)
+					return false;
+			}
+			return true;
+		}
+		return true;
+		
+	}
+
 	
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener pcl)
