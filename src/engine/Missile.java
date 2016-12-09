@@ -13,6 +13,7 @@ public class Missile implements Model, ActionListener {
 	
 	public PropertyChangeSupport propertyChangeSupport;
 	public static final int DELAY = 10;
+	public static final int MOVE_DELTA = 10;
 	
 	private int x;
 	private int y;
@@ -64,8 +65,8 @@ public class Missile implements Model, ActionListener {
 	
 	
 	public void move(){
-		x+=10*Math.sin(rotation);
-		y-=10*Math.cos(rotation);
+		x+=MOVE_DELTA*Math.sin(rotation);
+		y-=MOVE_DELTA*Math.cos(rotation);
 		collider.update(x,y);
 		firePropertyChange("x", x-dx, x);
 		firePropertyChange("y", y-dy, y);

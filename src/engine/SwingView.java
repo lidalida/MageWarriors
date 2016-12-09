@@ -60,7 +60,7 @@ public class SwingView extends JPanel implements ActionListener, View{
         timer.start();     
 	}
 	
-	public void paintView(){
+	public void updateView(){
 		repaint();
 	}
 	

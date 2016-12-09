@@ -58,6 +58,10 @@ public class Player implements Model, ActionListener{
 		return rotation;
 	}
 	
+	public void setRotation(double rot){
+		rotation = rot;
+	}
+	
 	public Image getImage(){
 		return image;
 	}

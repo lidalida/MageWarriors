@@ -3,7 +3,7 @@ package engine;
 import java.beans.PropertyChangeEvent;
 
 public interface View {
-	void paintView();
+	void updateView();
 	
 	void setController(Controller controller);
 	
