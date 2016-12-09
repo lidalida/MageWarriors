@@ -1,8 +1,8 @@
 package tests;
 
-import engine.Missile;
-import engine.Player;
-import engine.SwingView;
+import model.Missile;
+import model.Player;
+import view.SwingView;
 
 import static org.junit.Assert.assertEquals;
 

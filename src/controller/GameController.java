@@ -1,4 +1,4 @@
-package engine;
+package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Timer;
+
+import model.Missile;
+import model.Model;
+import model.Player;
+import view.SwingView;
+import view.View;
 
 public class GameController implements Controller, PropertyChangeListener, ActionListener{
 	
@@ -118,7 +124,6 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 
 					if(player.collider.collides(((Player)m).collider))	//kolizja playera z playerem
 					{
-						System.out.println("playerzy koliduja");
 						double a=m.getX()+m.getImage().getWidth(null)/2-player.getX()-player.getImage().getWidth(null)/2;
 						double b=player.getY()+player.getImage().getWidth(null)/2-m.getY()-m.getImage().getWidth(null)/2;
 						double rot=Math.atan2(a, b);

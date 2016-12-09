@@ -1,6 +1,9 @@
-package engine;
+package view;
 
 import java.beans.PropertyChangeEvent;
+
+import controller.Controller;
+import model.Model;
 
 public interface View {
 	void updateView();

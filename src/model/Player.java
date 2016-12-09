@@ -1,4 +1,4 @@
-package engine;
+package model;
 
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
+
+import view.SwingView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -197,9 +199,6 @@ public class Player implements Model, ActionListener{
 			forbidden_rotation=Math.toDegrees(forbidden_rotation);
 			if(forbidden_rotation<0)
 				forbidden_rotation=360+forbidden_rotation;
-			System.out.println("forbidden " + forbidden_rotation);
-
-			
 		
 			double r=(forbidden_rotation+90);
 			double l=(forbidden_rotation-90);
@@ -212,7 +211,6 @@ public class Player implements Model, ActionListener{
 			double rot=Math.toDegrees(rotation);
 			if(rot<0)
 				rot+=360;
-			System.out.println(rot);
 
 			if(forbidden_rotation>270 || forbidden_rotation<90)
 			{

@@ -1,8 +1,8 @@
-package engine;
+package main;
 
 import javax.swing.JFrame;
 
-import engine.SwingView;
+import view.SwingView;
 
 public class Main {
 

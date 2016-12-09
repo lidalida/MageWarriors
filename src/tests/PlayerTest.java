@@ -6,7 +6,8 @@ import javax.swing.ImageIcon;
 
 import org.junit.Before;
 import org.junit.Test;
-import engine.Player;
+
+import model.Player;
 
 public class PlayerTest {
 	Player player;

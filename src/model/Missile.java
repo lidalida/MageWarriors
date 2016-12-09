@@ -1,4 +1,4 @@
-package engine;
+package model;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;

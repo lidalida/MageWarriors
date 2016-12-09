@@ -1,7 +1,7 @@
 package tests;
 
-import engine.Player;
-import engine.Missile;
+import model.Missile;
+import model.Player;
 
 import static org.junit.Assert.assertEquals;
 
