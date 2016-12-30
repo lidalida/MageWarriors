@@ -1,5 +1,6 @@
 package view;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
@@ -24,8 +25,8 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Model;
 import model.Player;
+import model.Drawable;
 
 public class SwingView extends JPanel implements ActionListener, View{
 	
@@ -39,10 +40,10 @@ public class SwingView extends JPanel implements ActionListener, View{
     private final int DELAY = 1000/60;
 
 	private GameController gameController;
-	public List<Model> models = new ArrayList<Model>();
 	
 	private Player player, enemy;
 	private Timer timer;
+	
 
 	public SwingView(){
         addKeyListener(new CustomKeyListener());
@@ -56,17 +57,11 @@ public class SwingView extends JPanel implements ActionListener, View{
 		player = new Player();
 		enemy = new Player();
 		enemy.setPosition(100, 100);
-		models.add(player);
-		models.add(enemy);
 		gameController.addModel(player);
 		gameController.addModel(enemy);
 		gameController.addView(this);
 		timer = new Timer(DELAY, this);
-        timer.start();     
-	}
-	
-	public void updateView(){
-		repaint();
+        timer.start();
 	}
 	
 	public void setController(Controller controller){
@@ -77,10 +72,6 @@ public class SwingView extends JPanel implements ActionListener, View{
 		//repaint();
 	}
 	
-	public void addModel(Model model){
-		models.add(model);
-	}
-	
 	@Override
     public void paintComponent(Graphics g1) {
         super.paintComponent(g1);
@@ -89,21 +80,16 @@ public class SwingView extends JPanel implements ActionListener, View{
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		for (Model it: models){
-			g = (Graphics2D) g1.create();
-			int cx = it.getImage().getWidth(null) / 2;
-	        int cy = it.getImage().getHeight(null) / 2;
-	        g.rotate(it.getRotation(), cx+it.getX(), cy+it.getY());
-	        g.drawImage(it.getImage(), it.getX(), it.getY(), null);
+		for (Drawable it: gameController.models){
+			it.draw(g1);
 		}
-		
 		
 	    Toolkit.getDefaultToolkit().sync();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    				repaint();
+    	repaint();
     }	
     
        

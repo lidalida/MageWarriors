@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import model.Drawable;
 import model.Missile;
 import model.Model;
 import model.Player;
@@ -26,8 +27,8 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 	public View view;
 	public Player player, enemy;
 	public Missile missile;
-	List<Model> models = new ArrayList<Model>();
-	Iterator<Model> iter = models.iterator();
+	public List<Drawable> models = new ArrayList<Drawable>();
+	Iterator<Drawable> iter = models.iterator();
 	public Timer timer;
 	
 	public GameController()
@@ -40,7 +41,7 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 		this.view=view;
 	}
 	
-	public void addModel(Model model)
+	public void addModel(Drawable model)
 	{
 		models.add(model);
 		if(models.size()==1)
@@ -49,7 +50,7 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 			enemy = (Player)model;
 		else if(models.size()>2)
 			missile = (Missile)model;
-		model.addPropertyChangeListener(this);
+		((Model)model).addPropertyChangeListener(this);
 	}
 	
 	public void propertyChange(PropertyChangeEvent e)
@@ -68,7 +69,6 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 		if(e.getKeyCode() == KeyEvent.VK_SPACE){
 			missile = new Missile(player);
 			addModel(missile);
-			view.addModel(missile);
 		}
 		
 	}	
@@ -84,14 +84,13 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 	}
 	
 	public void mouseMoved(MouseEvent e){
-		for(Model it: models){
+		for(Drawable it: models){
 			if(it.getClass()==player.getClass())
 				continue;
 			missile = (Missile)it;
 			if(missile != null)
 				if(missile.IsToDelete()){
 					models.remove(missile);
-					((SwingView)view).models.remove(missile);
 					missile = null;
 					break;
 				}
@@ -104,9 +103,9 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		for(Iterator<Model> it = models.subList(1, models.size()).iterator(); it.hasNext(); ){
+		for(Iterator<Drawable> it = models.subList(1, models.size()).iterator(); it.hasNext(); ){
 			{
-				Model m = it.next();
+				Model m = (Model)it.next();
 				if(m.getClass()==Missile.class)	
 				{
 					if(enemy.collider.collides(((Missile)m).collider))	//kolizja enemy z missile
@@ -115,7 +114,6 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 						it.remove();
 						missile=(Missile)m;
 						//models.remove(missile);
-						((SwingView)view).models.remove(missile);
 						missile = null;
 					}
 				}

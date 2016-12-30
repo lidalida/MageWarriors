@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -13,7 +15,7 @@ import view.SwingView;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class Player implements Model, ActionListener{
+public class Player implements Drawable, Model, ActionListener{
 
 	public PropertyChangeSupport propertyChangeSupport;
 	public static final int MOVE_DELTA = 5;
@@ -32,8 +34,6 @@ public class Player implements Model, ActionListener{
 	private int is_rotating; 
 	private Timer timer;
 	private double forbidden_rotation=1000;
-
-
 	
 	public Player(){
 		x=0;
@@ -47,6 +47,14 @@ public class Player implements Model, ActionListener{
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		timer=new Timer(DELAY, this);
 		timer.start();
+	}
+	
+	public void draw(Graphics g1){
+		Graphics2D g = (Graphics2D) g1.create();
+		int cx = image.getWidth(null) / 2;
+        int cy = image.getHeight(null) / 2;
+        g.rotate(rotation, cx+x, cy+y);
+        g.drawImage(image, x, y, null);
 	}
 	
 	public int getX(){

@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +11,7 @@ import java.beans.PropertyChangeSupport;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-public class Missile implements Model, ActionListener {
+public class Missile implements Drawable, Model, ActionListener {
 	
 	public PropertyChangeSupport propertyChangeSupport;
 	public static final int DELAY = 10;
@@ -26,6 +28,13 @@ public class Missile implements Model, ActionListener {
 	private boolean toDelete;
 	private Timer timer;
 	
+	public void draw(Graphics g1){
+		Graphics2D g = (Graphics2D) g1.create();
+		int cx = image.getWidth(null) / 2;
+        int cy = image.getHeight(null) / 2;
+        g.rotate(rotation, cx+x, cy+y);
+        g.drawImage(image, x, y, null);
+	}
 	
 	public Missile(Player player){
 		x=(int) (player.getX()+player.getImage().getWidth(null)/2+player.getImage().getWidth(null)/2*Math.sin(player.getRotation()));
