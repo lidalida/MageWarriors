@@ -54,7 +54,7 @@ public class Main {
 				//System.gc();
 			}
 			v.repaint();
-			gameScene.gameLoop();
+			gameScene.gameUpdate();
 			try {
 				Thread.sleep(18);
 			} catch (InterruptedException e) {

@@ -15,7 +15,7 @@ import view.SwingView;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class Player implements Drawable, Model, ActionListener{
+public class Player implements Drawable, Model {
 
 	public PropertyChangeSupport propertyChangeSupport;
 	public static final int MOVE_DELTA = 5;
@@ -30,9 +30,6 @@ public class Player implements Drawable, Model, ActionListener{
 	private Image image;
 	public Collider collider;
 	private double rotation;
-	private int is_moving; //0-nie, 1-do przodu, 2-do tylu
-	private int is_rotating; 
-	private Timer timer;
 	private double forbidden_rotation=1000;
 	
 	public Player(){
@@ -44,9 +41,6 @@ public class Player implements Drawable, Model, ActionListener{
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
-		propertyChangeSupport = new PropertyChangeSupport(this);
-		timer=new Timer(DELAY, this);
-		timer.start();
 	}
 	
 	public void draw(Graphics g1){
@@ -95,21 +89,12 @@ public class Player implements Drawable, Model, ActionListener{
 		
 	public void setMouseX(int x)
 	{
-		int old_mx=mousex;
 		mousex=x;
-		firePropertyChange("mousex", old_mx, mousex);
-		
-
-
 	}
 	
 	public void setMouseY(int y)
 	{
-		int old_my=mousey;
 		mousey=y;
-		firePropertyChange("mousey", old_my, mousey);
-
-
 	}
 	
 	public void setPosition(int xx, int yy)
@@ -127,15 +112,6 @@ public class Player implements Drawable, Model, ActionListener{
 	public void setDy(double y)
 	{
 		dy=y;
-	}
-	
-	public void setIsMoving(int i)
-	{
-		is_moving=i;
-	}
-	public void setIsRotating(int i)
-	{
-		is_rotating=i;
 	}
 	
 	public void setForbiddenRotation(double r)
@@ -159,8 +135,6 @@ public class Player implements Drawable, Model, ActionListener{
 			x+=dx;
 			y+=dy;
 			collider.update(x,y);
-			firePropertyChange("x", x-dx, x);
-			firePropertyChange("y", y-dy, y);
 		}
 	}
 	
@@ -173,17 +147,13 @@ public class Player implements Drawable, Model, ActionListener{
 		x+=dx;
 		y+=dy;
 		collider.update(x,y);
-		firePropertyChange("x", x-dx, x);
-		firePropertyChange("y", y-dy, y);
 	}
 	
 	public void rotate(){
-		double old_rotation=rotation;
 		double a=mousex-x-image.getWidth(null)/2;
 		double b=y+image.getWidth(null)/2-mousey;
 		if(b!=0)
 			rotation=Math.atan2(a,b);
-		firePropertyChange("rotation", old_rotation, rotation);
 	}
 	
 
@@ -235,37 +205,4 @@ public class Player implements Drawable, Model, ActionListener{
 		return true;
 		
 	}
-
-	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener pcl)
-	{
-		propertyChangeSupport.addPropertyChangeListener(pcl);
-	}
-
-	@Override
-	public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	/*	if(is_moving==1)
-		{
-			move();
-		}
-		else if(is_moving==2)
-		{
-			moveBack();
-		}
-		
-		if(is_rotating==1)
-		{
-			double old_rotation=rotation;
-			rotate();
-			is_rotating=0;
-			firePropertyChange("rotation", old_rotation, rotation);
-		}*/
-	}
-
 }

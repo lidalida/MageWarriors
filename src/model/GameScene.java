@@ -90,7 +90,8 @@ public class GameScene extends Scene{
 				if(m.getClass()==Missile.class)	
 				{
 					missile=(Missile)m;
-					if(missile.IsToDelete()){
+					missile.move();
+					if(++missile.lifetime>100){
 						it.remove();
 						models.remove(missile);
 						missile = null;
@@ -122,21 +123,8 @@ public class GameScene extends Scene{
 	}
 	
 			
-	public void gameLoop()
+	public void gameUpdate()
 	{
-		//long t, t_start=System.currentTimeMillis();
-		//while(true)
-		//{	
-			//System.out.println("loop");
-			//akcje zachodz¹ce raz na klatkê
-			/*t=System.currentTimeMillis();
-			if(t-t_start>18)
-			{
-				checkCollisions();
-				t_start=t;
-			}*/
-			
-			
 			if(painted)
 			{
 				//checkCollisions();

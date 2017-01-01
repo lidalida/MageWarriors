@@ -14,9 +14,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Timer;
 
-import controller.Controller;
-import controller.GameController;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseMotionListener;
@@ -56,23 +53,12 @@ public class SwingView extends JPanel implements ActionListener, View{
         addMouseMotionListener(new CustomMouseListener());
 		setSize(WIDTH, HEIGHT);
 		setFocusable(true);
-		setController(new GameController());
-		/*player = new Player();
-		models.add(player);
-		gameController.addModel(player);*/
-		//player = new Player();
-		//enemy = new Player();
-		//enemy.setPosition(100, 100);
-		//gameScene.addModel(player);
-		//gameScene.addModel(enemy);
-		//gameScene.addView(this);
 		timer = new Timer(DELAY, this);
         timer.start();
 	}
 	
 	public void setGameScene(GameScene gs){
 		gameScene=gs;
-		//gameScene.v=this;
 		player = new Player();
 		enemy = new Player();
 		enemy.setPosition(100, 100);
@@ -94,10 +80,6 @@ public class SwingView extends JPanel implements ActionListener, View{
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		/*for (Drawable it: gameScene.models){
-			it.draw(g1);
-		}*/
-		//List<Drawable> models_copy = new ArrayList<Drawable>(gameScene.models);
 		synchronized(gameScene.models){
 		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
 		{
@@ -171,11 +153,5 @@ public class SwingView extends JPanel implements ActionListener, View{
 		}
     	
     }
-
-	@Override
-	public void setController(Controller controller) {
-		// TODO Auto-generated method stub
-		
-	}	
 
 }

@@ -11,7 +11,7 @@ import java.beans.PropertyChangeSupport;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-public class Missile implements Drawable, Model, ActionListener {
+public class Missile implements Drawable, Model {
 	
 	public PropertyChangeSupport propertyChangeSupport;
 	public static final int DELAY = 10;
@@ -24,9 +24,7 @@ public class Missile implements Drawable, Model, ActionListener {
 	private Image image;
 	public Collider collider;
 	private double rotation;
-	private int lifetime;
-	private boolean toDelete;
-	private Timer timer;
+	int lifetime;
 	
 	public void draw(Graphics g1){
 		Graphics2D g = (Graphics2D) g1.create();
@@ -45,11 +43,7 @@ public class Missile implements Drawable, Model, ActionListener {
 		ImageIcon ii = new ImageIcon("src/res/missile.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
-		propertyChangeSupport = new PropertyChangeSupport(this);
-		timer=new Timer(DELAY, this);
-		timer.start();
 		lifetime = 0;
-		toDelete = false;
 	}
 	
 	public int getX(){
@@ -68,36 +62,11 @@ public class Missile implements Drawable, Model, ActionListener {
 		return image;
 	}
 	
-	public boolean IsToDelete(){
-		return toDelete;
-	}
-	
 	
 	public void move(){
 		x+=MOVE_DELTA*Math.sin(rotation);
 		y-=MOVE_DELTA*Math.cos(rotation);
 		collider.update(x,y);
-		firePropertyChange("x", x-dx, x);
-		firePropertyChange("y", y-dy, y);
-	}
-	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener pcl)
-	{
-		propertyChangeSupport.addPropertyChangeListener(pcl);
-	}
-
-	@Override
-	public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-	}
-	
-	
-	public void actionPerformed(ActionEvent e) {
-		lifetime++;
-		if(lifetime>=10)
-			toDelete = true;
-		move();
 	}
 	
 }
