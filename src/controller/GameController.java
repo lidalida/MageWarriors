@@ -103,8 +103,9 @@ public class GameController implements Controller, PropertyChangeListener, Actio
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		for(Iterator<Drawable> it = models.subList(1, models.size()).iterator(); it.hasNext(); ){
-			{
+		if(models.size()>1)
+		{
+			for(Iterator<Drawable> it = models.subList(1, models.size()).iterator(); it.hasNext(); ){
 				Model m = (Model)it.next();
 				if(m.getClass()==Missile.class)	
 				{

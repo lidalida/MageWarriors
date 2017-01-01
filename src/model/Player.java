@@ -250,7 +250,7 @@ public class Player implements Drawable, Model, ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(is_moving==1)
+	/*	if(is_moving==1)
 		{
 			move();
 		}
@@ -265,7 +265,7 @@ public class Player implements Drawable, Model, ActionListener{
 			rotate();
 			is_rotating=0;
 			firePropertyChange("rotation", old_rotation, rotation);
-		}
+		}*/
 	}
 
 }

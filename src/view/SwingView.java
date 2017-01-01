@@ -23,10 +23,13 @@ import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import model.Player;
 import model.Drawable;
+import model.GameScene;
+import model.Missile;
 
 public class SwingView extends JPanel implements ActionListener, View{
 	
@@ -38,8 +41,11 @@ public class SwingView extends JPanel implements ActionListener, View{
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
     private final int DELAY = 1000/60;
+	enum Flags_names{IS_MOVING, IS_MOVING_BACK, IS_SHOOTING, IS_ROTATING};
 
-	private GameController gameController;
+
+
+	public GameScene gameScene;
 	
 	private Player player, enemy;
 	private Timer timer;
@@ -54,20 +60,27 @@ public class SwingView extends JPanel implements ActionListener, View{
 		/*player = new Player();
 		models.add(player);
 		gameController.addModel(player);*/
-		player = new Player();
-		enemy = new Player();
-		enemy.setPosition(100, 100);
-		gameController.addModel(player);
-		gameController.addModel(enemy);
-		gameController.addView(this);
+		//player = new Player();
+		//enemy = new Player();
+		//enemy.setPosition(100, 100);
+		//gameScene.addModel(player);
+		//gameScene.addModel(enemy);
+		//gameScene.addView(this);
 		timer = new Timer(DELAY, this);
         timer.start();
 	}
 	
-	public void setController(Controller controller){
-		gameController = (GameController)controller;
+	public void setGameScene(GameScene gs){
+		gameScene=gs;
+		//gameScene.v=this;
+		player = new Player();
+		enemy = new Player();
+		enemy.setPosition(100, 100);
+		gameScene.addModel(player);
+		gameScene.addModel(enemy);
+
 	}
-	
+		
 	public void modelPropertyChange(final PropertyChangeEvent evt){
 		//repaint();
 	}
@@ -75,15 +88,25 @@ public class SwingView extends JPanel implements ActionListener, View{
 	@Override
     public void paintComponent(Graphics g1) {
         super.paintComponent(g1);
-
+        
+       
         Graphics2D g = (Graphics2D) g1;
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		for (Drawable it: gameController.models){
+		/*for (Drawable it: gameScene.models){
 			it.draw(g1);
+		}*/
+		//List<Drawable> models_copy = new ArrayList<Drawable>(gameScene.models);
+		synchronized(gameScene.models){
+		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
+		{
+			Drawable d = it.next();
+			d.draw(g1);
+		}
 		}
 		
+		gameScene.setPainted(true);
 	    Toolkit.getDefaultToolkit().sync();
     }
 
@@ -97,13 +120,30 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-            gameController.keyPressed(e);
+			if(e.getKeyCode() == KeyEvent.VK_W) {			
+	            gameScene.setFlag(Flags_names.IS_MOVING.ordinal(), true);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_S) {
+	            gameScene.setFlag(Flags_names.IS_MOVING_BACK.ordinal(), true);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_SPACE){
+	            gameScene.setFlag(Flags_names.IS_SHOOTING.ordinal(), true);
+
+			}
             
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			gameController.keyReleased(e);
+			if(e.getKeyCode() == KeyEvent.VK_W) {			
+	            gameScene.setFlag(Flags_names.IS_MOVING.ordinal(), false);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_S) {
+	            gameScene.setFlag(Flags_names.IS_MOVING_BACK.ordinal(), false);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_SPACE){
+	            gameScene.setFlag(Flags_names.IS_SHOOTING.ordinal(), false);
+			}
 			
 		}
 
@@ -125,10 +165,17 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			gameController.mouseMoved(e);
-			
+            gameScene.setFlag(Flags_names.IS_ROTATING.ordinal(), true);
+            gameScene.setMousePos(e.getX(), e.getY());
+		
 		}
     	
-    }	
+    }
+
+	@Override
+	public void setController(Controller controller) {
+		// TODO Auto-generated method stub
+		
+	}	
 
 }

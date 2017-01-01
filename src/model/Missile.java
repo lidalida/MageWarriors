@@ -37,11 +37,11 @@ public class Missile implements Drawable, Model, ActionListener {
 	}
 	
 	public Missile(Player player){
-		x=(int) (player.getX()+player.getImage().getWidth(null)/2+player.getImage().getWidth(null)/2*Math.sin(player.getRotation()));
-		y=(int) (player.getY()+player.getImage().getHeight(null)/2-player.getImage().getHeight(null)/2*Math.cos(player.getRotation()));
+		x=(int) (player.getX()+player.getImage().getWidth(null)/2+(player.getImage().getWidth(null)+15)/2*Math.sin(player.getRotation()))-5;
+		y=(int) (player.getY()+player.getImage().getHeight(null)/2-(player.getImage().getHeight(null)+15)/2*Math.cos(player.getRotation()))-5;
 		dx=0;
 		dy=0;
-		rotation=player.getRotation();
+		rotation=player.getRotation();		
 		ImageIcon ii = new ImageIcon("src/res/missile.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
@@ -95,7 +95,7 @@ public class Missile implements Drawable, Model, ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		lifetime++;
-		if(lifetime>=100)
+		if(lifetime>=10)
 			toDelete = true;
 		move();
 	}
