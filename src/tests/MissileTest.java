@@ -1,14 +1,14 @@
 package tests;
 
-import model.Missile;
-import model.Player;
-
 import static org.junit.Assert.assertEquals;
 
 import javax.swing.ImageIcon;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import engine.Missile;
+import engine.Player;
 
 public class MissileTest {
 	Player player;
@@ -35,7 +35,6 @@ public class MissileTest {
 		final int originalY = missile.getY();
 		missile.move();
 		int deltaX = missile.getX() - originalX;
-		int deltaY = missile.getY() - originalY;
 		assertEquals(deltaX,10,1);
 	}
 }

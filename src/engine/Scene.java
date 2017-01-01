@@ -1,4 +1,4 @@
-package model;
+package engine;
 
 public abstract class Scene {
 	private boolean[] flags = new boolean[4];

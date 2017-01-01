@@ -1,4 +1,4 @@
-package model;
+package engine;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ public class GameScene extends Scene implements Commons{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
-	public boolean[] player1_flags = new boolean[4];
-	boolean[] player2_flags = new boolean[4];
+	public boolean[] player1_flags = new boolean[8];
+	boolean[] player2_flags = new boolean[8];
 	public int mouseX, mouseY;
 	public boolean painted = false;
 	Player player1, player2;
@@ -48,6 +48,11 @@ public class GameScene extends Scene implements Commons{
 	public void setFlag(int i, boolean value)
 	{
 		player1_flags[i]=value;
+	}
+	
+	public boolean getFlag(int i)
+	{
+		return player1_flags[i];
 	}
 	
 	public void setPainted(boolean value)
@@ -93,8 +98,7 @@ public class GameScene extends Scene implements Commons{
 					}
 						
 					else if(player1.collider.collides(((Missile)m).collider))	//kolizja playera z missile
-					{														//tu musi byæ odejmowanie ¿ycia
-
+					{							
 						it.remove();
 						models.remove(missile);
 						missile = null;
@@ -102,7 +106,7 @@ public class GameScene extends Scene implements Commons{
 					
 					else if(player2.collider.collides(((Missile)m).collider))	//kolizja playera z missile
 					{
-
+						player2.takeDamage(30);
 						it.remove();
 						models.remove(missile);
 						missile = null;
@@ -156,18 +160,56 @@ public class GameScene extends Scene implements Commons{
 			
 			//akcje, któe mog¹ zachodziæ wiele razy na klatkê
 			
-			if(player1_flags[IS_SHOOTING])
+			if(player1_flags[IS_CASTING_SPELL_1])
 			{
-				missile = new Missile(player1);
+				if(player1.takeMana(10)){
+					missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25),player1.getRotation());
+					addModel(missile);
+				}
+				else
+					System.out.println("Not enough mana points!!!");
+				player1_flags[IS_CASTING_SPELL_1] = false;
+				player1_flags[IS_SPELL_CRAFTED] = true;
+			}
+			
+			if(player1_flags[IS_CASTING_SPELL_2])
+			{
+				if(player1.takeMana(30)){
+					for(int i=0;i<4;i++){
+						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25+i*25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25+i*25),player1.getRotation());
+						addModel(missile);
+					}
+					
+				}
+				else
+					System.out.println("Not enough mana points!!!");
+				player1_flags[IS_CASTING_SPELL_2] = false;
+				player1_flags[IS_SPELL_CRAFTED] = true;
+			}
+			
+			if(player1_flags[IS_CASTING_SPELL_3])
+			{
+				if(player1.takeMana(80)){
+					for(int i=-6;i<7;i++){
+						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player1.getY(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),player1.getRotation()+(double)i*5*DEG_TO_RAD);
+						addModel(missile);
+					}
+					
+				}
+				else
+					System.out.println("Not enough mana points!!!");
+				player1_flags[IS_CASTING_SPELL_3] = false;
+				player1_flags[IS_SPELL_CRAFTED] = true;
+			}
+			
+			if(player2_flags[IS_CASTING_SPELL_1])
+			{
+				missile = new Missile(player2.getX(),player2.getY(),player2.getRotation());
 				addModel(missile);
 			}
 			
-			if(player2_flags[IS_SHOOTING])
-			{
-				missile = new Missile(player2);
-				addModel(missile);
-			}
-			
+			if(player1_flags[TMP_MANA_CHARGER])
+				player1.restoreMana();
 			//wykrywanie kolizji		
 			
 			

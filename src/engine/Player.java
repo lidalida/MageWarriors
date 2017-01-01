@@ -1,4 +1,4 @@
-package model;
+package engine;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,12 +26,17 @@ public class Player implements Drawable, Model, Commons {
 	private double rotation;
 	private double forbidden_rotation=1000;
 	
+	private int hp;
+	private int mp;
+	
 	public Player(){
 		x=0;
 		y=0;
 		dx=0;
 		dy=0;
 		rotation=0;
+		hp=PLAYER_HEALTH;
+		mp=PLAYER_MANA;
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
@@ -150,7 +155,32 @@ public class Player implements Drawable, Model, Commons {
 			rotation=Math.atan2(a,b);
 	}
 	
+	public int getHP(){
+		return hp;
+	}
+	
+	public void setHP(int health){
+		hp=health;
+	}
 
+	public void takeDamage(int dmg){
+		hp -= dmg;
+		if(hp<=0)
+			System.out.println("I'm dead "+hp);
+	}
+
+	public boolean takeMana(int mana){
+		if(mp >= mana)
+			mp -= mana;
+		else
+			return false;
+		return true;
+	}
+	
+	public void restoreMana(){
+		mp = 100;
+	}
+	
 	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();

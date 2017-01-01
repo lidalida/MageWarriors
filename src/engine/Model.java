@@ -1,7 +1,6 @@
-package model;
+package engine;
 
 import java.awt.Image;
-import java.beans.PropertyChangeListener;
 
 public interface Model {
 	Image getImage();

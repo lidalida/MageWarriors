@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 
-import model.Commons;
-import model.GameScene;
+import engine.Commons;
+import engine.GameScene;
 import view.SwingView;
 
 public class Main implements Commons{

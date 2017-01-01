@@ -1,12 +1,8 @@
 package tests;
 
-import model.Missile;
-import model.Player;
 import view.SwingView;
 
 import static org.junit.Assert.assertEquals;
-
-import javax.swing.ImageIcon;
 
 import org.junit.Before;
 import org.junit.Test;
