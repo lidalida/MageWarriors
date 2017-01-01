@@ -1,6 +1,7 @@
 package main;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -12,6 +13,7 @@ public class Main implements Commons{
 	
 	static GameScene gameScene;
 	static SwingView v;
+	static Random rnd;
 
 	private static void createGUI(){
 		JFrame frame = new JFrame("MageWarriors");
@@ -45,14 +47,14 @@ public class Main implements Commons{
 			e1.printStackTrace();
 		}
 		
+		
 		while(true)
 		{	
 			t=System.currentTimeMillis();
-			if(t-t_start>10000)
+			if(t-t_start>1500)
 			{
-				//v.repaint();
-				//t_start=t;
-				//System.gc();
+				gameScene.generateItems();				
+				t_start=t;
 			}
 			v.repaint();
 			gameScene.gameUpdate();

@@ -98,6 +98,9 @@ public class SwingView extends JPanel implements View, Commons{
 			if(e.getKeyCode() == KeyEvent.VK_M){
 				gameScene.setFlag(TMP_MANA_CHARGER, true);
 			}
+			if(e.getKeyCode() == KeyEvent.VK_SPACE){
+				gameScene.setFlag(IS_CASTING_SUPER_SPELL, true);
+			}
             
 		}
 

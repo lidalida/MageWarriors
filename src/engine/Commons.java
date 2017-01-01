@@ -22,10 +22,18 @@ public interface Commons {
 	public static final int IS_CASTING_SPELL_3 = 5;
 	public static final int IS_SPELL_CRAFTED = 6;
 	public static final int TMP_MANA_CHARGER = 7;
+	public static final int IS_CASTING_SUPER_SPELL = 8;
 
 	//player attacks
 	public static final int SPELL1_COST = 10;
 	public static final int SPELL2_COST = 30;
 	public static final int SPELL3_COST = 80;
+	
+	//types of items
+	public static final int MANA = 0;
+	public static final int HP = 1;
+	
+	//super spells & types of items
+	public static final int SPEEDUP = 2;
 	
 }

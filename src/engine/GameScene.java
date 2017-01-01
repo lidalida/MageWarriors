@@ -4,27 +4,34 @@ import java.util.ArrayList;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 
 public class GameScene extends Scene implements Commons{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
-	public boolean[] player1_flags = new boolean[8];
-	boolean[] player2_flags = new boolean[8];
+	public boolean[] player1_flags = new boolean[9];
+	boolean[] player2_flags = new boolean[9];
 	public int mouseX, mouseY;
 	public boolean painted = false;
+	private int player1_modificator, player2_modificator;
+	private int player1_modificator_counter, player2_modificator_counter;
 	Player player1, player2;
 	Missile missile;
 	double a, b, c, d, rot1, rot2;
 	Model m;
+	Item item;
+	Random rnd;
+	private int item_x=0, item_y=0;
 	//public SwingView v;
 	
 	public GameScene()
 	{
 		player1=new Player();
 		player2=new Player();
-		
+		rnd=new Random();
+
 	}
 	public void addModel(Drawable model)
 	{
@@ -35,8 +42,8 @@ public class GameScene extends Scene implements Commons{
 			player1 = (Player)model;
 		else if(models.size()==2)
 			player2 = (Player)model;
-		else if(models.size()>2)
-			missile = (Missile)model;
+		//else if(models.size()>2)
+			//missile = (Missile)model;
 	}
 	
 	public void setMousePos(int x, int y)
@@ -58,6 +65,24 @@ public class GameScene extends Scene implements Commons{
 	public void setPainted(boolean value)
 	{
 		painted=value;
+	}
+	
+	public void generateItems()
+	{
+		int r=rnd.nextInt(2);
+		if(r==0)
+		{			
+			do
+			{
+				item_x=rnd.nextInt(WINDOW_WIDTH-40);
+				item_y=rnd.nextInt(WINDOW_HEIGHT-40);
+			} while((item_x>player1.getX()-30 && item_x<player1.getX()+30) || 
+					(item_x>player2.getX()-30 && item_x<player2.getX()+30) ||
+					(item_y>player1.getY()-30 && item_y<player1.getY()+30) ||
+					(item_y>player2.getY()-30 && item_y<player2.getY()+30));		
+			Item item=new Item(item_x, item_y);
+			addModel(item);
+		}
 	}
 	
 	private void checkCollisions()
@@ -112,8 +137,40 @@ public class GameScene extends Scene implements Commons{
 						missile = null;
 					}
 				}
+				else if(m.getClass()==Item.class)		//kolizja playera z itemem
+				{
+					if(player1.collider.collides(((Item)m).collider))	
+					{			
+						System.out.println("hp: " + player1.getHP() + " mana: " + player1.getMP() + "super spell: " + player1.getSuperSpell());
+						item=(Item)m;
+						if(item.type==MANA)
+							player1.restoreMana();
+						else if(item.type==HP)
+							player1.addHP();
+						else if(item.type==SPEEDUP)
+							player1.setSuperSpell(SPEEDUP);
+						it.remove();
+						models.remove(item);
+						item = null;
+						System.out.println("hp: " + player1.getHP() + " mana: " + player1.getMP()+ "super spell: " + player1.getSuperSpell());
+
+					}
+					else if(player2.collider.collides(((Item)m).collider))	
+					{			
+						item=(Item)m;
+						if(item.type==MANA)
+							player2.restoreMana();
+						else if(item.type==HP)
+							player2.addHP();
+						else if(item.type==SPEEDUP)
+							player2.setSuperSpell(SPEEDUP);
+						it.remove();
+						models.remove(item);
+						item = null;
+					}
+					
+				}
 				
-				//tu musz¹ byæ jeszcze kolizje playerów z itemami itd.
 				
 			}
 			}
@@ -127,8 +184,12 @@ public class GameScene extends Scene implements Commons{
 			if(painted)
 			{
 				//checkCollisions();
-				if(player1_flags[IS_MOVING])	
+				if(player1_flags[IS_MOVING])
+				{
 					player1.move();
+					if(player1_modificator==SPEEDUP)
+							player1.move();
+				}
 				
 				if(player1_flags[IS_MOVING_BACK])
 					player1.moveBack();
@@ -142,7 +203,11 @@ public class GameScene extends Scene implements Commons{
 				}
 				
 				if(player2_flags[IS_MOVING])				
+				{
 					player2.move();
+					if(player2_modificator==SPEEDUP)
+						player2.move();
+				}
 				
 				if(player2_flags[IS_MOVING_BACK])
 					player2.moveBack();				
@@ -210,6 +275,44 @@ public class GameScene extends Scene implements Commons{
 			
 			if(player1_flags[TMP_MANA_CHARGER])
 				player1.restoreMana();
+			
+			if(player1_flags[IS_CASTING_SUPER_SPELL])
+			{
+				if(player1.getSuperSpell()==SPEEDUP)
+				{
+					player1_modificator=SPEEDUP;
+					player1_modificator_counter++;
+					if(player1_modificator_counter==FRAMETIME*10)
+					{
+						player1_modificator_counter=0;
+						player1.setSuperSpell(0);
+						player1_modificator=0;
+						player1_flags[IS_CASTING_SUPER_SPELL]=false;
+					}
+				}	
+				else
+					player1_flags[IS_CASTING_SUPER_SPELL]=false;
+					
+			}
+			
+			if(player2_flags[IS_CASTING_SUPER_SPELL])
+			{
+				if(player2.getSuperSpell()==SPEEDUP)
+				{
+					player2_modificator=SPEEDUP;
+					player2_modificator_counter++;
+					if(player2_modificator_counter==FRAMETIME*10)
+					{
+						player2_modificator_counter=0;
+						player2.setSuperSpell(0);
+						player2_modificator=0;
+						player2_flags[IS_CASTING_SUPER_SPELL]=false;
+					}
+				}	
+				else
+					player2_flags[IS_CASTING_SUPER_SPELL]=false;
+					
+			}
 			//wykrywanie kolizji		
 			
 			

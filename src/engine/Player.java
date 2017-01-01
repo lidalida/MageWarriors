@@ -25,6 +25,7 @@ public class Player implements Drawable, Model, Commons {
 	public Collider collider;
 	private double rotation;
 	private double forbidden_rotation=1000;
+	private int super_spell;
 	
 	private int hp;
 	private int mp;
@@ -35,6 +36,7 @@ public class Player implements Drawable, Model, Commons {
 		dx=0;
 		dy=0;
 		rotation=0;
+		super_spell=0;
 		hp=PLAYER_HEALTH;
 		mp=PLAYER_MANA;
 		ImageIcon ii = new ImageIcon("src/res/player.png");
@@ -118,6 +120,15 @@ public class Player implements Drawable, Model, Commons {
 		forbidden_rotation=r;
 	}
 	
+	public void setSuperSpell(int spell)
+	{
+		super_spell=spell;
+	}
+	public int getSuperSpell()
+	{
+		return super_spell;
+	}
+	
 	public void move(){
 		if(checkRotation())
 		{
@@ -136,6 +147,7 @@ public class Player implements Drawable, Model, Commons {
 			collider.update(x,y);
 		}
 	}
+	
 	
 	public void moveBack()
 	{
@@ -159,8 +171,19 @@ public class Player implements Drawable, Model, Commons {
 		return hp;
 	}
 	
+	public int getMP(){
+		return mp;
+	}
+	
 	public void setHP(int health){
 		hp=health;
+	}
+	
+	public void addHP()
+	{
+		hp+=20;
+		if(hp>100)
+			hp=100;
 	}
 
 	public void takeDamage(int dmg){
