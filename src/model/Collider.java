@@ -3,6 +3,7 @@ package model;
 public class Collider {
 	
 	private int x, y, r;
+	private double dist, a, b;
 
 	public Collider(int xx, int yy, int rr)
 	{
@@ -13,7 +14,7 @@ public class Collider {
 	
 	public boolean collides(Collider otherCollider)
 	{
-		double dist = Math.sqrt(Math.pow((x+r)-(otherCollider.x+otherCollider.r), 2)+Math.pow((y+r)-(otherCollider.y+otherCollider.r), 2));
+		dist = Math.sqrt(Math.pow((x+r)-(otherCollider.x+otherCollider.r), 2)+Math.pow((y+r)-(otherCollider.y+otherCollider.r), 2));
 		if (dist<= Math.abs(r+otherCollider.r))// || dist >=Math.abs(r-otherCollider.r))
 			return true;
 		return false;
@@ -21,8 +22,8 @@ public class Collider {
 	
 	public boolean containsPoint(int xx, int yy)
 	{
-		double a=Math.pow((xx-(x+r)), 2.0);
-		double b=Math.pow((yy-(y+r)), 2.0);
+		a=Math.pow((xx-(x+r)), 2.0);
+		b=Math.pow((yy-(y+r)), 2.0);
 		if(a+b<=Math.pow(r, 2.0))
 			return true;
 		return false;

@@ -4,10 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 
+import model.Commons;
 import model.GameScene;
 import view.SwingView;
 
-public class Main {
+public class Main implements Commons{
 	
 	static GameScene gameScene;
 	static SwingView v;
@@ -56,7 +57,7 @@ public class Main {
 			v.repaint();
 			gameScene.gameUpdate();
 			try {
-				Thread.sleep(18);
+				Thread.sleep(FRAMETIME);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

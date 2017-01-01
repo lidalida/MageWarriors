@@ -1,8 +1,6 @@
 package view;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,41 +9,23 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-
-import javax.swing.Timer;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import model.Player;
+import model.Commons;
 import model.Drawable;
 import model.GameScene;
-import model.Missile;
 
-public class SwingView extends JPanel implements ActionListener, View{
-	
-	/**
-	 * 
-	 */
-	
+public class SwingView extends JPanel implements View, Commons{
+
 	private static final long serialVersionUID = 1L;
-	public static final int HEIGHT = 600;
-	public static final int WIDTH = 800;
-    private final int DELAY = 1000/60;
-	enum Flags_names{IS_MOVING, IS_MOVING_BACK, IS_SHOOTING, IS_ROTATING};
-
-
-
 	public GameScene gameScene;
 	
 	private Player player, enemy;
-	private Timer timer;
+	public static final int WIDTH=800, HEIGHT=600;
 	
 
 	public SwingView(){
@@ -53,8 +33,7 @@ public class SwingView extends JPanel implements ActionListener, View{
         addMouseMotionListener(new CustomMouseListener());
 		setSize(WIDTH, HEIGHT);
 		setFocusable(true);
-		timer = new Timer(DELAY, this);
-        timer.start();
+
 	}
 	
 	public void setGameScene(GameScene gs){
@@ -92,24 +71,20 @@ public class SwingView extends JPanel implements ActionListener, View{
 	    Toolkit.getDefaultToolkit().sync();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	repaint();
-    }	
-    
+  
        
     private class CustomKeyListener implements KeyListener{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(Flags_names.IS_MOVING.ordinal(), true);
+	            gameScene.setFlag(IS_MOVING, true);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameScene.setFlag(Flags_names.IS_MOVING_BACK.ordinal(), true);
+	            gameScene.setFlag(IS_MOVING_BACK, true);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
-	            gameScene.setFlag(Flags_names.IS_SHOOTING.ordinal(), true);
+	            gameScene.setFlag(IS_SHOOTING, true);
 
 			}
             
@@ -118,13 +93,13 @@ public class SwingView extends JPanel implements ActionListener, View{
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(Flags_names.IS_MOVING.ordinal(), false);
+	            gameScene.setFlag(IS_MOVING, false);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameScene.setFlag(Flags_names.IS_MOVING_BACK.ordinal(), false);
+	            gameScene.setFlag(IS_MOVING_BACK, false);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
-	            gameScene.setFlag(Flags_names.IS_SHOOTING.ordinal(), false);
+	            gameScene.setFlag(IS_SHOOTING, false);
 			}
 			
 		}
@@ -147,7 +122,7 @@ public class SwingView extends JPanel implements ActionListener, View{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-            gameScene.setFlag(Flags_names.IS_ROTATING.ordinal(), true);
+            gameScene.setFlag(IS_ROTATING, true);
             gameScene.setMousePos(e.getX(), e.getY());
 		
 		}

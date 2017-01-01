@@ -11,11 +11,9 @@ import java.beans.PropertyChangeSupport;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-public class Missile implements Drawable, Model {
+public class Missile implements Drawable, Model, Commons {
 	
 	public PropertyChangeSupport propertyChangeSupport;
-	public static final int DELAY = 10;
-	public static final int MOVE_DELTA = 10;
 	
 	private int x;
 	private int y;
@@ -64,8 +62,8 @@ public class Missile implements Drawable, Model {
 	
 	
 	public void move(){
-		x+=MOVE_DELTA*Math.sin(rotation);
-		y-=MOVE_DELTA*Math.cos(rotation);
+		x+=MISSILE_MOVE_DELTA*Math.sin(rotation);
+		y-=MISSILE_MOVE_DELTA*Math.cos(rotation);
 		collider.update(x,y);
 	}
 	

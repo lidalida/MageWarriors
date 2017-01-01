@@ -4,20 +4,15 @@ import java.util.ArrayList;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import view.SwingView;
-import view.View;
 
 
-public class GameScene extends Scene{
+public class GameScene extends Scene implements Commons{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
 	public boolean[] player1_flags = new boolean[4];
 	boolean[] player2_flags = new boolean[4];
 	public int mouseX, mouseY;
-	enum Flags_names{IS_MOVING, IS_MOVING_BACK, IS_SHOOTING, IS_ROTATING};
 	public boolean painted = false;
 	Player player1, player2;
 	Missile missile;
@@ -128,32 +123,32 @@ public class GameScene extends Scene{
 			if(painted)
 			{
 				//checkCollisions();
-				if(player1_flags[Flags_names.IS_MOVING.ordinal()])				
+				if(player1_flags[IS_MOVING])	
 					player1.move();
 				
-				if(player1_flags[Flags_names.IS_MOVING_BACK.ordinal()])
+				if(player1_flags[IS_MOVING_BACK])
 					player1.moveBack();
 								
-				if(player1_flags[Flags_names.IS_ROTATING.ordinal()])
+				if(player1_flags[IS_ROTATING])
 				{
 					player1.setMouseX(mouseX);
 					player1.setMouseY(mouseY);
 					player1.rotate();
-					player1_flags[Flags_names.IS_ROTATING.ordinal()]=false;
+					player1_flags[IS_ROTATING]=false;
 				}
 				
-				if(player2_flags[Flags_names.IS_MOVING.ordinal()])				
+				if(player2_flags[IS_MOVING])				
 					player2.move();
 				
-				if(player2_flags[Flags_names.IS_MOVING_BACK.ordinal()])
+				if(player2_flags[IS_MOVING_BACK])
 					player2.moveBack();				
 				
-				if(player2_flags[Flags_names.IS_ROTATING.ordinal()])
+				if(player2_flags[IS_ROTATING])
 				{
 					player2.setMouseX(mouseX);
 					player2.setMouseY(mouseY);
 					player2.rotate();
-					player2_flags[Flags_names.IS_ROTATING.ordinal()]=false;
+					player2_flags[IS_ROTATING]=false;
 					
 				}
 				painted=false;
@@ -161,13 +156,13 @@ public class GameScene extends Scene{
 			
 			//akcje, któe mog¹ zachodziæ wiele razy na klatkê
 			
-			if(player1_flags[Flags_names.IS_SHOOTING.ordinal()])
+			if(player1_flags[IS_SHOOTING])
 			{
 				missile = new Missile(player1);
 				addModel(missile);
 			}
 			
-			if(player2_flags[Flags_names.IS_SHOOTING.ordinal()])
+			if(player2_flags[IS_SHOOTING])
 			{
 				missile = new Missile(player2);
 				addModel(missile);

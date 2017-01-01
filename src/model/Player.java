@@ -4,22 +4,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.Timer;
 
 import view.SwingView;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class Player implements Drawable, Model {
+public class Player implements Drawable, Model, Commons {
 
 	public PropertyChangeSupport propertyChangeSupport;
-	public static final int MOVE_DELTA = 5;
-	public static final int DELAY = 10;
 
 	private int x;
 	private int y;
@@ -161,7 +155,6 @@ public class Player implements Drawable, Model {
 		
 		Rectangle player = getBordersAfterMove();
 		Rectangle gamescene = new Rectangle(0, 0, SwingView.WIDTH, SwingView.HEIGHT);
-		
 
 		if(!gamescene.contains(player))
 		{
