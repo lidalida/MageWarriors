@@ -149,6 +149,8 @@ public class GameScene extends Scene implements Commons{
 							player1.addHP();
 						else if(item.type==SPEEDUP)
 							player1.setSuperSpell(SPEEDUP);
+						else if(item.type==TELEPORT)
+							player1.setSuperSpell(TELEPORT);
 						it.remove();
 						models.remove(item);
 						item = null;
@@ -164,6 +166,8 @@ public class GameScene extends Scene implements Commons{
 							player2.addHP();
 						else if(item.type==SPEEDUP)
 							player2.setSuperSpell(SPEEDUP);
+						else if(item.type==TELEPORT)
+							player1.setSuperSpell(TELEPORT);
 						it.remove();
 						models.remove(item);
 						item = null;
@@ -289,7 +293,17 @@ public class GameScene extends Scene implements Commons{
 						player1_modificator=0;
 						player1_flags[IS_CASTING_SUPER_SPELL]=false;
 					}
-				}	
+				}
+				else if(player1.getSuperSpell()==TELEPORT)
+				{
+					if((mouseX > player2.getX()+30 || mouseX < player2.getX()-30) && (mouseY > player2.getY()+30 || mouseX < player2.getY()-30))
+					{
+						player1.setPosition(mouseX, mouseY);
+						player1.collider.update(player1.getX(), player1.getY());
+						player1.setSuperSpell(0);
+					}
+					player1_flags[IS_CASTING_SUPER_SPELL]=false;
+				}
 				else
 					player1_flags[IS_CASTING_SUPER_SPELL]=false;
 					
@@ -309,6 +323,16 @@ public class GameScene extends Scene implements Commons{
 						player2_flags[IS_CASTING_SUPER_SPELL]=false;
 					}
 				}	
+				else if(player2.getSuperSpell()==TELEPORT)
+				{
+					if((mouseX > player1.getX()+30 || mouseX < player1.getX()-30) && (mouseY > player1.getY()+30 || mouseX < player1.getY()-30))
+					{
+						player2.setPosition(mouseX, mouseY);
+						player2.collider.update(player2.getX(), player2.getY());
+						player2.setSuperSpell(0);
+					}
+					player2_flags[IS_CASTING_SUPER_SPELL]=false;
+				}
 				else
 					player2_flags[IS_CASTING_SUPER_SPELL]=false;
 					

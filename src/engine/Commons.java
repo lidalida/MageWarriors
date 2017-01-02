@@ -29,11 +29,10 @@ public interface Commons {
 	public static final int SPELL2_COST = 30;
 	public static final int SPELL3_COST = 80;
 	
-	//types of items
+	//types of items & super spells
 	public static final int MANA = 0;
-	public static final int HP = 1;
-	
-	//super spells & types of items
+	public static final int HP = 1;	
 	public static final int SPEEDUP = 2;
+	public static final int TELEPORT =3;
 	
 }
