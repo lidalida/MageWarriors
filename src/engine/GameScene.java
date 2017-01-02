@@ -11,8 +11,8 @@ public class GameScene extends Scene implements Commons{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
-	public boolean[] player1_flags = new boolean[9];
-	boolean[] player2_flags = new boolean[9];
+	public boolean[] player1_flags = new boolean[11];
+	boolean[] player2_flags = new boolean[11];
 	public int mouseX, mouseY;
 	public boolean painted = false;
 	private int player1_modificator, player2_modificator;
@@ -187,7 +187,6 @@ public class GameScene extends Scene implements Commons{
 	{
 			if(painted)
 			{
-				//checkCollisions();
 				if(player1_flags[IS_MOVING])
 				{
 					player1.move();
@@ -196,7 +195,17 @@ public class GameScene extends Scene implements Commons{
 				}
 				
 				if(player1_flags[IS_MOVING_BACK])
+				{
 					player1.moveBack();
+					if(player1_modificator==SPEEDUP)
+							player1.moveBack();
+				}
+				
+				if(player1_flags[IS_MOVING_LEFT])
+					player1.moveLeft();
+				
+				if(player1_flags[IS_MOVING_RIGHT])
+					player1.moveRight();					
 								
 				if(player1_flags[IS_ROTATING])
 				{
@@ -213,8 +222,18 @@ public class GameScene extends Scene implements Commons{
 						player2.move();
 				}
 				
-				if(player2_flags[IS_MOVING_BACK])
-					player2.moveBack();				
+				if(player2_flags[IS_MOVING_BACK])				
+				{
+					player2.moveBack();
+					if(player2_modificator==SPEEDUP)
+						player2.moveBack();
+				}
+				
+				if(player2_flags[IS_MOVING_LEFT])
+					player2.moveLeft();
+				
+				if(player2_flags[IS_MOVING_RIGHT])
+					player2.moveRight();		
 				
 				if(player2_flags[IS_ROTATING])
 				{
@@ -296,7 +315,9 @@ public class GameScene extends Scene implements Commons{
 				}
 				else if(player1.getSuperSpell()==TELEPORT)
 				{
-					if((mouseX > player2.getX()+30 || mouseX < player2.getX()-30) && (mouseY > player2.getY()+30 || mouseX < player2.getY()-30))
+					player1_modificator=0;
+					player1_modificator_counter=0;
+					if((mouseX > player2.getX()+40 || mouseX < player2.getX()) || (mouseY > player2.getY()+40 || mouseY < player2.getY()))
 					{
 						player1.setPosition(mouseX, mouseY);
 						player1.collider.update(player1.getX(), player1.getY());
@@ -325,7 +346,7 @@ public class GameScene extends Scene implements Commons{
 				}	
 				else if(player2.getSuperSpell()==TELEPORT)
 				{
-					if((mouseX > player1.getX()+30 || mouseX < player1.getX()-30) && (mouseY > player1.getY()+30 || mouseX < player1.getY()-30))
+					if((mouseX > player1.getX()+40 || mouseX < player1.getX()) || (mouseY > player1.getY()+40 || mouseY < player1.getY()))
 					{
 						player2.setPosition(mouseX, mouseY);
 						player2.collider.update(player2.getX(), player2.getY());
@@ -341,22 +362,7 @@ public class GameScene extends Scene implements Commons{
 			
 			
 			checkCollisions();
-			//usuwanie pocisków
-			/*synchronized(this.models){
-			for(Drawable it: models){
-				if(it.getClass()==new Missile(player1).getClass())
-				{
-					missile = (Missile)it;
-					if(missile != null)
-						if(missile.IsToDelete()){
-							models.remove(missile);
-							missile = null;
-							break;
-					}
-				}
-			}
 			
-			}*/
 	}
 
 }

@@ -23,7 +23,7 @@ public class Player implements Drawable, Model, Commons {
 	private int mousey;
 	private Image image;
 	public Collider collider;
-	private double rotation;
+	private double rotation, tmp_rotation;
 	private double forbidden_rotation=1000;
 	private int super_spell;
 	
@@ -36,6 +36,7 @@ public class Player implements Drawable, Model, Commons {
 		dx=0;
 		dy=0;
 		rotation=0;
+		tmp_rotation=0;
 		super_spell=0;
 		hp=PLAYER_HEALTH;
 		mp=PLAYER_MANA;
@@ -154,6 +155,32 @@ public class Player implements Drawable, Model, Commons {
 		dx=-MOVE_DELTA*Math.sin(rotation);
 		dy=MOVE_DELTA*Math.cos(rotation);
 		
+		checkBorders();
+		x+=dx;
+		y+=dy;
+		collider.update(x,y);
+	}
+	
+	public void moveLeft()
+	{
+		tmp_rotation=Math.toDegrees(rotation)-90;
+		if(tmp_rotation<0)
+			tmp_rotation+=360;
+		dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
+		dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
+		checkBorders();
+		x+=dx;
+		y+=dy;
+		collider.update(x,y);
+	}
+	
+	public void moveRight()
+	{
+		tmp_rotation=Math.toDegrees(rotation)+90;
+		if(tmp_rotation<0)
+			tmp_rotation+=360;
+		dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
+		dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
 		checkBorders();
 		x+=dx;
 		y+=dy;

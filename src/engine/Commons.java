@@ -23,6 +23,9 @@ public interface Commons {
 	public static final int IS_SPELL_CRAFTED = 6;
 	public static final int TMP_MANA_CHARGER = 7;
 	public static final int IS_CASTING_SUPER_SPELL = 8;
+	public static final int IS_MOVING_RIGHT = 9;
+	public static final int IS_MOVING_LEFT = 10;
+
 
 	//player attacks
 	public static final int SPELL1_COST = 10;

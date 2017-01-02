@@ -83,6 +83,12 @@ public class SwingView extends JPanel implements View, Commons{
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 	            gameScene.setFlag(IS_MOVING_BACK, true);
 			}
+			if(e.getKeyCode() == KeyEvent.VK_A){
+				gameScene.setFlag(IS_MOVING_LEFT, true);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_D){
+				gameScene.setFlag(IS_MOVING_RIGHT, true);
+			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 				if(!gameScene.getFlag(IS_SPELL_CRAFTED))
 					gameScene.setFlag(IS_CASTING_SPELL_1, true);
@@ -111,6 +117,12 @@ public class SwingView extends JPanel implements View, Commons{
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 	            gameScene.setFlag(IS_MOVING_BACK, false);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_A){
+				gameScene.setFlag(IS_MOVING_LEFT, false);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_D){
+				gameScene.setFlag(IS_MOVING_RIGHT, false);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 	            gameScene.setFlag(IS_CASTING_SPELL_1, false);
