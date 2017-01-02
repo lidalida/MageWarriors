@@ -32,7 +32,7 @@ public class Player implements Drawable, Model, Commons {
 	
 	public Player(){
 		x=0;
-		y=0;
+		y=SCOREBOARD_HEIGHT;
 		dx=0;
 		dy=0;
 		rotation=0;
@@ -245,7 +245,7 @@ public class Player implements Drawable, Model, Commons {
 	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();
-		Rectangle gamescene = new Rectangle(0, 0, SwingView.WIDTH, SwingView.HEIGHT);
+		Rectangle gamescene = new Rectangle(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
 
 		if(!gamescene.contains(player))
 		{

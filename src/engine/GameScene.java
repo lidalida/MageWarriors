@@ -11,13 +11,14 @@ public class GameScene extends Scene implements Commons{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
-	public boolean[] player1_flags = new boolean[11];
-	boolean[] player2_flags = new boolean[11];
+	public boolean[] player1_flags = new boolean[FLAG_COUNT];
+	boolean[] player2_flags = new boolean[FLAG_COUNT];
 	public int mouseX, mouseY;
 	public boolean painted = false;
 	private int player1_modificator, player2_modificator;
 	private int player1_modificator_counter, player2_modificator_counter;
 	Player player1, player2;
+	Bar p1_hp, p1_mp, p2_hp, p2_mp;
 	Missile missile;
 	double a, b, c, d, rot1, rot2;
 	Model m;
@@ -33,6 +34,20 @@ public class GameScene extends Scene implements Commons{
 		rnd=new Random();
 
 	}
+	
+	public Bar getBar(int player_id, int type){
+		if(player_id==1)
+			if(type==0)
+				return p1_hp;
+			else
+				return p1_mp;
+		else
+			if(type==0)
+				return p2_hp;
+			else
+				return p2_mp;
+	}
+	
 	public void addModel(Drawable model)
 	{
 		synchronized(this.models){
@@ -44,6 +59,13 @@ public class GameScene extends Scene implements Commons{
 			player2 = (Player)model;
 		//else if(models.size()>2)
 			//missile = (Missile)model;
+	}
+	
+	public void makeBars(){
+		p1_hp = new Bar(100,20,HEALTH_BAR,PLAYER_HEALTH,player1);
+		p1_mp = new Bar(100,60,MANA_BAR,PLAYER_MANA,player1);
+		p2_hp = new Bar(WINDOW_WIDTH-PLAYER_HEALTH-100,20,HEALTH_BAR,PLAYER_HEALTH,player2);
+		p2_mp = new Bar(WINDOW_WIDTH-PLAYER_MANA-100,60,MANA_BAR,PLAYER_MANA,player2);
 	}
 	
 	public void setMousePos(int x, int y)

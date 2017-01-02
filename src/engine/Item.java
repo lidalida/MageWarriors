@@ -18,7 +18,7 @@ public class Item implements Drawable, Model, Commons{
 	public Item(int item_x, int item_y)
 	{
 		x=item_x;
-		y=item_y;
+		y=SCOREBOARD_HEIGHT+item_y;
 		rnd=Math.random();
 		if(rnd<0.2)
 		{

@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JPanel;
 
+import engine.Bar;
+import engine.BarElement;
 import engine.Commons;
 import engine.Drawable;
 import engine.GameScene;
@@ -16,8 +18,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
-
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class SwingView extends JPanel implements View, Commons{
 
@@ -26,24 +29,24 @@ public class SwingView extends JPanel implements View, Commons{
 	
 	private Player player, enemy;
 	public static final int WIDTH=800, HEIGHT=600;
+	private Bar bar;
 	
 
 	public SwingView(){
         addKeyListener(new CustomKeyListener());
         addMouseMotionListener(new CustomMouseListener());
-		setSize(WIDTH, HEIGHT);
+		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setFocusable(true);
-
 	}
 	
 	public void setGameScene(GameScene gs){
 		gameScene=gs;
 		player = new Player();
 		enemy = new Player();
-		enemy.setPosition(100, 100);
+		enemy.setPosition(100, SCOREBOARD_HEIGHT+100);
 		gameScene.addModel(player);
 		gameScene.addModel(enemy);
-
+		gameScene.makeBars();
 	}
 		
 	public void modelPropertyChange(final PropertyChangeEvent evt){
@@ -56,8 +59,10 @@ public class SwingView extends JPanel implements View, Commons{
         
        
         Graphics2D g = (Graphics2D) g1;
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(SCOREBOARD_COLOR);
+		g.fillRect(0, 0, WINDOW_WIDTH, SCOREBOARD_HEIGHT);
+		g.setColor(BACKGROUND_COLOR);
+		g.fillRect(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
 		
 		synchronized(gameScene.models){
 		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
@@ -65,6 +70,10 @@ public class SwingView extends JPanel implements View, Commons{
 			Drawable d = it.next();
 			d.draw(g1);
 		}
+		gameScene.getBar(1,0).draw(g1);
+		gameScene.getBar(1,1).draw(g1);
+		gameScene.getBar(2,0).draw(g1);
+		gameScene.getBar(2,1).draw(g1);
 		}
 		
 		gameScene.setPainted(true);
