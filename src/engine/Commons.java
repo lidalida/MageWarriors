@@ -8,10 +8,10 @@ public interface Commons {
 	public static final int MOVE_DELTA = 5;
 	public static final int MISSILE_MOVE_DELTA=8;
 	public static final int DELAY = 10;
-	public static final int WINDOW_HEIGHT = 700;
+	public static final int WINDOW_HEIGHT = 600;
 	public static final int WINDOW_WIDTH = 800;
 	public static final int SCOREBOARD_HEIGHT = 100;
-	public static final int ARENA_HEIGHT = 600;
+	public static final int ARENA_HEIGHT = 500;
 	public static final int FRAMETIME = 18;
 	public static final int MISSILE_LIFETIME = 100;
 	public static final int PLAYER_HEALTH = 100;

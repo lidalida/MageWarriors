@@ -48,6 +48,21 @@ public class Item implements Drawable, Model, Commons{
 		collider=new Collider(x,y,image.getWidth(null)/2);
 		
 	}
+	
+	public Item(int item_x, int item_y, int t)
+	{
+		x=item_x;
+		y=SCOREBOARD_HEIGHT+item_y;
+		type=t;
+		if(type==SPEEDUP)
+			{ImageIcon ii = new ImageIcon("src/res/speedup.png");
+			image=ii.getImage();
+}
+		else if (type==TELEPORT)
+			{ImageIcon ii = new ImageIcon("src/res/teleport.png");
+			image=ii.getImage();
+}
+	}
 
 	@Override
 	public Image getImage() {

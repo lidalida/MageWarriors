@@ -7,6 +7,7 @@ import engine.BarElement;
 import engine.Commons;
 import engine.Drawable;
 import engine.GameScene;
+import engine.Item;
 import engine.Player;
 
 import java.awt.Color;
@@ -30,6 +31,7 @@ public class SwingView extends JPanel implements View, Commons{
 	private Player player, enemy;
 	public static final int WIDTH=800, HEIGHT=600;
 	private Bar bar;
+	private Item item;
 	
 
 	public SwingView(){
@@ -70,11 +72,11 @@ public class SwingView extends JPanel implements View, Commons{
 			Drawable d = it.next();
 			d.draw(g1);
 		}
+		}
 		gameScene.getBar(1,0).draw(g1);
 		gameScene.getBar(1,1).draw(g1);
 		gameScene.getBar(2,0).draw(g1);
 		gameScene.getBar(2,1).draw(g1);
-		}
 		
 		gameScene.setPainted(true);
 	    Toolkit.getDefaultToolkit().sync();

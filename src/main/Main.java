@@ -51,7 +51,7 @@ public class Main implements Commons{
 		while(true)
 		{	
 			t=System.currentTimeMillis();
-			if(t-t_start>1500)
+			if(t-t_start>1000)
 			{
 				gameScene.generateItems();				
 				t_start=t;

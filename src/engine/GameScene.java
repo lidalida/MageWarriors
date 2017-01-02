@@ -97,7 +97,7 @@ public class GameScene extends Scene implements Commons{
 			do
 			{
 				item_x=rnd.nextInt(WINDOW_WIDTH-40);
-				item_y=rnd.nextInt(WINDOW_HEIGHT-40);
+				item_y=rnd.nextInt(ARENA_HEIGHT-40);
 			} while((item_x>player1.getX()-30 && item_x<player1.getX()+30) || 
 					(item_x>player2.getX()-30 && item_x<player2.getX()+30) ||
 					(item_y>player1.getY()-30 && item_y<player1.getY()+30) ||
@@ -116,11 +116,49 @@ public class GameScene extends Scene implements Commons{
 			{
 				a=player2.getX()+player2.getImage().getWidth(null)/2-player1.getX()-player1.getImage().getWidth(null)/2;
 				b=player1.getY()+player1.getImage().getWidth(null)/2-player2.getY()-player2.getImage().getWidth(null)/2;
-				rot1=Math.atan2(a, b);
-				
+				rot1=Math.toDegrees(Math.atan2(a, b));
+
 				c=-a;
 				d=-b;
-				rot2=Math.atan2(c, d);
+				rot2=Math.toDegrees(Math.atan2(c, d));
+				
+				if(player1_flags[IS_MOVING_BACK])
+				{
+					rot1-=180;
+					if(rot1<0)
+						rot1+=360;
+				}
+				if(player1_flags[IS_MOVING_LEFT])
+				{
+					rot1+=90;
+					if(rot1<0)
+						rot1+=360;
+				}
+				if(player1_flags[IS_MOVING_RIGHT])
+				{
+					rot1-=90;
+					if(rot1<0)
+						rot1+=360;
+				}
+				
+				if(player2_flags[IS_MOVING_BACK])
+				{
+					rot2-=180;
+					if(rot2<0)
+						rot2+=360;
+				}
+				if(player2_flags[IS_MOVING_LEFT])
+				{
+					rot2+=90;
+					if(rot2<0)
+						rot2+=360;
+				}
+				if(player2_flags[IS_MOVING_RIGHT])
+				{
+					rot2-=90;
+					if(rot2<0)
+						rot2+=360;
+				}
 				
 				player1.setForbiddenRotation(rot1);
 				player2.setForbiddenRotation(rot2);
@@ -355,7 +393,7 @@ public class GameScene extends Scene implements Commons{
 				{
 					player1_modificator=0;
 					player1_modificator_counter=0;
-					if((mouseX > player2.getX()+40 || mouseX < player2.getX()) || (mouseY > player2.getY()+40 || mouseY < player2.getY()))
+					if(mouseY>SCOREBOARD_HEIGHT && mouseY<WINDOW_HEIGHT-40 && ((mouseX > player2.getX()+40 || mouseX < player2.getX()) || (mouseY > player2.getY()+40 || mouseY < player2.getY())))
 					{
 						player1.setPosition(mouseX, mouseY);
 						player1.collider.update(player1.getX(), player1.getY());

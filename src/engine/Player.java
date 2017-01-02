@@ -171,8 +171,8 @@ public class Player implements Drawable, Model, Commons {
 			tmp_rotation=Math.toDegrees(rotation)-90;
 			if(tmp_rotation<0)
 				tmp_rotation+=360;
-			dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
-			dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
+			dx=MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
+			dy=-MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
 			checkBorders();
 			x+=dx;
 			y+=dy;
@@ -188,8 +188,8 @@ public class Player implements Drawable, Model, Commons {
 			tmp_rotation=Math.toDegrees(rotation)+90;
 			if(tmp_rotation<0)
 				tmp_rotation+=360;
-			dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
-			dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
+			dx=MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
+			dy=-MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
 			checkBorders();
 			x+=dx;
 			y+=dy;
@@ -258,7 +258,7 @@ public class Player implements Drawable, Model, Commons {
 	{
 		if(forbidden_rotation!=1000)
 		{
-			forbidden_rotation=Math.toDegrees(forbidden_rotation);
+			//forbidden_rotation=Math.toDegrees(forbidden_rotation);
 			if(forbidden_rotation<0)
 				forbidden_rotation=360+forbidden_rotation;
 		
