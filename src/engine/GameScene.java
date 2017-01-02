@@ -202,10 +202,18 @@ public class GameScene extends Scene implements Commons{
 				}
 				
 				if(player1_flags[IS_MOVING_LEFT])
+				{
 					player1.moveLeft();
+					if(player1_modificator==SPEEDUP)
+							player1.moveLeft();
+				}
 				
 				if(player1_flags[IS_MOVING_RIGHT])
-					player1.moveRight();					
+				{
+					player1.moveRight();
+					if(player1_modificator==SPEEDUP)
+							player1.moveRight();
+				}					
 								
 				if(player1_flags[IS_ROTATING])
 				{
@@ -230,10 +238,18 @@ public class GameScene extends Scene implements Commons{
 				}
 				
 				if(player2_flags[IS_MOVING_LEFT])
+				{
 					player2.moveLeft();
+					if(player2_modificator==SPEEDUP)
+						player2.moveLeft();
+				}
 				
 				if(player2_flags[IS_MOVING_RIGHT])
-					player2.moveRight();		
+				{
+					player2.moveRight();
+					if(player2_modificator==SPEEDUP)
+						player2.moveRight();
+				}		
 				
 				if(player2_flags[IS_ROTATING])
 				{
@@ -346,6 +362,8 @@ public class GameScene extends Scene implements Commons{
 				}	
 				else if(player2.getSuperSpell()==TELEPORT)
 				{
+					player2_modificator=0;
+					player2_modificator_counter=0;
 					if((mouseX > player1.getX()+40 || mouseX < player1.getX()) || (mouseY > player1.getY()+40 || mouseY < player1.getY()))
 					{
 						player2.setPosition(mouseX, mouseY);

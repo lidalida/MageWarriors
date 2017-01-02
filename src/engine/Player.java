@@ -152,39 +152,50 @@ public class Player implements Drawable, Model, Commons {
 	
 	public void moveBack()
 	{
-		dx=-MOVE_DELTA*Math.sin(rotation);
-		dy=MOVE_DELTA*Math.cos(rotation);
-		
-		checkBorders();
-		x+=dx;
-		y+=dy;
-		collider.update(x,y);
+		if(checkRotation())
+		{
+			dx=-MOVE_DELTA*Math.sin(rotation);
+			dy=MOVE_DELTA*Math.cos(rotation);
+			
+			checkBorders();
+			x+=dx;
+			y+=dy;
+			collider.update(x,y);
+		}
 	}
 	
 	public void moveLeft()
 	{
-		tmp_rotation=Math.toDegrees(rotation)-90;
-		if(tmp_rotation<0)
-			tmp_rotation+=360;
-		dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
-		dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
-		checkBorders();
-		x+=dx;
-		y+=dy;
-		collider.update(x,y);
+		if(checkRotation())
+		{
+			tmp_rotation=Math.toDegrees(rotation)-90;
+			if(tmp_rotation<0)
+				tmp_rotation+=360;
+			dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
+			dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
+			checkBorders();
+			x+=dx;
+			y+=dy;
+			collider.update(x,y);
+			rotate();
+		}
 	}
 	
 	public void moveRight()
 	{
-		tmp_rotation=Math.toDegrees(rotation)+90;
-		if(tmp_rotation<0)
-			tmp_rotation+=360;
-		dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
-		dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
-		checkBorders();
-		x+=dx;
-		y+=dy;
-		collider.update(x,y);
+		if(checkRotation())
+		{
+			tmp_rotation=Math.toDegrees(rotation)+90;
+			if(tmp_rotation<0)
+				tmp_rotation+=360;
+			dx=-MOVE_DELTA*Math.sin(Math.toRadians(tmp_rotation));
+			dy=MOVE_DELTA*Math.cos(Math.toRadians(tmp_rotation));
+			checkBorders();
+			x+=dx;
+			y+=dy;
+			collider.update(x,y);
+			rotate();
+		}
 	}
 	
 	public void rotate(){
