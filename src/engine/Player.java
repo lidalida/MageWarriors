@@ -245,9 +245,9 @@ public class Player implements Drawable, Model, Commons {
 	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();
-		Rectangle gamescene = new Rectangle(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
+		Rectangle arena = new Rectangle(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
 
-		if(!gamescene.contains(player))
+		if(!arena.contains(player))
 		{
 			dx=0;
 			dy=0;
