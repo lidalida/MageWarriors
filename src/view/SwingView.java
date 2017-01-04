@@ -3,6 +3,7 @@ package view;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import engine.Bar;
 import engine.BarElement;
@@ -19,6 +20,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -37,19 +40,22 @@ public class SwingView extends JPanel implements View, Commons{
 	public GameScene gameScene;
 	
 	private Player player, enemy;
-	public static final int WIDTH=800, HEIGHT=600;
+	public static final int WIDTH=WINDOW_WIDTH, HEIGHT=ARENA_HEIGHT;
 	private Bar bar;
 	private Item item;
     private TexturePaint paint, paint_scoreboard;
     private BufferedImage bi, bi_sb;
     private ImageIcon ii;
     private Image image_p1, image_p2, image_bar_border;
+	long t, t_start;
+	
+
 	
 
 	public SwingView(){
         addKeyListener(new CustomKeyListener());
         addMouseMotionListener(new CustomMouseListener());
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		setSize(WINDOW_WIDTH, ARENA_HEIGHT);
 		setFocusable(true);
 		try {
 			bi = ImageIO.read(new File("src/res/texture.png"));
@@ -59,13 +65,16 @@ public class SwingView extends JPanel implements View, Commons{
 			e.printStackTrace();
 		}
 		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
-		 this.paint_scoreboard = new TexturePaint(bi_sb, new Rectangle(0, 0, bi_sb.getWidth(), bi_sb.getHeight()));
+		 /*this.paint_scoreboard = new TexturePaint(bi_sb, new Rectangle(0, 0, bi_sb.getWidth(), bi_sb.getHeight()));
 		 ii = new ImageIcon("src/res/player1_text.png");
 		 image_p1=ii.getImage();
 		 ii = new ImageIcon("src/res/player2_text.png");
 		 image_p2=ii.getImage();
 		 ii = new ImageIcon("src/res/bar_border.png");
-		 image_bar_border=ii.getImage();
+		 image_bar_border=ii.getImage();*/
+		 
+		 t_start=System.currentTimeMillis();
+		 
 
 	}
 	
@@ -73,10 +82,30 @@ public class SwingView extends JPanel implements View, Commons{
 		gameScene=gs;
 		player = new Player();
 		enemy = new Player();
-		enemy.setPosition(100, SCOREBOARD_HEIGHT+100);
+		enemy.setPosition(1, 1);
 		gameScene.addModel(player);
 		gameScene.addModel(enemy);
 		gameScene.makeBars();
+	}
+	
+	public void startGame()
+	{
+		Timer timer=new Timer(FRAMETIME, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				t=System.currentTimeMillis();
+				if(t-t_start>1000)
+				{
+					gameScene.generateItems();	
+					t_start=t;
+				}
+				repaint();
+				gameScene.gameUpdate();
+			}
+			
+		});
+		timer.start();
 	}
 		
 	public void modelPropertyChange(final PropertyChangeEvent evt){
@@ -90,14 +119,14 @@ public class SwingView extends JPanel implements View, Commons{
         Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint);
         g.fillRect(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
-        g.setPaint(paint_scoreboard);
+       /* g.setPaint(paint_scoreboard);
 		g.fillRect(0, 0, WINDOW_WIDTH, SCOREBOARD_HEIGHT);
 		g.drawImage(image_p1, 60, 20, null);
 		g.drawImage(image_p2, 460, 20, null);
 		g.drawImage(image_bar_border, 200-2, 20-2, null);
 		g.drawImage(image_bar_border, 200-2, 60-2, null);
 		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_HEALTH-100-2, 20-2, null);
-		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_MANA-100-2, 60-2, null);
+		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_MANA-100-2, 60-2, null);*/
 
 		synchronized(gameScene.models){
 		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
@@ -106,10 +135,10 @@ public class SwingView extends JPanel implements View, Commons{
 			d.draw(g1);
 		}
 		}
-		gameScene.getBar(1,0).draw(g1);
+		/*gameScene.getBar(1,0).draw(g1);
 		gameScene.getBar(1,1).draw(g1);
 		gameScene.getBar(2,0).draw(g1);
-		gameScene.getBar(2,1).draw(g1);
+		gameScene.getBar(2,1).draw(g1);*/
 		
 		gameScene.setPainted(true);
 	    Toolkit.getDefaultToolkit().sync();
