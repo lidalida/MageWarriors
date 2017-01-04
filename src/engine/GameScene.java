@@ -62,8 +62,8 @@ public class GameScene extends Scene implements Commons{
 	}
 	
 	public void makeBars(){
-		p1_hp = new Bar(100,20,HEALTH_BAR,PLAYER_HEALTH,player1);
-		p1_mp = new Bar(100,60,MANA_BAR,PLAYER_MANA,player1);
+		p1_hp = new Bar(200,20,HEALTH_BAR,PLAYER_HEALTH,player1);
+		p1_mp = new Bar(200,60,MANA_BAR,PLAYER_MANA,player1);
 		p2_hp = new Bar(WINDOW_WIDTH-PLAYER_HEALTH-100,20,HEALTH_BAR,PLAYER_HEALTH,player2);
 		p2_mp = new Bar(WINDOW_WIDTH-PLAYER_MANA-100,60,MANA_BAR,PLAYER_MANA,player2);
 	}
@@ -98,10 +98,10 @@ public class GameScene extends Scene implements Commons{
 			{
 				item_x=rnd.nextInt(WINDOW_WIDTH-40);
 				item_y=rnd.nextInt(ARENA_HEIGHT-40);
-			} while((item_x>player1.getX()-30 && item_x<player1.getX()+30) || 
-					(item_x>player2.getX()-30 && item_x<player2.getX()+30) ||
-					(item_y>player1.getY()-30 && item_y<player1.getY()+30) ||
-					(item_y>player2.getY()-30 && item_y<player2.getY()+30));		
+			} while((item_x>player1.getX() && item_x<player1.getX()+40) || 
+					(item_x>player2.getX() && item_x<player2.getX()+40) ||
+					(item_y>player1.getY() && item_y<player1.getY()+40) ||
+					(item_y>player2.getY() && item_y<player2.getY()+40));		
 			Item item=new Item(item_x, item_y);
 			addModel(item);
 		}
