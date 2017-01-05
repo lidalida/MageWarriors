@@ -14,6 +14,7 @@ import engine.Item;
 import engine.Player;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -56,25 +57,19 @@ public class SwingView extends JPanel implements View, Commons{
         addKeyListener(new CustomKeyListener());
         addMouseMotionListener(new CustomMouseListener());
 		setSize(WINDOW_WIDTH, ARENA_HEIGHT);
+		this.setPreferredSize(new Dimension(WINDOW_WIDTH, ARENA_HEIGHT));
+		//this.setMaximumSize(new Dimension(WINDOW_WIDTH, ARENA_HEIGHT));
+
 		setFocusable(true);
 		try {
 			bi = ImageIO.read(new File("src/res/texture.png"));
-			bi_sb = ImageIO.read(new File("src/res/texture_scoreboard.png"));
 		} catch (IOException e) {
 				// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
-		 /*this.paint_scoreboard = new TexturePaint(bi_sb, new Rectangle(0, 0, bi_sb.getWidth(), bi_sb.getHeight()));
-		 ii = new ImageIcon("src/res/player1_text.png");
-		 image_p1=ii.getImage();
-		 ii = new ImageIcon("src/res/player2_text.png");
-		 image_p2=ii.getImage();
-		 ii = new ImageIcon("src/res/bar_border.png");
-		 image_bar_border=ii.getImage();*/
-		 
-		 t_start=System.currentTimeMillis();
-		 
+				 
+		 t_start=System.currentTimeMillis();		 
 
 	}
 	
@@ -82,7 +77,7 @@ public class SwingView extends JPanel implements View, Commons{
 		gameScene=gs;
 		player = new Player();
 		enemy = new Player();
-		enemy.setPosition(1, 1);
+		enemy.setPosition(100, 110);
 		gameScene.addModel(player);
 		gameScene.addModel(enemy);
 		gameScene.makeBars();
@@ -118,7 +113,7 @@ public class SwingView extends JPanel implements View, Commons{
        
         Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint);
-        g.fillRect(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
+        g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);
        /* g.setPaint(paint_scoreboard);
 		g.fillRect(0, 0, WINDOW_WIDTH, SCOREBOARD_HEIGHT);
 		g.drawImage(image_p1, 60, 20, null);

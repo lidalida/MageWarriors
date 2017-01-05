@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 
 import view.SwingView;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class Player implements Drawable, Model, Commons {
@@ -27,12 +28,12 @@ public class Player implements Drawable, Model, Commons {
 	private double forbidden_rotation=1000;
 	private int super_spell;
 	
-	private int hp;
-	private int mp;
+	private int old_hp, hp;
+	private int old_mp, mp;
 	
 	public Player(){
 		x=0;
-		y=SCOREBOARD_HEIGHT;
+		y=0;
 		dx=0;
 		dy=0;
 		rotation=0;
@@ -43,6 +44,17 @@ public class Player implements Drawable, Model, Commons {
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
+		propertyChangeSupport = new PropertyChangeSupport(this);
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener l)
+	{
+		propertyChangeSupport.addPropertyChangeListener(l);
+	}
+	
+	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+	{
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 	
 	public void draw(Graphics g1){
@@ -219,33 +231,42 @@ public class Player implements Drawable, Model, Commons {
 	
 	public void addHP()
 	{
+		old_hp=hp;
 		hp+=20;
 		if(hp>100)
 			hp=100;
+		firePropertyChange("HP", old_hp, hp);
 	}
 
 	public void takeDamage(int dmg){
+		old_hp=hp;
 		hp -= dmg;
 		if(hp<=0)
 			System.out.println("I'm dead "+hp);
+		firePropertyChange("HP", old_hp, hp);
 	}
 
 	public boolean takeMana(int mana){
 		if(mp >= mana)
-			mp -= mana;
-		else
-			return false;
-		return true;
+		{
+			old_mp=mp;
+			mp -= mana;	
+			firePropertyChange("MP", old_mp, mp);
+			return true;
+		}
+		return false;
 	}
 	
 	public void restoreMana(){
+		old_mp=mp;
 		mp = 100;
+		firePropertyChange("MP", old_mp, mp);	
 	}
 	
 	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();
-		Rectangle arena = new Rectangle(0, SCOREBOARD_HEIGHT, WINDOW_WIDTH, ARENA_HEIGHT);
+		Rectangle arena = new Rectangle(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);
 
 		if(!arena.contains(player))
 		{

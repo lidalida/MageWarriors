@@ -18,7 +18,7 @@ public class Item implements Drawable, Model, Commons{
 	public Item(int item_x, int item_y)
 	{
 		x=item_x;
-		y=SCOREBOARD_HEIGHT+item_y;
+		y=item_y;
 		rnd=Math.random();
 		if(rnd<0.2)
 		{
@@ -52,7 +52,7 @@ public class Item implements Drawable, Model, Commons{
 	public Item(int item_x, int item_y, int t)
 	{
 		x=item_x;
-		y=SCOREBOARD_HEIGHT+item_y;
+		y=item_y;
 		type=t;
 		if(type==SPEEDUP)
 			{ImageIcon ii = new ImageIcon("src/res/speedup.png");

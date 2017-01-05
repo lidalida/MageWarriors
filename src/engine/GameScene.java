@@ -25,7 +25,6 @@ public class GameScene extends Scene implements Commons{
 	Item item;
 	Random rnd;
 	private int item_x=0, item_y=0;
-	//public SwingView v;
 	
 	public GameScene()
 	{
@@ -55,6 +54,7 @@ public class GameScene extends Scene implements Commons{
 		}
 		if(models.size()==1)
 			player1 = (Player)model;
+
 		else if(models.size()==2)
 			player2 = (Player)model;
 		//else if(models.size()>2)
@@ -98,10 +98,10 @@ public class GameScene extends Scene implements Commons{
 			{
 				item_x=rnd.nextInt(WINDOW_WIDTH-40);
 				item_y=rnd.nextInt(ARENA_HEIGHT-40);
-			} while((item_x>player1.getX() && item_x<player1.getX()+40) || 
-					(item_x>player2.getX() && item_x<player2.getX()+40) ||
-					(item_y>player1.getY() && item_y<player1.getY()+40) ||
-					(item_y>player2.getY() && item_y<player2.getY()+40));		
+			} while((item_x>player1.getX() && item_x<player1.getX()+50) || 
+					(item_x>player2.getX() && item_x<player2.getX()+50) ||
+					(item_y>player1.getY() && item_y<player1.getY()+50) ||
+					(item_y>player2.getY() && item_y<player2.getY()+50));		
 			Item item=new Item(item_x, item_y);
 			addModel(item);
 		}
@@ -393,7 +393,7 @@ public class GameScene extends Scene implements Commons{
 				{
 					player1_modificator=0;
 					player1_modificator_counter=0;
-					if(mouseY>SCOREBOARD_HEIGHT && mouseY<WINDOW_HEIGHT-40 && ((mouseX > player2.getX()+40 || mouseX < player2.getX()) || (mouseY > player2.getY()+40 || mouseY < player2.getY())))
+					if(mouseY>0 && mouseX>0 && mouseY<ARENA_HEIGHT-50 && mouseX<WINDOW_WIDTH-50 && ((mouseX > player2.getX()+50 || mouseX < player2.getX()-50) || (mouseY > player2.getY()+50 || mouseY < player2.getY()-50)))
 					{
 						player1.setPosition(mouseX, mouseY);
 						player1.collider.update(player1.getX(), player1.getY());
@@ -424,7 +424,7 @@ public class GameScene extends Scene implements Commons{
 				{
 					player2_modificator=0;
 					player2_modificator_counter=0;
-					if((mouseX > player1.getX()+40 || mouseX < player1.getX()) || (mouseY > player1.getY()+40 || mouseY < player1.getY()))
+					if(mouseY>0 && mouseX>0 && mouseY<ARENA_HEIGHT-50 && mouseX<WINDOW_WIDTH-50 && (mouseX > player1.getX()+50 || mouseX < player1.getX()-50) || (mouseY > player1.getY()+50 || mouseY < player1.getY()-50))
 					{
 						player2.setPosition(mouseX, mouseY);
 						player2.collider.update(player2.getX(), player2.getY());

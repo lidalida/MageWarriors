@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -7,6 +8,8 @@ import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -18,8 +21,9 @@ import javax.swing.JPanel;
 import engine.Commons;
 import engine.Drawable;
 import engine.GameScene;
+import engine.Player;
 
-public class BarView extends JPanel implements Commons {
+public class BarView extends JPanel implements Commons, PropertyChangeListener {
 
 	private static final long serialVersionUID = -2659427042057456193L;
 	public static final int WIDTH=800, HEIGHT=100;
@@ -33,6 +37,9 @@ public class BarView extends JPanel implements Commons {
 	public BarView()
 	{
 		setSize(WINDOW_WIDTH, SCOREBOARD_HEIGHT);
+		this.setPreferredSize(new Dimension(WINDOW_WIDTH, SCOREBOARD_HEIGHT));
+		//this.setMaximumSize(new Dimension(WINDOW_WIDTH, SCOREBOARD_HEIGHT));
+
 		setFocusable(true);
 		try {
 			bi_sb = ImageIO.read(new File("src/res/texture_scoreboard.png"));
@@ -47,26 +54,33 @@ public class BarView extends JPanel implements Commons {
 		 image_p2=ii.getImage();
 		 ii = new ImageIcon("src/res/bar_border.png");
 		 image_bar_border=ii.getImage();
+		 
+	 
 		
 	}
 	
 	public void setGameScene(GameScene gs)
 	{
 		gameScene=gs;
+		 ((Player)gameScene.models.get(0)).addPropertyChangeListener(this);
+		 ((Player)gameScene.models.get(1)).addPropertyChangeListener(this);
+		 
 	}
 	
 	public void paintComponent(Graphics g1) {
         //super.paintComponent(g1);
        
-        Graphics2D g = (Graphics2D) g1;
+
+		Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint_scoreboard);
 		g.fillRect(0, 0, WINDOW_WIDTH, SCOREBOARD_HEIGHT);
 		g.drawImage(image_p1, 60, 20, null);
 		g.drawImage(image_p2, 460, 20, null);
-		g.drawImage(image_bar_border, 200-2, 20-2, null);
-		g.drawImage(image_bar_border, 200-2, 60-2, null);
-		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_HEALTH-100-2, 20-2, null);
-		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_MANA-100-2, 60-2, null);
+		g.drawImage(image_bar_border, 200-3, 20-3, null);
+		g.drawImage(image_bar_border, 200-3, 60-3, null);
+		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_HEALTH-100-3, 20-3, null);
+		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_MANA-100-3, 60-3, null);
+
 
 		
 		gameScene.getBar(1,0).draw(g1);
@@ -76,6 +90,15 @@ public class BarView extends JPanel implements Commons {
 		
 	    Toolkit.getDefaultToolkit().sync();
     }
+
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("changed");
+		repaint();
+		
+	}
+
 
 
 }
