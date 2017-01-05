@@ -117,7 +117,7 @@ public class GameScene extends Scene implements Commons{
 			checkMoves();
 			checkSpells();			
 			checkCollisions();
-			checkSuperSpellTime();			
+			checkSuperSpellTime();	
 	}
 	
 	private void checkCollisions()
