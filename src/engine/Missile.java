@@ -38,7 +38,6 @@ public class Missile implements Drawable, Model, Commons {
 		x=(int) (player.getX()+player.getImage().getWidth(null)/2+(player.getImage().getWidth(null))/2*Math.sin(player.getRotation()));
 		y=(int) (player.getY()+player.getImage().getHeight(null)/2-(player.getImage().getHeight(null))/2*Math.cos(player.getRotation()));
 		rotation=player.getRotation();	
-		System.out.println(rotation);
 		ImageIcon ii = new ImageIcon("src/res/missile.png");
 		image=ii.getImage();
 		if(rotation>=(-Math.PI/2) && rotation<0)
@@ -57,20 +56,7 @@ public class Missile implements Drawable, Model, Commons {
 		rotation=spawn_rotation;	
 		System.out.println(rotation);
 		ImageIcon ii = new ImageIcon("src/res/missile.png");
-		image=ii.getImage();
-		/*if(rotation>=(-Math.PI/2) && rotation<0)
-		{
-			x-=image.getWidth(null);
-			y-=image.getHeight(null);
-		}
-		else if(rotation>=(-Math.PI) && rotation<(-Math.PI/2))
-		{
-			x-=image.getWidth(null);
-		}
-		else if(rotation>=0 && rotation<=Math.PI/2)
-		{
-			y-=image.getWidth(null);
-		}*/
+		image=ii.getImage();		
 		collider=new Collider(x,y,image.getWidth(null)/2);
 		lifetime = 0;
 	}
