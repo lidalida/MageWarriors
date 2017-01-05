@@ -9,7 +9,7 @@ public interface Commons {
 	public static final int MISSILE_MOVE_DELTA=8;
 	public static final int DELAY = 10;
 	public static final int WINDOW_HEIGHT = 600;
-	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_WIDTH = 1000;
 	public static final int SCOREBOARD_HEIGHT = 100;
 	public static final int ARENA_HEIGHT = 500;
 	public static final int FRAMETIME = 18;
@@ -17,12 +17,8 @@ public interface Commons {
 	public static final int PLAYER_HEALTH = 100;
 	public static final int PLAYER_MANA = 100;
 	
-	// COLORS
-	public static final Color SCOREBOARD_COLOR=new Color(74,144,76);
-	public static final Color BACKGROUND_COLOR=Color.DARK_GRAY;
-	
 	// Count of flags IMPORTANT
-	public static final int FLAG_COUNT = 11;
+	public static final int FLAG_COUNT = 10;
 	//player flags
 	public static final int IS_MOVING = 0;
 	public static final int IS_MOVING_BACK = 1;
@@ -31,22 +27,25 @@ public interface Commons {
 	public static final int IS_CASTING_SPELL_2 = 4;
 	public static final int IS_CASTING_SPELL_3 = 5;
 	public static final int IS_SPELL_CRAFTED = 6;
-	public static final int TMP_MANA_CHARGER = 7;
-	public static final int IS_CASTING_SUPER_SPELL = 8;
-	public static final int IS_MOVING_RIGHT = 9;
-	public static final int IS_MOVING_LEFT = 10;
+	public static final int IS_CASTING_SUPER_SPELL = 7;
+	public static final int IS_MOVING_RIGHT = 8;
+	public static final int IS_MOVING_LEFT = 9;
 
 
 	//player attacks
 	public static final int SPELL1_COST = 10;
 	public static final int SPELL2_COST = 30;
 	public static final int SPELL3_COST = 80;
+	public static final int DAMAGE = 10;
+
 	
 	//types of items & super spells
 	public static final int MANA = 0;
 	public static final int HP = 1;	
 	public static final int SPEEDUP = 2;
-	public static final int TELEPORT =3;
+	public static final int TELEPORT = 3;
+	public static final int FREEZE = 4;
+
 	
 	// GUI
 	public static final int HEALTH_BAR = 0;

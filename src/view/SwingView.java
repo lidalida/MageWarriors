@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SwingView extends JPanel implements View, Commons{
+public class SwingView extends JPanel implements Commons{
 
 	private static final long serialVersionUID = 1L;
 	public GameScene gameScene;
@@ -58,7 +58,6 @@ public class SwingView extends JPanel implements View, Commons{
         addMouseMotionListener(new CustomMouseListener());
 		setSize(WINDOW_WIDTH, ARENA_HEIGHT);
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, ARENA_HEIGHT));
-		//this.setMaximumSize(new Dimension(WINDOW_WIDTH, ARENA_HEIGHT));
 
 		setFocusable(true);
 		try {
@@ -102,10 +101,6 @@ public class SwingView extends JPanel implements View, Commons{
 		});
 		timer.start();
 	}
-		
-	public void modelPropertyChange(final PropertyChangeEvent evt){
-		//repaint();
-	}
 	
 	@Override
     public void paintComponent(Graphics g1) {
@@ -113,15 +108,7 @@ public class SwingView extends JPanel implements View, Commons{
        
         Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint);
-        g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);
-       /* g.setPaint(paint_scoreboard);
-		g.fillRect(0, 0, WINDOW_WIDTH, SCOREBOARD_HEIGHT);
-		g.drawImage(image_p1, 60, 20, null);
-		g.drawImage(image_p2, 460, 20, null);
-		g.drawImage(image_bar_border, 200-2, 20-2, null);
-		g.drawImage(image_bar_border, 200-2, 60-2, null);
-		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_HEALTH-100-2, 20-2, null);
-		g.drawImage(image_bar_border, WINDOW_WIDTH-PLAYER_MANA-100-2, 60-2, null);*/
+        g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);       
 
 		synchronized(gameScene.models){
 		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
@@ -130,10 +117,6 @@ public class SwingView extends JPanel implements View, Commons{
 			d.draw(g1);
 		}
 		}
-		/*gameScene.getBar(1,0).draw(g1);
-		gameScene.getBar(1,1).draw(g1);
-		gameScene.getBar(2,0).draw(g1);
-		gameScene.getBar(2,1).draw(g1);*/
 		
 		gameScene.setPainted(true);
 	    Toolkit.getDefaultToolkit().sync();
@@ -169,9 +152,6 @@ public class SwingView extends JPanel implements View, Commons{
 				if(!gameScene.getFlag(IS_SPELL_CRAFTED))
 					gameScene.setFlag(IS_CASTING_SPELL_3, true);
 			}
-			if(e.getKeyCode() == KeyEvent.VK_M){
-				gameScene.setFlag(TMP_MANA_CHARGER, true);
-			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
 				gameScene.setFlag(IS_CASTING_SUPER_SPELL, true);
 			}
@@ -203,10 +183,7 @@ public class SwingView extends JPanel implements View, Commons{
 			if(e.getKeyCode() == KeyEvent.VK_T){
 	            gameScene.setFlag(IS_CASTING_SPELL_3, false);
 	            gameScene.setFlag(IS_SPELL_CRAFTED, false);
-			}
-			if(e.getKeyCode() == KeyEvent.VK_M){
-				gameScene.setFlag(TMP_MANA_CHARGER, false);
-			}
+			}			
 		}
 
 		@Override
@@ -221,7 +198,6 @@ public class SwingView extends JPanel implements View, Commons{
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			//gameController.mouseDragged(e);
 			
 		}
 

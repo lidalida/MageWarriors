@@ -38,7 +38,6 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 	{
 		setSize(WINDOW_WIDTH, SCOREBOARD_HEIGHT);
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, SCOREBOARD_HEIGHT));
-		//this.setMaximumSize(new Dimension(WINDOW_WIDTH, SCOREBOARD_HEIGHT));
 
 		setFocusable(true);
 		try {
@@ -94,7 +93,6 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("changed");
 		repaint();
 		
 	}

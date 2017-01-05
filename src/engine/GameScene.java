@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
 
 public class GameScene extends Scene implements Commons{
 		
@@ -24,7 +27,9 @@ public class GameScene extends Scene implements Commons{
 	Model m;
 	Item item;
 	Random rnd;
+	ImageIcon ii;
 	private int item_x=0, item_y=0;
+	double time_p1, time_p2, time_start_p1, time_start_p2;
 	
 	public GameScene()
 	{
@@ -105,6 +110,14 @@ public class GameScene extends Scene implements Commons{
 			Item item=new Item(item_x, item_y);
 			addModel(item);
 		}
+	}
+	
+	public void gameUpdate()
+	{		
+			checkMoves();
+			checkSpells();			
+			checkCollisions();
+			checkSuperSpellTime();			
 	}
 	
 	private void checkCollisions()
@@ -191,7 +204,7 @@ public class GameScene extends Scene implements Commons{
 					
 					else if(player2.collider.collides(((Missile)m).collider))	//kolizja playera z missile
 					{
-						player2.takeDamage(30);
+						player2.takeDamage(DAMAGE);
 						it.remove();
 						models.remove(missile);
 						missile = null;
@@ -211,6 +224,8 @@ public class GameScene extends Scene implements Commons{
 							player1.setSuperSpell(SPEEDUP);
 						else if(item.type==TELEPORT)
 							player1.setSuperSpell(TELEPORT);
+						else if(item.type==FREEZE)
+							player1.setSuperSpell(FREEZE);
 						it.remove();
 						models.remove(item);
 						item = null;
@@ -228,6 +243,8 @@ public class GameScene extends Scene implements Commons{
 							player2.setSuperSpell(SPEEDUP);
 						else if(item.type==TELEPORT)
 							player1.setSuperSpell(TELEPORT);
+						else if(item.type==FREEZE)
+							player1.setSuperSpell(FREEZE);
 						it.remove();
 						models.remove(item);
 						item = null;
@@ -243,90 +260,153 @@ public class GameScene extends Scene implements Commons{
 	}
 	
 			
-	public void gameUpdate()
+	
+	
+	private void checkSuperSpellTime()
 	{
-			if(painted)
+		if(player1_modificator==SPEEDUP)
+		{
+			time_p1=System.currentTimeMillis();
+			if(time_p1-time_start_p1>FRAMETIME*200)
+				player1_modificator=0;
+		}
+		
+		if(player2_modificator==SPEEDUP)
+		{
+			time_p2=System.currentTimeMillis();
+			if(time_p2-time_start_p2>FRAMETIME*200)
+				player2_modificator=0;
+		}
+		
+		if(player1_modificator==FREEZE)
+		{
+			time_p1=System.currentTimeMillis();
+			if(time_p1-time_start_p1>FRAMETIME*200)
 			{
-				if(player1_flags[IS_MOVING])
-				{
-					player1.move();
-					if(player1_modificator==SPEEDUP)
-							player1.move();
-				}
-				
-				if(player1_flags[IS_MOVING_BACK])
-				{
-					player1.moveBack();
-					if(player1_modificator==SPEEDUP)
-							player1.moveBack();
-				}
-				
-				if(player1_flags[IS_MOVING_LEFT])
-				{
-					player1.moveLeft();
-					if(player1_modificator==SPEEDUP)
-							player1.moveLeft();
-				}
-				
-				if(player1_flags[IS_MOVING_RIGHT])
-				{
-					player1.moveRight();
-					if(player1_modificator==SPEEDUP)
-							player1.moveRight();
-				}					
-								
-				if(player1_flags[IS_ROTATING])
-				{
-					player1.setMouseX(mouseX);
-					player1.setMouseY(mouseY);
-					player1.rotate();
-					player1_flags[IS_ROTATING]=false;
-				}
-				
-				if(player2_flags[IS_MOVING])				
+				player1_modificator=0;
+				ii = new ImageIcon("src/res/player.png");
+				player1.setImage(ii.getImage());
+			}
+		}
+		
+		if(player2_modificator==FREEZE)
+		{
+			time_p2=System.currentTimeMillis();
+			if(time_p2-time_start_p2>FRAMETIME*200)
+			{
+				player2_modificator=0;
+				ii = new ImageIcon("src/res/player.png");
+				player2.setImage(ii.getImage());
+			}
+		}
+		
+	}
+	
+	private void checkMoves()
+	{
+		if(painted)
+		{
+			if(player1_flags[IS_MOVING])
+			{
+				player1.move();
+				if(player1_modificator==SPEEDUP)
+						player1.move();
+			}
+			
+			if(player1_flags[IS_MOVING_BACK])
+			{
+				player1.moveBack();
+				if(player1_modificator==SPEEDUP)
+						player1.moveBack();
+			}
+			
+			if(player1_flags[IS_MOVING_LEFT])
+			{
+				player1.moveLeft();
+				if(player1_modificator==SPEEDUP)
+						player1.moveLeft();
+			}
+			
+			if(player1_flags[IS_MOVING_RIGHT])
+			{
+				player1.moveRight();
+				if(player1_modificator==SPEEDUP)
+						player1.moveRight();
+			}					
+							
+			if(player1_flags[IS_ROTATING])
+			{
+				player1.setMouseX(mouseX);
+				player1.setMouseY(mouseY);
+				player1.rotate();
+				player1_flags[IS_ROTATING]=false;
+			}
+			
+			if(player2_flags[IS_MOVING])				
+			{
+				if(player2_modificator!=FREEZE)
 				{
 					player2.move();
 					if(player2_modificator==SPEEDUP)
 						player2.move();
 				}
-				
-				if(player2_flags[IS_MOVING_BACK])				
+			}
+			
+			if(player2_flags[IS_MOVING_BACK])				
+			{
+				if(player2_modificator!=FREEZE)
 				{
 					player2.moveBack();
 					if(player2_modificator==SPEEDUP)
 						player2.moveBack();
 				}
-				
-				if(player2_flags[IS_MOVING_LEFT])
+			}
+			
+			if(player2_flags[IS_MOVING_LEFT])
+			{
+				if(player2_modificator!=FREEZE)
 				{
 					player2.moveLeft();
 					if(player2_modificator==SPEEDUP)
 						player2.moveLeft();
 				}
-				
-				if(player2_flags[IS_MOVING_RIGHT])
+			}
+			
+			if(player2_flags[IS_MOVING_RIGHT])
+			{
+				if(player2_modificator!=FREEZE)
 				{
 					player2.moveRight();
 					if(player2_modificator==SPEEDUP)
 						player2.moveRight();
-				}		
-				
-				if(player2_flags[IS_ROTATING])
+				}
+			}		
+			
+			if(player2_flags[IS_ROTATING])
+			{
+				if(player2_modificator!=FREEZE)
 				{
 					player2.setMouseX(mouseX);
 					player2.setMouseY(mouseY);
 					player2.rotate();
 					player2_flags[IS_ROTATING]=false;
-					
 				}
-				painted=false;
+				
 			}
-			
-			//akcje, któe mog¹ zachodziæ wiele razy na klatkê
+			painted=false;
+		}
+	}
+
+	private void checkSpells()
+	{
+		
+		if(player1_modificator!=FREEZE)
+		{
+			//regular spells
 			
 			if(player1_flags[IS_CASTING_SPELL_1])
 			{
-				if(player1.takeMana(10)){
+				if(player1.takeMana(SPELL1_COST)){
 					missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25),player1.getRotation());
 					addModel(missile);
 				}
@@ -338,7 +418,7 @@ public class GameScene extends Scene implements Commons{
 			
 			if(player1_flags[IS_CASTING_SPELL_2])
 			{
-				if(player1.takeMana(30)){
+				if(player1.takeMana(SPELL2_COST)){
 					for(int i=0;i<4;i++){
 						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25+i*25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25+i*25),player1.getRotation());
 						addModel(missile);
@@ -353,7 +433,7 @@ public class GameScene extends Scene implements Commons{
 			
 			if(player1_flags[IS_CASTING_SPELL_3])
 			{
-				if(player1.takeMana(80)){
+				if(player1.takeMana(SPELL3_COST)){
 					for(int i=-6;i<7;i++){
 						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player1.getY(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),player1.getRotation()+(double)i*5*DEG_TO_RAD);
 						addModel(missile);
@@ -366,28 +446,18 @@ public class GameScene extends Scene implements Commons{
 				player1_flags[IS_SPELL_CRAFTED] = true;
 			}
 			
-			if(player2_flags[IS_CASTING_SPELL_1])
-			{
-				missile = new Missile(player2.getX(),player2.getY(),player2.getRotation());
-				addModel(missile);
-			}
-			
-			if(player1_flags[TMP_MANA_CHARGER])
-				player1.restoreMana();
+			//super spells
 			
 			if(player1_flags[IS_CASTING_SUPER_SPELL])
 			{
 				if(player1.getSuperSpell()==SPEEDUP)
 				{
 					player1_modificator=SPEEDUP;
-					player1_modificator_counter++;
-					if(player1_modificator_counter==FRAMETIME*10)
-					{
-						player1_modificator_counter=0;
-						player1.setSuperSpell(0);
-						player1_modificator=0;
-						player1_flags[IS_CASTING_SUPER_SPELL]=false;
-					}
+					
+					time_start_p1 = System.currentTimeMillis();
+					player1.setSuperSpell(0);
+					player1_flags[IS_CASTING_SUPER_SPELL]=false;
+				
 				}
 				else if(player1.getSuperSpell()==TELEPORT)
 				{
@@ -400,25 +470,82 @@ public class GameScene extends Scene implements Commons{
 						player1.setSuperSpell(0);
 					}
 					player1_flags[IS_CASTING_SUPER_SPELL]=false;
+		
+				}
+				else if(player1.getSuperSpell()==FREEZE)
+				{
+					player2_modificator=FREEZE;
+					player1.setSuperSpell(0);
+					time_start_p2=System.currentTimeMillis();
+					ii = new ImageIcon("src/res/player2_frozen.png");
+					player2.setImage(ii.getImage());
+					player1_flags[IS_CASTING_SUPER_SPELL]=false;
+				
 				}
 				else
 					player1_flags[IS_CASTING_SUPER_SPELL]=false;
 					
 			}
+		}
+		
+		if(player2_modificator!=FREEZE)
+		{
+			//regular spells
+			
+			if(player2_flags[IS_CASTING_SPELL_1])
+			{
+				if(player2.takeMana(SPELL1_COST)){
+					missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation(),25),Missile.getYOnRadius(player2.getY(),player2.getRotation(),25),player2.getRotation());
+					addModel(missile);
+				}
+				else
+					System.out.println("Not enough mana points!!!");
+				player2_flags[IS_CASTING_SPELL_1] = false;
+				player2_flags[IS_SPELL_CRAFTED] = true;
+			}
+			
+			if(player2_flags[IS_CASTING_SPELL_2])
+			{
+				if(player2.takeMana(SPELL2_COST)){
+					for(int i=0;i<4;i++){
+						missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation(),25+i*25),Missile.getYOnRadius(player2.getY(),player2.getRotation(),25+i*25),player2.getRotation());
+						addModel(missile);
+					}
+					
+				}
+				else
+					System.out.println("Not enough mana points!!!");
+				player2_flags[IS_CASTING_SPELL_2] = false;
+				player2_flags[IS_SPELL_CRAFTED] = true;
+			}
+			
+			if(player2_flags[IS_CASTING_SPELL_3])
+			{
+				if(player2.takeMana(SPELL3_COST)){
+					for(int i=-6;i<7;i++){
+						missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player2.getY(),player2.getRotation()+(double)i*5*DEG_TO_RAD,50),player2.getRotation()+(double)i*5*DEG_TO_RAD);
+						addModel(missile);
+					}
+					
+				}
+				else
+					System.out.println("Not enough mana points!!!");
+				player2_flags[IS_CASTING_SPELL_3] = false;
+				player2_flags[IS_SPELL_CRAFTED] = true;
+			}
+			
+			
+			//super spells
 			
 			if(player2_flags[IS_CASTING_SUPER_SPELL])
 			{
 				if(player2.getSuperSpell()==SPEEDUP)
 				{
 					player2_modificator=SPEEDUP;
-					player2_modificator_counter++;
-					if(player2_modificator_counter==FRAMETIME*10)
-					{
-						player2_modificator_counter=0;
-						player2.setSuperSpell(0);
-						player2_modificator=0;
-						player2_flags[IS_CASTING_SUPER_SPELL]=false;
-					}
+					
+					time_start_p2 = System.currentTimeMillis();
+					player2.setSuperSpell(0);
+					player2_flags[IS_CASTING_SUPER_SPELL]=false;
 				}	
 				else if(player2.getSuperSpell()==TELEPORT)
 				{
@@ -432,15 +559,23 @@ public class GameScene extends Scene implements Commons{
 					}
 					player2_flags[IS_CASTING_SUPER_SPELL]=false;
 				}
+				else if(player2.getSuperSpell()==FREEZE)
+				{
+					player1_modificator=FREEZE;
+					player2.setSuperSpell(0);
+					time_start_p1=System.currentTimeMillis();
+					ii = new ImageIcon("src/res/player2_frozen.png");
+					player1.setImage(ii.getImage());
+					player2_flags[IS_CASTING_SUPER_SPELL]=false;
+				
+				}
+				
 				else
 					player2_flags[IS_CASTING_SUPER_SPELL]=false;
 					
 			}
-			//wykrywanie kolizji		
-			
-			
-			checkCollisions();
-			
+		}		
+	
+				
 	}
-
 }

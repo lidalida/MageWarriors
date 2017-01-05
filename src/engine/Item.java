@@ -26,10 +26,16 @@ public class Item implements Drawable, Model, Commons{
 			ImageIcon ii = new ImageIcon("src/res/hp.png");
 			image=ii.getImage();
 		}
-		else if(rnd>=0.2 && rnd<0.8)
+		else if(rnd>=0.2 && rnd<0.7)
 		{
 			type=MANA;
 			ImageIcon ii = new ImageIcon("src/res/mana.png");
+			image=ii.getImage();
+		}
+		else if(rnd>=0.7 && rnd<0.8)
+		{
+			type=FREEZE;
+			ImageIcon ii = new ImageIcon("src/res/freeze.png");
 			image=ii.getImage();
 		}
 		else if(rnd>=0.8 && rnd<0.9)

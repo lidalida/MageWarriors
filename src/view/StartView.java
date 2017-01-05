@@ -49,6 +49,7 @@ public class StartView extends JPanel implements Commons {
 		button_start.setFocusPainted(false);
 		button_start.setBorderPainted(false);
 		button_start.setMargin(new Insets(0,0,0,0));
+		button_start.setRolloverIcon(new ImageIcon("src/res/button_start_hover.png"));
 		button_start.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
@@ -62,6 +63,7 @@ public class StartView extends JPanel implements Commons {
 		button_credits.setFocusPainted(false);
 		button_credits.setBorderPainted(false);
 		button_credits.setMargin(new Insets(0,0,0,0));
+		button_credits.setRolloverIcon(new ImageIcon("src/res/button_credits_hover.png"));
 		button_credits.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -75,6 +77,7 @@ public class StartView extends JPanel implements Commons {
 		button_quit.setFocusPainted(false);
 		button_quit.setBorderPainted(false);
 		button_quit.setMargin(new Insets(0,0,0,0));
+		button_quit.setRolloverIcon(new ImageIcon("src/res/button_quit_hover.png"));
 		button_quit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);

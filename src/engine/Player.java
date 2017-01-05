@@ -85,6 +85,10 @@ public class Player implements Drawable, Model, Commons {
 		return image;
 	}
 	
+	public void setImage(Image img){
+		image=img;
+	}
+	
 	public Rectangle getBorders(){
 		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
 	}

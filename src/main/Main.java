@@ -25,9 +25,6 @@ public class Main implements Commons{
 	private static void createGUI(){
 		frame = new JFrame("MageWarriors");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//Container contentPane = frame.getContentPane();
-		//BoxLayout l = new BoxLayout(contentPane, BoxLayout.PAGE_AXIS);
-		//frame.setLayout(l);
 		
 		v=new StartView();
 		frame.getContentPane().add(v);
@@ -39,29 +36,7 @@ public class Main implements Commons{
 		
 	}
 	
-	public static void gameLoop()
-	{
-		long t, t_start=System.currentTimeMillis();
-
-		while(true)
-		{	
-			t=System.currentTimeMillis();
-			if(t-t_start>1000)
-			{
-				gameScene.generateItems();				
-				t_start=t;
-			}
-			v.repaint();
-			gameScene.gameUpdate();
-			try {
-				Thread.sleep(FRAMETIME);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//v.repaint();
-		}
-	}
+	
 	public static void main(String[] args){
 		gameScene=new GameScene();
 			javax.swing.SwingUtilities.invokeLater(new Runnable(){
