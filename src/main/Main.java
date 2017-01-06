@@ -17,7 +17,7 @@ import view.SwingView;
 public class Main implements Commons{
 	
 	public static GameScene gameScene;
-	static StartView v;
+	public static StartView v;
 	static Random rnd;
 	public static JFrame frame;
 	

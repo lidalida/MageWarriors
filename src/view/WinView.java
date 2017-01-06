@@ -24,16 +24,15 @@ import engine.Commons;
 import engine.GameScene;
 import main.Main;
 
-public class StartView extends JPanel implements Commons {
-	
-	private static final long serialVersionUID = 6342838906053390199L;
-	private JButton button_host, button_join, button_credits, button_quit;
+public class WinView extends JPanel implements Commons{
+
+	private static final long serialVersionUID = 7369417166220359256L;
+	private JButton button_play, button_menu;
 	private BufferedImage bi;
 	private TexturePaint paint;
 	private ImageIcon ii;
 	private Image img;
-	
-	public StartView()
+	public WinView(int i)
 	{
 		try {
 			bi = ImageIO.read(new File("src/res/texture.png"));
@@ -43,73 +42,47 @@ public class StartView extends JPanel implements Commons {
 		}
 		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
 		 
-        ii=new ImageIcon("src/res/magewarriors.png");
+		if(i==1)
+			ii=new ImageIcon("src/res/p2_won.png");
+		else
+			ii=new ImageIcon("src/res/p1_won.png");
+
         img=ii.getImage();
 		 
-		ImageIcon i1 = new ImageIcon("src/res/button_host.png");
-		button_host = new JButton(i1);
-		button_host.setContentAreaFilled(false);
-		button_host.setFocusPainted(false);
-		button_host.setBorderPainted(false);
-		button_host.setMargin(new Insets(0,0,0,0));
-		button_host.setRolloverIcon(new ImageIcon("src/res/button_host_hover.png"));
-		button_host.addActionListener(new ActionListener(){
+		ImageIcon i1 = new ImageIcon("src/res/button_play.png");
+		button_play = new JButton(i1);
+		button_play.setContentAreaFilled(false);
+		button_play.setFocusPainted(false);
+		button_play.setBorderPainted(false);
+		button_play.setMargin(new Insets(0,0,0,0));
+		button_play.setRolloverIcon(new ImageIcon("src/res/button_play_hover.png"));
+		button_play.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
 				createGame();
 			}
 		});
 		
-		ImageIcon i4 = new ImageIcon("src/res/button_join.png");
-		button_join = new JButton(i4);
-		button_join.setContentAreaFilled(false);
-		button_join.setFocusPainted(false);
-		button_join.setBorderPainted(false);
-		button_join.setMargin(new Insets(0,0,0,0));
-		button_join.setRolloverIcon(new ImageIcon("src/res/button_join_hover.png"));
-		button_join.addActionListener(new ActionListener(){
+		ImageIcon i2 = new ImageIcon("src/res/button_menu.png");
+		button_menu = new JButton(i2);
+		button_menu.setContentAreaFilled(false);
+		button_menu.setFocusPainted(false);
+		button_menu.setBorderPainted(false);
+		button_menu.setMargin(new Insets(0,0,0,0));
+		button_menu.setRolloverIcon(new ImageIcon("src/res/button_menu_hover.png"));
+		button_menu.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
+				returnToMenu();
 			}
-		});
-		
-		ImageIcon i2 = new ImageIcon("src/res/button_credits.png");
-		button_credits = new JButton(i2);
-		button_credits.setContentAreaFilled(false);
-		button_credits.setFocusPainted(false);
-		button_credits.setBorderPainted(false);
-		button_credits.setMargin(new Insets(0,0,0,0));
-		button_credits.setRolloverIcon(new ImageIcon("src/res/button_credits_hover.png"));
-		button_credits.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				
-			}
-			
-		});
-		
-		ImageIcon i3 = new ImageIcon("src/res/button_quit.png");
-		button_quit = new JButton(i3);
-		button_quit.setContentAreaFilled(false);
-		button_quit.setFocusPainted(false);
-		button_quit.setBorderPainted(false);
-		button_quit.setMargin(new Insets(0,0,0,0));
-		button_quit.setRolloverIcon(new ImageIcon("src/res/button_quit_hover.png"));
-		button_quit.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-			
 		});
 		
 		Box box = Box.createVerticalBox();
 		box.add(Box.createVerticalStrut(320));
-		box.add(button_join);
+		box.add(button_play);
 		box.add(Box.createVerticalStrut(10));
-		box.add(button_host);
-		box.add(Box.createVerticalStrut(10));
-		box.add(button_credits);
-		box.add(Box.createVerticalStrut(10));
-		box.add(button_quit);
+		box.add(button_menu);
+		
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.add(box);		
 		setFocusable(true);
@@ -128,6 +101,7 @@ public class StartView extends JPanel implements Commons {
         
         
 	}
+	
 	private void createGame()
 	{
 		Main.gameScene=new GameScene();
@@ -150,6 +124,15 @@ public class StartView extends JPanel implements Commons {
 		v.startGame();
 				
 	}
-
+	
+	private void returnToMenu()
+	{
+		Main.frame.getContentPane().remove(this);
+		Main.frame.getContentPane().add(Main.v);
+		Main.v.repaint();
+		Main.v.revalidate();
+	}
+	
+	
 
 }

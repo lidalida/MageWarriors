@@ -245,8 +245,6 @@ public class Player implements Drawable, Model, Commons {
 	public void takeDamage(int dmg){
 		old_hp=hp;
 		hp -= dmg;
-		if(hp<=0)
-			System.out.println("I'm dead "+hp);
 		firePropertyChange("HP", old_hp, hp);
 	}
 
