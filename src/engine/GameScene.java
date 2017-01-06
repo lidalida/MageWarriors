@@ -19,7 +19,6 @@ public class GameScene extends Scene implements Commons{
 	public int mouseX, mouseY;
 	public boolean painted = false;
 	private int player1_modificator, player2_modificator;
-	private int player1_modificator_counter, player2_modificator_counter;
 	Player player1, player2;
 	Bar p1_hp, p1_mp, p2_hp, p2_mp;
 	Missile missile;
@@ -30,6 +29,7 @@ public class GameScene extends Scene implements Commons{
 	ImageIcon ii;
 	private int item_x=0, item_y=0;
 	double time_p1, time_p2, time_start_p1, time_start_p2;
+	public int game_over=0; //1-p1 przegral, 2-p2 przegral
 	
 	public GameScene()
 	{
@@ -196,25 +196,29 @@ public class GameScene extends Scene implements Commons{
 					}
 						
 					else if(player1.collider.collides(((Missile)m).collider))	//kolizja playera z missile
-					{							
+					{				
+						player1.takeDamage(DAMAGE);
 						it.remove();
 						models.remove(missile);
 						missile = null;
+						if(player1.getHP()<=0)
+							game_over=1;
 					}
 					
 					else if(player2.collider.collides(((Missile)m).collider))	//kolizja playera z missile
 					{
-						player2.takeDamage(DAMAGE);
+						player2.takeDamage(DAMAGE);						
 						it.remove();
 						models.remove(missile);
 						missile = null;
+						if(player2.getHP()<=0)
+							game_over=2;
 					}
 				}
 				else if(m.getClass()==Item.class)		//kolizja playera z itemem
 				{
 					if(player1.collider.collides(((Item)m).collider))	
 					{			
-						System.out.println("hp: " + player1.getHP() + " mana: " + player1.getMP() + "super spell: " + player1.getSuperSpell());
 						item=(Item)m;
 						if(item.type==MANA)
 							player1.restoreMana();
@@ -229,7 +233,6 @@ public class GameScene extends Scene implements Commons{
 						it.remove();
 						models.remove(item);
 						item = null;
-						System.out.println("hp: " + player1.getHP() + " mana: " + player1.getMP()+ "super spell: " + player1.getSuperSpell());
 
 					}
 					else if(player2.collider.collides(((Item)m).collider))	
@@ -462,10 +465,9 @@ public class GameScene extends Scene implements Commons{
 				else if(player1.getSuperSpell()==TELEPORT)
 				{
 					player1_modificator=0;
-					player1_modificator_counter=0;
-					if(mouseY>0 && mouseX>0 && mouseY<ARENA_HEIGHT-50 && mouseX<WINDOW_WIDTH-50 && ((mouseX > player2.getX()+50 || mouseX < player2.getX()-50) || (mouseY > player2.getY()+50 || mouseY < player2.getY()-50)))
+					if(mouseY>player1.getImage().getHeight(null)/2 && mouseX>player1.getImage().getWidth(null)/2 && mouseY<ARENA_HEIGHT-player1.getImage().getHeight(null)/2 && mouseX<WINDOW_WIDTH-player1.getImage().getWidth(null)/2 && ((mouseX > player2.getX()+player2.getImage().getWidth(null)+player1.getImage().getWidth(null)/2 || mouseX < player2.getX()-player1.getImage().getWidth(null)/2) || (mouseY > player2.getY()+player2.getImage().getWidth(null)+player1.getImage().getHeight(null)/2 || mouseY < player2.getY()-player1.getImage().getHeight(null)/2)))
 					{
-						player1.setPosition(mouseX, mouseY);
+						player1.setPosition(mouseX-player1.getImage().getWidth(null)/2, mouseY-player1.getImage().getHeight(null)/2);
 						player1.collider.update(player1.getX(), player1.getY());
 						player1.setSuperSpell(0);
 					}
@@ -550,10 +552,9 @@ public class GameScene extends Scene implements Commons{
 				else if(player2.getSuperSpell()==TELEPORT)
 				{
 					player2_modificator=0;
-					player2_modificator_counter=0;
-					if(mouseY>0 && mouseX>0 && mouseY<ARENA_HEIGHT-50 && mouseX<WINDOW_WIDTH-50 && (mouseX > player1.getX()+50 || mouseX < player1.getX()-50) || (mouseY > player1.getY()+50 || mouseY < player1.getY()-50))
+					if(mouseY>player2.getImage().getHeight(null)/2 && mouseX>player2.getImage().getWidth(null)/2 && mouseY<ARENA_HEIGHT-player2.getImage().getHeight(null)/2 && mouseX<WINDOW_WIDTH-player2.getImage().getWidth(null)/2 && ((mouseX > player1.getX()+player1.getImage().getWidth(null)+player2.getImage().getWidth(null)/2 || mouseX < player1.getX()-player2.getImage().getWidth(null)/2) || (mouseY > player1.getY()+player1.getImage().getWidth(null)+player2.getImage().getHeight(null)/2 || mouseY < player1.getY()-player2.getImage().getHeight(null)/2)))
 					{
-						player2.setPosition(mouseX, mouseY);
+						player2.setPosition(mouseX-player2.getImage().getWidth(null)/2, mouseY-player2.getImage().getHeight(null)/2);
 						player2.collider.update(player2.getX(), player2.getY());
 						player2.setSuperSpell(0);
 					}
@@ -578,4 +579,6 @@ public class GameScene extends Scene implements Commons{
 	
 				
 	}
+	
+
 }

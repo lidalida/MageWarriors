@@ -12,6 +12,7 @@ import engine.Drawable;
 import engine.GameScene;
 import engine.Item;
 import engine.Player;
+import main.Main;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,13 +43,10 @@ public class SwingView extends JPanel implements Commons{
 	
 	private Player player, enemy;
 	public static final int WIDTH=WINDOW_WIDTH, HEIGHT=ARENA_HEIGHT;
-	private Bar bar;
-	private Item item;
-    private TexturePaint paint, paint_scoreboard;
-    private BufferedImage bi, bi_sb;
-    private ImageIcon ii;
-    private Image image_p1, image_p2, image_bar_border;
-	long t, t_start;
+	private TexturePaint paint;
+    private BufferedImage bi;
+    long t, t_start;
+    private Timer timer;
 	
 
 	
@@ -84,7 +82,7 @@ public class SwingView extends JPanel implements Commons{
 	
 	public void startGame()
 	{
-		Timer timer=new Timer(FRAMETIME, new ActionListener(){
+		timer=new Timer(FRAMETIME, new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -96,6 +94,8 @@ public class SwingView extends JPanel implements Commons{
 				}
 				repaint();
 				gameScene.gameUpdate();
+				if(gameScene.game_over!=0)
+					gameOver();
 			}
 			
 		});
@@ -104,7 +104,7 @@ public class SwingView extends JPanel implements Commons{
 	
 	@Override
     public void paintComponent(Graphics g1) {
-        //super.paintComponent(g1);
+        super.paintComponent(g1);
        
         Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint);
@@ -208,6 +208,17 @@ public class SwingView extends JPanel implements Commons{
 		
 		}
     	
+    }
+    
+    private void gameOver()
+    {
+    	timer.stop();
+    	Main.frame.getContentPane().removeAll();;
+    	StartView v = new StartView();
+    	Main.frame.getContentPane().add(v);
+    	v.requestFocus();
+    	v.repaint();
+    	v.revalidate();
     }
 
 }

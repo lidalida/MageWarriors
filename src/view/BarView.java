@@ -12,14 +12,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import engine.Commons;
-import engine.Drawable;
 import engine.GameScene;
 import engine.Player;
 
@@ -67,7 +65,7 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 	}
 	
 	public void paintComponent(Graphics g1) {
-        //super.paintComponent(g1);
+        super.paintComponent(g1);
        
 
 		Graphics2D g = (Graphics2D) g1;

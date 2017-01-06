@@ -1,18 +1,17 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -20,8 +19,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.SwingWorker;
 
 import engine.Commons;
 import main.Main;
@@ -32,6 +29,8 @@ public class StartView extends JPanel implements Commons {
 	private JButton button_start, button_credits, button_quit;
 	private BufferedImage bi;
 	private TexturePaint paint;
+	private ImageIcon ii;
+	private Image img;
 	
 	public StartView()
 	{
@@ -42,6 +41,9 @@ public class StartView extends JPanel implements Commons {
 			e.printStackTrace();
 		}
 		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
+		 
+        ii=new ImageIcon("src/res/magewarriors.png");
+        img=ii.getImage();
 		 
 		ImageIcon i1 = new ImageIcon("src/res/button_start.png");
 		button_start = new JButton(i1);
@@ -56,6 +58,7 @@ public class StartView extends JPanel implements Commons {
 				createGame();
 			}
 		});
+		System.out.println("start added");
 		
 		ImageIcon i2 = new ImageIcon("src/res/button_credits.png");
 		button_credits = new JButton(i2);
@@ -86,7 +89,7 @@ public class StartView extends JPanel implements Commons {
 		});
 		
 		Box box = Box.createVerticalBox();
-		box.add(Box.createVerticalStrut(200));
+		box.add(Box.createVerticalStrut(350));
 		box.add(button_start);
 		box.add(Box.createVerticalStrut(20));
 		box.add(button_credits);
@@ -99,9 +102,16 @@ public class StartView extends JPanel implements Commons {
 	
 	@Override
     public void paintComponent(Graphics g1) {
+		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint);
-        g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);        
+        g.drawImage(img, WINDOW_WIDTH/2-img.getWidth(null)/2, 20, null);
+       
+	    Toolkit.getDefaultToolkit().sync();
+
+        
+        
 	}
 	public void createGame()
 	{
@@ -119,6 +129,8 @@ public class StartView extends JPanel implements Commons {
 		v.requestFocus();
 		v.repaint();
 		bv.repaint();
+		v.revalidate();
+		bv.revalidate();
 		v.startGame();
 				
 	}

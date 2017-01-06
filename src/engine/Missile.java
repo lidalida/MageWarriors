@@ -54,7 +54,6 @@ public class Missile implements Drawable, Model, Commons {
 		x=spawn_x;
 		y=spawn_y;
 		rotation=spawn_rotation;	
-		System.out.println(rotation);
 		ImageIcon ii = new ImageIcon("src/res/missile.png");
 		image=ii.getImage();		
 		collider=new Collider(x,y,image.getWidth(null)/2);
