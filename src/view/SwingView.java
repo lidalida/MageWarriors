@@ -106,7 +106,7 @@ public class SwingView extends JPanel implements Commons{
 			public void actionPerformed(ActionEvent e) {
 				t=System.currentTimeMillis();				
 				repaint();
-				gameScene.gameUpdate();
+				//gameScene.gameUpdate();
 				if(gameScene.getGameOver()!=0)
 					gameOver();
 			}

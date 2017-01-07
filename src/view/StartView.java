@@ -147,8 +147,9 @@ public class StartView extends JPanel implements Commons {
 		bv.repaint();
 		v.revalidate();
 		bv.revalidate();
+		Main.gameScene.startGame();
 		v.startGame();
-				
+		
 	}
 	
 	private void credits()

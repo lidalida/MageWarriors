@@ -1,5 +1,7 @@
 package engine;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -10,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 
-public class GameScene extends Scene implements Commons, GameCommons{
+public class GameScene extends Scene implements Commons, GameCommons, ActionListener{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
@@ -30,6 +32,7 @@ public class GameScene extends Scene implements Commons, GameCommons{
 	private int item_x=0, item_y=0;
 	double time_p1, time_p2, time_start_p1, time_start_p2, t_items, t_start_items;
 	public int game_over=0; //1-p1 przegral, 2-p2 przegral
+	private Timer timer;
 	
 	public GameScene()
 	{
@@ -37,8 +40,20 @@ public class GameScene extends Scene implements Commons, GameCommons{
 		player2=new Player();
 		rnd=new Random();
 		t_start_items=System.currentTimeMillis();
+		timer = new Timer(FRAMETIME, this);
 
 	}
+	
+	public void startGame()
+	{
+		timer.start();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		gameUpdate();		
+	}
+	
 	
 	public Bar getBar(int player_id, int type){
 		if(player_id==1)
@@ -591,6 +606,7 @@ public class GameScene extends Scene implements Commons, GameCommons{
 	
 				
 	}
+
 	
 
 }
