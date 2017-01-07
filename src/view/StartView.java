@@ -82,7 +82,7 @@ public class StartView extends JPanel implements Commons {
 		button_credits.setRolloverIcon(new ImageIcon("src/res/button_credits_hover.png"));
 		button_credits.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				
+				credits();
 			}
 			
 		});
@@ -149,6 +149,16 @@ public class StartView extends JPanel implements Commons {
 		bv.revalidate();
 		v.startGame();
 				
+	}
+	
+	private void credits()
+	{
+		CreditsView v = new CreditsView();
+		Main.frame.getContentPane().remove(this);
+		Main.frame.getContentPane().add(v);
+		v.requestFocus();
+		v.repaint();
+		v.revalidate();
 	}
 
 

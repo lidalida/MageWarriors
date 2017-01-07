@@ -281,7 +281,6 @@ public class Player implements Drawable, Model, Commons {
 	{
 		if(forbidden_rotation!=1000)
 		{
-			//forbidden_rotation=Math.toDegrees(forbidden_rotation);
 			if(forbidden_rotation<0)
 				forbidden_rotation=360+forbidden_rotation;
 		

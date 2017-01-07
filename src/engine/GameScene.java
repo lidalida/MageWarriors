@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 
-public class GameScene extends Scene implements Commons{
+public class GameScene extends Scene implements Commons, GameCommons{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
@@ -92,6 +92,11 @@ public class GameScene extends Scene implements Commons{
 	public void setPainted(boolean value)
 	{
 		painted=value;
+	}
+	
+	public int getGameOver()
+	{
+		return game_over;
 	}
 	
 	public void generateItems()
