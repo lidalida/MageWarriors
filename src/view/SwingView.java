@@ -2,6 +2,7 @@ package view;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -13,6 +14,10 @@ import engine.GameScene;
 import engine.Item;
 import engine.Player;
 import main.Main;
+import net.Flag;
+import net.GameClient;
+import net.GameServer;
+import net.Packet;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -48,7 +53,8 @@ public class SwingView extends JPanel implements Commons{
     long t, t_start;
     private Timer timer;
 	
-
+    GameServer gameServer;
+    GameClient gameClient;
 	
 
 	public SwingView(){
@@ -82,6 +88,18 @@ public class SwingView extends JPanel implements Commons{
 	
 	public void startGame()
 	{
+		if (JOptionPane.showConfirmDialog(this, "Do you want to run the server") == 0){
+			gameServer = new GameServer(gameScene);
+			gameServer.start();
+		}
+		else
+		{
+			System.out.println("You can't play now");
+		}
+		gameClient = new GameClient();
+		gameClient.start();
+		
+		
 		timer=new Timer(FRAMETIME, new ActionListener(){
 
 			@Override
@@ -129,7 +147,10 @@ public class SwingView extends JPanel implements Commons{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(IS_MOVING, true);
+	            //gameScene.setFlag(IS_MOVING, true);
+	            Flag flag = new Flag(IS_MOVING,true);
+	            Packet input = new Packet(0,3,0,gameClient.serializeObject(flag));
+	            gameClient.sendPacket(input);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 	            gameScene.setFlag(IS_MOVING_BACK, true);
