@@ -17,7 +17,7 @@ import engine.Commons;
 import engine.Drawable;
 import engine.GameScene;
 
-public class GameServer extends Thread implements Commons, Serializator{
+public class GameServer extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
 	public final static int TCPPort = 7331;
 	
@@ -56,9 +56,9 @@ public class GameServer extends Thread implements Commons, Serializator{
 				e.printStackTrace();
 			}
 			
-			Packet received = (Packet)Serializator.deserializeObject(packet.getData());
+			Packet received = (Packet)Serializer.deserializeObject(packet.getData());
 			System.out.println("DataType: "+received.data_type);
-			Flag flag = (Flag)Serializator.deserializeObject(received.data);
+			Flag flag = (Flag)Serializer.deserializeObject(received.data);
 			System.out.println("Flag id: "+flag.id+"  Value: "+flag.value);
 			game.setFlag(flag.id, flag.value);
             /*String sentence = new String( packet.getData());
@@ -77,12 +77,12 @@ public class GameServer extends Thread implements Commons, Serializator{
 		}
 	}
 	
-	/*private void resolvePacket(Packet packet){
+	private void resolvePacket(Packet packet){
 		if(packet.packet_type==LOGIN){
-			if(playersIPs.size()<=MAX_PLAYERS)
-				playersIPs.add()
+			if(playersIPs.size()<=MAX_PLAYERS);
+				//playersIPs.add()
 		}
-	}*/
+	}
 	
 	
 }

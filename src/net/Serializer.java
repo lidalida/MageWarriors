@@ -9,7 +9,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public interface Serializator {
+public interface Serializer {
 	public static Serializable deserializeObject(byte[] array){
 		ByteArrayInputStream bis = new ByteArrayInputStream(array);
 		ObjectInput in = null;

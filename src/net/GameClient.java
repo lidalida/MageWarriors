@@ -14,7 +14,7 @@ import java.net.SocketException;
 
 import engine.Commons;
 
-public class GameClient extends Thread implements Commons, Serializator{
+public class GameClient extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
 	public final static int TCPPort = 7331;
 	
@@ -67,7 +67,7 @@ public class GameClient extends Thread implements Commons, Serializator{
 	}
 	
 	public void sendPacket(Packet pack){
-		byte[] packet = Serializator.serializeObject(pack);
+		byte[] packet = Serializer.serializeObject(pack);
 		DatagramPacket sendPacket = new DatagramPacket(packet, packet.length, IPAddress, UDPPort);
 		try {
 			UDPSocket.send(sendPacket);
