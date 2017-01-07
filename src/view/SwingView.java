@@ -142,10 +142,7 @@ public class SwingView extends JPanel implements Commons{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            //gameScene.setFlag(IS_MOVING, true);
-	            Flag flag = new Flag(IS_MOVING,true);
-	            Packet input = new Packet(0,3,0,gameClient.serializeObject(flag));
-	            gameClient.sendPacket(input);
+	            gameScene.setFlag(IS_MOVING, true);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 	            gameScene.setFlag(IS_MOVING_BACK, true);

@@ -10,17 +10,22 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 import engine.Commons;
+import engine.Drawable;
 import engine.GameScene;
 
-public class GameServer extends Thread implements Commons{
+public class GameServer extends Thread implements Commons, Serializator{
 	public final static int UDPPort = 1337;
 	public final static int TCPPort = 7331;
 	
 	DatagramSocket UDPSocket;
 	ServerSocket TCPSocket;
 	GameScene game;
+	
+	public List<InetAddress> playersIPs = new ArrayList<InetAddress>();
 	
 	public GameServer(GameScene g){
 		game = g;
@@ -51,9 +56,9 @@ public class GameServer extends Thread implements Commons{
 				e.printStackTrace();
 			}
 			
-			Packet received = (Packet)DeserializePacket(packet.getData());
+			Packet received = (Packet)Serializator.deserializeObject(packet.getData());
 			System.out.println("DataType: "+received.data_type);
-			Flag flag = (Flag)DeserializePacket(received.data);
+			Flag flag = (Flag)Serializator.deserializeObject(received.data);
 			System.out.println("Flag id: "+flag.id+"  Value: "+flag.value);
 			game.setFlag(flag.id, flag.value);
             /*String sentence = new String( packet.getData());
@@ -72,19 +77,12 @@ public class GameServer extends Thread implements Commons{
 		}
 	}
 	
-	public Serializable DeserializePacket(byte[] array){
-		ByteArrayInputStream bis = new ByteArrayInputStream(array);
-		ObjectInput in = null;
-		try {
-			in = new ObjectInputStream(bis);
-			Serializable packet = (Serializable) in.readObject();
-			return packet;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+	/*private void resolvePacket(Packet packet){
+		if(packet.packet_type==LOGIN){
+			if(playersIPs.size()<=MAX_PLAYERS)
+				playersIPs.add()
 		}
-		
-		return null;
-	}
+	}*/
+	
+	
 }
