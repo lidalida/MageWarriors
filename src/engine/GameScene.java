@@ -28,7 +28,7 @@ public class GameScene extends Scene implements Commons, GameCommons{
 	Random rnd;
 	ImageIcon ii;
 	private int item_x=0, item_y=0;
-	double time_p1, time_p2, time_start_p1, time_start_p2;
+	double time_p1, time_p2, time_start_p1, time_start_p2, t_items, t_start_items;
 	public int game_over=0; //1-p1 przegral, 2-p2 przegral
 	
 	public GameScene()
@@ -36,6 +36,7 @@ public class GameScene extends Scene implements Commons, GameCommons{
 		player1=new Player();
 		player2=new Player();
 		rnd=new Random();
+		t_start_items=System.currentTimeMillis();
 
 	}
 	
@@ -123,6 +124,12 @@ public class GameScene extends Scene implements Commons, GameCommons{
 			checkSpells();			
 			checkCollisions();
 			checkSuperSpellTime();	
+			t_items=System.currentTimeMillis();
+			if(t_items-t_start_items>1000)
+			{
+				generateItems();
+				t_start_items=t_items;
+			}
 	}
 	
 	private void checkCollisions()

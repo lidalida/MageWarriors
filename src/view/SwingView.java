@@ -104,12 +104,7 @@ public class SwingView extends JPanel implements Commons{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				t=System.currentTimeMillis();
-				if(t-t_start>1000)
-				{
-					gameScene.generateItems();	
-					t_start=t;
-				}
+				t=System.currentTimeMillis();				
 				repaint();
 				gameScene.gameUpdate();
 				if(gameScene.getGameOver()!=0)
