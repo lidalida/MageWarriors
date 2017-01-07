@@ -51,4 +51,8 @@ public interface Commons {
 	public static final int HEALTH_BAR = 0;
 	public static final int MANA_BAR = 1;
 	
+	// NETWORK
+	public static final int LOGIN = 0;
+	
+	public static final int MAX_PLAYERS = 2;
 }
