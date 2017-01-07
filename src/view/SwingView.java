@@ -112,7 +112,7 @@ public class SwingView extends JPanel implements Commons{
 				}
 				repaint();
 				gameScene.gameUpdate();
-				if(gameScene.game_over!=0)
+				if(gameScene.getGameOver()!=0)
 					gameOver();
 			}
 			
@@ -235,7 +235,7 @@ public class SwingView extends JPanel implements Commons{
     {
     	timer.stop();
     	Main.frame.getContentPane().removeAll();
-    	WinView v = new WinView(gameScene.game_over);    	
+    	WinView v = new WinView(gameScene.getGameOver());    	
     	Main.frame.getContentPane().add(v);
     	v.requestFocus();
     	v.repaint();

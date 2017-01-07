@@ -96,9 +96,7 @@ public class WinView extends JPanel implements Commons{
         g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);        
         g.drawImage(img, WINDOW_WIDTH/2-img.getWidth(null)/2, 10, null);
        
-	    Toolkit.getDefaultToolkit().sync();
-
-        
+	    Toolkit.getDefaultToolkit().sync();       
         
 	}
 	
