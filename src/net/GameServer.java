@@ -45,44 +45,9 @@ public class GameServer extends Thread implements Commons, Serializer{
 	}
 	
 	public void run(){
-		while(true){
-			byte[] data = new byte[1024];
-			DatagramPacket packet = new DatagramPacket(data, data.length);
-			
-			try {
-				UDPSocket.receive(packet);
-				System.out.println("RECEIVED");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			Packet received = (Packet)Serializer.deserializeObject(packet.getData());
-			System.out.println("DataType: "+received.data_type);
-			Flag flag = (Flag)Serializer.deserializeObject(received.data);
-			System.out.println("Flag id: "+flag.id+"  Value: "+flag.value);
-			game.setFlag(flag.id, flag.value);
-            /*String sentence = new String( packet.getData());
-            System.out.println("RECEIVED: " + sentence);
-            InetAddress IPAddress = packet.getAddress();
-            int port = packet.getPort();
-            data = "You're logged in".getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, port);
-            
-            try {
-				UDPSocket.send(sendPacket);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
-            
-		}
+		
 	}
 	
-	private void resolvePacket(Packet packet){
-		if(packet.packet_type==LOGIN){
-			if(playersIPs.size()<=MAX_PLAYERS);
-				//playersIPs.add()
-		}
-	}
 	
 	
 }

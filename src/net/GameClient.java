@@ -43,27 +43,7 @@ public class GameClient extends Thread implements Commons, Serializer{
 	}
 	
 	public void run(){
-		/*String sentence = "Bede gral w gre!!!";
-		byte[] sendData = new byte[1024];
-		byte[] receiveData = new byte[1024];
-		sendData = sentence.getBytes();
-		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, UDPPort);
 		
-		try {
-			UDPSocket.send(sendPacket);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		DatagramPacket receive = new DatagramPacket(receiveData, receiveData.length);
-		
-		try {
-			UDPSocket.receive(receive);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println(new String(receive.getData()));*/
 	}
 	
 	public void sendPacket(Packet pack){
