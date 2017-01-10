@@ -7,8 +7,6 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-import view.SwingView;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
