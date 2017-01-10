@@ -45,7 +45,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	}
 	
 	public void run(){
-		
+		//
 	}
 	
 	
