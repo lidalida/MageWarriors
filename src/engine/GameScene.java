@@ -33,6 +33,7 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 	double time_p1, time_p2, time_start_p1, time_start_p2, t_items, t_start_items;
 	public int game_over=0; //1-p1 przegral, 2-p2 przegral
 	private Timer timer;
+	private int models_count;
 	
 	public GameScene()
 	{
@@ -70,16 +71,14 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 	
 	public void addModel(Drawable model)
 	{
-		synchronized(this.models){
+		((Model)model).setID(++models_count);
+		System.out.println(((Model)model).getID());
 		models.add(model);
-		}
 		if(models.size()==1)
 			player1 = (Player)model;
 
 		else if(models.size()==2)
 			player2 = (Player)model;
-		//else if(models.size()>2)
-			//missile = (Missile)model;
 	}
 	
 	public void makeBars(){
@@ -207,8 +206,8 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 			{
 				player1.setForbiddenRotation(1000);	
 				player2.setForbiddenRotation(1000);
-			}				
-			synchronized(this.models){
+			}		
+			
 			for(Iterator<Drawable> it = models.subList(1, models.size()).iterator(); it.hasNext(); ){
 				
 				m = (Model)it.next();
@@ -284,7 +283,7 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 				
 				
 			}
-			}
+			
 		}
 			
 	}

@@ -13,6 +13,7 @@ public class Missile implements Drawable, Model, Commons {
 	
 	private int x;
 	private int y;
+	private int id;
 	private Image image;
 	public Collider collider;
 	private double rotation;
@@ -76,6 +77,15 @@ public class Missile implements Drawable, Model, Commons {
 		return image;
 	}
 	
+	public void setID(int i)
+	{
+		id=i;
+	}
+	
+	public int getID()
+	{
+		return id;
+	}
 	
 	public void move(){
 		x+=MISSILE_MOVE_DELTA*Math.sin(rotation);

@@ -16,6 +16,7 @@ public class Player implements Drawable, Model, Commons {
 
 	private int x;
 	private int y;
+	private int id;
 	private double dx;
 	private double dy;
 	private int mousex;
@@ -87,6 +88,15 @@ public class Player implements Drawable, Model, Commons {
 		image=img;
 	}
 	
+	public void setID(int i)
+	{
+		id=i;
+	}
+	
+	public int getID()
+	{
+		return id;
+	}
 	public Rectangle getBorders(){
 		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
 	}

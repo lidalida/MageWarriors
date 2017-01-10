@@ -7,4 +7,6 @@ public interface Model {
 	double getRotation();
 	int getX();
 	int getY();
+	void setID(int i);
+	int getID();
 }

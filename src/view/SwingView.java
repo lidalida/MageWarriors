@@ -123,12 +123,10 @@ public class SwingView extends JPanel implements Commons{
         g.setPaint(paint);
         g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);       
 
-		synchronized(gameScene.models){
 		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
 		{
 			Drawable d = it.next();
 			d.draw(g1);
-		}
 		}
 		
 		gameScene.setPainted(true);

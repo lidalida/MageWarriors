@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 public class Item implements Drawable, Model, Commons{
 	
 	public int x, y;
+	public int id;
 	public int type;
 	private double rotation;
 	public double rnd;
@@ -88,6 +89,16 @@ public class Item implements Drawable, Model, Commons{
 	@Override
 	public int getY() {
 		return y;
+	}
+	
+	public void setID(int i)
+	{
+		id=i;
+	}
+	
+	public int getID()
+	{
+		return id;
 	}
 
 	@Override
