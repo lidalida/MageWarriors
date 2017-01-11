@@ -12,13 +12,13 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 
-public class GameScene extends Scene implements Commons, GameCommons, ActionListener{
+public class GameScene implements Commons, GameCommons, ActionListener{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
 
 	public boolean[] player1_flags = new boolean[FLAG_COUNT];
 	boolean[] player2_flags = new boolean[FLAG_COUNT];
-	public int mouseX, mouseY;
+	public int targetX_p1, targetY_p1, targetX_p2, targetY_p2;
 	public boolean painted = false;
 	private int player1_modificator, player2_modificator;
 	Player player1, player2;
@@ -88,20 +88,36 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 		p2_mp = new Bar(WINDOW_WIDTH-PLAYER_MANA-100,60,MANA_BAR,PLAYER_MANA,player2);
 	}
 	
-	public void setMousePos(int x, int y)
+	public void setMousePos(int x, int y, int player_id)
 	{
-		mouseX=x;
-		mouseY=y;
+		if(player_id==1)
+		{
+			targetX_p1=x;
+			targetY_p1=y;
+		}
+		
+		else if(player_id==2)
+		{
+			targetX_p2=x;
+			targetY_p2=y;
+		}
 	}
 	
-	public void setFlag(int i, boolean value)
+	public void setFlag(int i, boolean value, int player_id)
 	{
-		player1_flags[i]=value;
+		if(player_id==1)
+			player1_flags[i]=value;
+		else if(player_id==2)
+			player2_flags[i]=value;
 	}
 	
-	public boolean getFlag(int i)
+	public boolean getFlag(int i, int player_id)
 	{
-		return player1_flags[i];
+		if(player_id==1)
+			return player1_flags[i];
+		else
+			return player2_flags[i];
+
 	}
 	
 	public void setPainted(boolean value)
@@ -365,8 +381,8 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 							
 			if(player1_flags[IS_ROTATING])
 			{
-				player1.setMouseX(mouseX);
-				player1.setMouseY(mouseY);
+				player1.setMouseX(targetX_p1);
+				player1.setMouseY(targetY_p1);
 				player1.rotate();
 				player1_flags[IS_ROTATING]=false;
 			}
@@ -415,8 +431,8 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 			{
 				if(player2_modificator!=FREEZE)
 				{
-					player2.setMouseX(mouseX);
-					player2.setMouseY(mouseY);
+					player2.setMouseX(targetX_p2);
+					player2.setMouseY(targetY_p2);
 					player2.rotate();
 					player2_flags[IS_ROTATING]=false;
 				}
@@ -491,9 +507,9 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 				else if(player1.getSuperSpell()==TELEPORT)
 				{
 					player1_modificator=0;
-					if(mouseY>player1.getImage().getHeight(null)/2 && mouseX>player1.getImage().getWidth(null)/2 && mouseY<ARENA_HEIGHT-player1.getImage().getHeight(null)/2 && mouseX<WINDOW_WIDTH-player1.getImage().getWidth(null)/2 && ((mouseX > player2.getX()+player2.getImage().getWidth(null)+player1.getImage().getWidth(null)/2 || mouseX < player2.getX()-player1.getImage().getWidth(null)/2) || (mouseY > player2.getY()+player2.getImage().getWidth(null)+player1.getImage().getHeight(null)/2 || mouseY < player2.getY()-player1.getImage().getHeight(null)/2)))
+					if(targetY_p1>player1.getImage().getHeight(null)/2 && targetX_p1>player1.getImage().getWidth(null)/2 && targetY_p1<ARENA_HEIGHT-player1.getImage().getHeight(null)/2 && targetX_p1<WINDOW_WIDTH-player1.getImage().getWidth(null)/2 && ((targetX_p1 > player2.getX()+player2.getImage().getWidth(null)+player1.getImage().getWidth(null)/2 || targetX_p1 < player2.getX()-player1.getImage().getWidth(null)/2) || (targetY_p1 > player2.getY()+player2.getImage().getWidth(null)+player1.getImage().getHeight(null)/2 || targetY_p1 < player2.getY()-player1.getImage().getHeight(null)/2)))
 					{
-						player1.setPosition(mouseX-player1.getImage().getWidth(null)/2, mouseY-player1.getImage().getHeight(null)/2);
+						player1.setPosition(targetX_p1-player1.getImage().getWidth(null)/2, targetY_p1-player1.getImage().getHeight(null)/2);
 						player1.collider.update(player1.getX(), player1.getY());
 						player1.setSuperSpell(0);
 					}
@@ -578,9 +594,9 @@ public class GameScene extends Scene implements Commons, GameCommons, ActionList
 				else if(player2.getSuperSpell()==TELEPORT)
 				{
 					player2_modificator=0;
-					if(mouseY>player2.getImage().getHeight(null)/2 && mouseX>player2.getImage().getWidth(null)/2 && mouseY<ARENA_HEIGHT-player2.getImage().getHeight(null)/2 && mouseX<WINDOW_WIDTH-player2.getImage().getWidth(null)/2 && ((mouseX > player1.getX()+player1.getImage().getWidth(null)+player2.getImage().getWidth(null)/2 || mouseX < player1.getX()-player2.getImage().getWidth(null)/2) || (mouseY > player1.getY()+player1.getImage().getWidth(null)+player2.getImage().getHeight(null)/2 || mouseY < player1.getY()-player2.getImage().getHeight(null)/2)))
+					if(targetY_p2>player2.getImage().getHeight(null)/2 && targetX_p2>player2.getImage().getWidth(null)/2 && targetY_p2<ARENA_HEIGHT-player2.getImage().getHeight(null)/2 && targetX_p2<WINDOW_WIDTH-player2.getImage().getWidth(null)/2 && ((targetX_p2 > player1.getX()+player1.getImage().getWidth(null)+player2.getImage().getWidth(null)/2 || targetX_p2 < player1.getX()-player2.getImage().getWidth(null)/2) || (targetY_p2 > player1.getY()+player1.getImage().getWidth(null)+player2.getImage().getHeight(null)/2 || targetY_p2 < player1.getY()-player2.getImage().getHeight(null)/2)))
 					{
-						player2.setPosition(mouseX-player2.getImage().getWidth(null)/2, mouseY-player2.getImage().getHeight(null)/2);
+						player2.setPosition(targetX_p2-player2.getImage().getWidth(null)/2, targetY_p2-player2.getImage().getHeight(null)/2);
 						player2.collider.update(player2.getX(), player2.getY());
 						player2.setSuperSpell(0);
 					}

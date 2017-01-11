@@ -140,31 +140,31 @@ public class SwingView extends JPanel implements Commons{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(IS_MOVING, true);
+	            gameScene.setFlag(IS_MOVING, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameScene.setFlag(IS_MOVING_BACK, true);
+	            gameScene.setFlag(IS_MOVING_BACK, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameScene.setFlag(IS_MOVING_LEFT, true);
+				gameScene.setFlag(IS_MOVING_LEFT, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameScene.setFlag(IS_MOVING_RIGHT, true);
+				gameScene.setFlag(IS_MOVING_RIGHT, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
-				if(!gameScene.getFlag(IS_SPELL_CRAFTED))
-					gameScene.setFlag(IS_CASTING_SPELL_1, true);
+				if(!gameScene.getFlag(IS_SPELL_CRAFTED, 1))
+					gameScene.setFlag(IS_CASTING_SPELL_1, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_R){
-				if(!gameScene.getFlag(IS_SPELL_CRAFTED))
-					gameScene.setFlag(IS_CASTING_SPELL_2, true);
+				if(!gameScene.getFlag(IS_SPELL_CRAFTED, 1))
+					gameScene.setFlag(IS_CASTING_SPELL_2, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_T){
-				if(!gameScene.getFlag(IS_SPELL_CRAFTED))
-					gameScene.setFlag(IS_CASTING_SPELL_3, true);
+				if(!gameScene.getFlag(IS_SPELL_CRAFTED, 1))
+					gameScene.setFlag(IS_CASTING_SPELL_3, true, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
-				gameScene.setFlag(IS_CASTING_SUPER_SPELL, true);
+				gameScene.setFlag(IS_CASTING_SUPER_SPELL, true, 1);
 			}
             
 		}
@@ -172,28 +172,28 @@ public class SwingView extends JPanel implements Commons{
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(IS_MOVING, false);
+	            gameScene.setFlag(IS_MOVING, false, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameScene.setFlag(IS_MOVING_BACK, false);
+	            gameScene.setFlag(IS_MOVING_BACK, false, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameScene.setFlag(IS_MOVING_LEFT, false);
+				gameScene.setFlag(IS_MOVING_LEFT, false, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameScene.setFlag(IS_MOVING_RIGHT, false);
+				gameScene.setFlag(IS_MOVING_RIGHT, false, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
-	            gameScene.setFlag(IS_CASTING_SPELL_1, false);
-	            gameScene.setFlag(IS_SPELL_CRAFTED, false);
+	            gameScene.setFlag(IS_CASTING_SPELL_1, false, 1);
+	            gameScene.setFlag(IS_SPELL_CRAFTED, false, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_R){
-	            gameScene.setFlag(IS_CASTING_SPELL_2, false);
-	            gameScene.setFlag(IS_SPELL_CRAFTED, false);
+	            gameScene.setFlag(IS_CASTING_SPELL_2, false, 1);
+	            gameScene.setFlag(IS_SPELL_CRAFTED, false, 1);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_T){
-	            gameScene.setFlag(IS_CASTING_SPELL_3, false);
-	            gameScene.setFlag(IS_SPELL_CRAFTED, false);
+	            gameScene.setFlag(IS_CASTING_SPELL_3, false, 1);
+	            gameScene.setFlag(IS_SPELL_CRAFTED, false, 1);
 			}			
 		}
 
@@ -214,8 +214,8 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-            gameScene.setFlag(IS_ROTATING, true);
-            gameScene.setMousePos(e.getX(), e.getY());
+            gameScene.setFlag(IS_ROTATING, true, 1);
+            gameScene.setMousePos(e.getX(), e.getY(), 1);
 		
 		}
     	
