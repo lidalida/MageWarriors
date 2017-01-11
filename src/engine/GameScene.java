@@ -56,6 +56,20 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	}
 	
 	
+	public void gameUpdate()
+	{		
+			checkMoves();
+			checkSpells();			
+			checkCollisions();
+			checkSuperSpellTime();	
+			t_items=System.currentTimeMillis();
+			if(t_items-t_start_items>1000)
+			{
+				generateItems();
+				t_start_items=t_items;
+			}
+	}
+	
 	public Bar getBar(int player_id, int type){
 		if(player_id==1)
 			if(type==0)
@@ -148,19 +162,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 		}
 	}
 	
-	public void gameUpdate()
-	{		
-			checkMoves();
-			checkSpells();			
-			checkCollisions();
-			checkSuperSpellTime();	
-			t_items=System.currentTimeMillis();
-			if(t_items-t_start_items>1000)
-			{
-				generateItems();
-				t_start_items=t_items;
-			}
-	}
+	
 	
 	private void checkCollisions()
 	{

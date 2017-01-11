@@ -9,5 +9,12 @@ public class EventMsg implements Serializable{
 	int attr; //który atrybut zmieniæ, jakaœ konkretna wartoœæ tego parametru bêdzie oznacza³a usuniêcie modelu a nie zmianê
 	int val; //na jak¹ wartoœæ
 	
+	public EventMsg(int i, int a, int v)
+	{
+		id=i;
+		attr=a;
+		val=v;
+	}
+	
 
 }

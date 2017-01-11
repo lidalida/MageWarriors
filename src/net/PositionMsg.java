@@ -9,5 +9,14 @@ public class PositionMsg implements Serializable{
 	int x;
 	int y;
 	double rot;
+	
+	public PositionMsg(int id, int x, int y, double r)
+	{
+		this.id=id;
+		this.x=x;
+		this.y=y;
+		this.rot=r;
+		
+	}
 
 }

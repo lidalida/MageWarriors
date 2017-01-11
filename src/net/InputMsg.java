@@ -11,5 +11,12 @@ public class InputMsg implements Serializable{
 	int x;
 	int y; //do mouse position
 	
-	
+	public InputMsg(int id, int i, boolean s, int x, int y)
+	{
+		this.id=id;
+		this.i=i;
+		this.state=s;
+		this.x=x;
+		this.y=y;
+	}
 }
