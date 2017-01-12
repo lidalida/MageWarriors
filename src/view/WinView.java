@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import engine.Commons;
 import engine.GameScene;
+import engine.LocalGameScene;
 import main.Main;
 
 public class WinView extends JPanel implements Commons{
@@ -103,8 +104,9 @@ public class WinView extends JPanel implements Commons{
 	private void createGame()
 	{
 		Main.gameScene=new GameScene();
+		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
-		v.setGameScene(Main.gameScene);
+		v.setGameScene(tmp,Main.gameScene);
 		BarView bv = new BarView();
 		bv.setGameScene(Main.gameScene);
 		Main.frame.getContentPane().remove(this);

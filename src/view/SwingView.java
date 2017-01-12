@@ -12,12 +12,14 @@ import engine.Commons;
 import engine.Drawable;
 import engine.GameScene;
 import engine.Item;
+import engine.LocalGameScene;
 import engine.Player;
 import main.Main;
 import net.Flag;
 import net.GameClient;
 import net.GameServer;
-import net.Packet;
+import net.InputMsg;
+import net.PositionMsg;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,6 +39,8 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +49,7 @@ public class SwingView extends JPanel implements Commons{
 
 	private static final long serialVersionUID = 1L;
 	public GameScene gameScene;
+	public LocalGameScene localGameScene;
 	
 	private Player player, enemy;
 	public static final int WIDTH=WINDOW_WIDTH, HEIGHT=ARENA_HEIGHT;
@@ -52,8 +57,8 @@ public class SwingView extends JPanel implements Commons{
     private BufferedImage bi;
     long t, t_start;
     private Timer timer;
-	
-    GameServer gameServer;
+    private boolean isSpellCrafted=false;
+    
     GameClient gameClient;
 	
 
@@ -76,12 +81,14 @@ public class SwingView extends JPanel implements Commons{
 
 	}
 	
-	public void setGameScene(GameScene gs){
-		gameScene=gs;
+	public void setGameScene(LocalGameScene lgs, GameScene gs){
+		localGameScene = lgs;
+		gameScene= gs;
 		player = new Player();
 		enemy = new Player();
 		enemy.setPosition(100, 110);
 		gameScene.addModel(player);
+		localGameScene.addModel(player);
 		gameScene.addModel(enemy);
 		gameScene.makeBars();
 	}
@@ -89,14 +96,15 @@ public class SwingView extends JPanel implements Commons{
 	public void startGame()
 	{
 		if (JOptionPane.showConfirmDialog(this, "Do you want to run the server") == 0){
-			gameServer = new GameServer(gameScene);
-			gameServer.start();
+			gameScene.gameServer = new GameServer(gameScene);
+			gameScene.gameServer.start();
 		}
 		else
 		{
+			gameScene = null;
 			System.out.println("You can't play now");
 		}
-		gameClient = new GameClient();
+		gameClient = new GameClient(localGameScene);
 		gameClient.start();
 		
 		
@@ -107,6 +115,7 @@ public class SwingView extends JPanel implements Commons{
 				t=System.currentTimeMillis();				
 				repaint();
 				//gameScene.gameUpdate();
+				if(gameScene!=null)
 				if(gameScene.getGameOver()!=0)
 					gameOver();
 			}
@@ -123,13 +132,13 @@ public class SwingView extends JPanel implements Commons{
         g.setPaint(paint);
         g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);       
 
-		for(Iterator<Drawable> it = gameScene.models.iterator(); it.hasNext();)
+		for(Iterator<Drawable> it = localGameScene.models.iterator(); it.hasNext();)
 		{
 			Drawable d = it.next();
 			d.draw(g1);
 		}
-		
-		gameScene.setPainted(true);
+		if(gameScene!=null)
+			gameScene.setPainted(true);
 	    Toolkit.getDefaultToolkit().sync();
     }
 
@@ -139,61 +148,70 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(IS_MOVING, true, 1);
+			if(gameScene==null)
+				return;
+			
+			if(e.getKeyCode() == KeyEvent.VK_W) {
+	            gameClient.sendViaTCP(new InputMsg(IS_MOVING,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameScene.setFlag(IS_MOVING_BACK, true, 1);
+	            gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameScene.setFlag(IS_MOVING_LEFT, true, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_MOVING_LEFT,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameScene.setFlag(IS_MOVING_RIGHT, true, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_MOVING_RIGHT,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
-				if(!gameScene.getFlag(IS_SPELL_CRAFTED, 1))
-					gameScene.setFlag(IS_CASTING_SPELL_1, true, 1);
+				if(!isSpellCrafted)
+					gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_1,true,0,0));
+				isSpellCrafted = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_R){
-				if(!gameScene.getFlag(IS_SPELL_CRAFTED, 1))
-					gameScene.setFlag(IS_CASTING_SPELL_2, true, 1);
+				if(!isSpellCrafted)
+					gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_2,true,0,0));
+				isSpellCrafted = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_T){
-				if(!gameScene.getFlag(IS_SPELL_CRAFTED, 1))
-					gameScene.setFlag(IS_CASTING_SPELL_3, true, 1);
+				if(!isSpellCrafted)
+					gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_3,true,0,0));
+				isSpellCrafted = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
-				gameScene.setFlag(IS_CASTING_SUPER_SPELL, true, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SUPER_SPELL,true,0,0));
 			}
             
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
+			if(gameScene==null)
+				return;
+			
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-	            gameScene.setFlag(IS_MOVING, false, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_MOVING,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameScene.setFlag(IS_MOVING_BACK, false, 1);
+	            gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameScene.setFlag(IS_MOVING_LEFT, false, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_MOVING_LEFT,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameScene.setFlag(IS_MOVING_RIGHT, false, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_MOVING_RIGHT,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
-	            gameScene.setFlag(IS_CASTING_SPELL_1, false, 1);
-	            gameScene.setFlag(IS_SPELL_CRAFTED, false, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_1,false,0,0));
+				isSpellCrafted = false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_R){
-	            gameScene.setFlag(IS_CASTING_SPELL_2, false, 1);
-	            gameScene.setFlag(IS_SPELL_CRAFTED, false, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_2,false,0,0));
+	            isSpellCrafted = false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_T){
-	            gameScene.setFlag(IS_CASTING_SPELL_3, false, 1);
-	            gameScene.setFlag(IS_SPELL_CRAFTED, false, 1);
+				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_3,false,0,0));
+	            isSpellCrafted = false;
 			}			
 		}
 
@@ -214,8 +232,9 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-            gameScene.setFlag(IS_ROTATING, true, 1);
-            gameScene.setMousePos(e.getX(), e.getY(), 1);
+			if(gameScene==null)
+				return;
+            gameClient.sendViaTCP(new InputMsg(IS_ROTATING,true,e.getX(),e.getY()));
 		
 		}
     	

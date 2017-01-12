@@ -19,6 +19,8 @@ import java.util.List;
 
 import engine.Commons;
 import engine.GameScene;
+import engine.Model;
+import engine.Player;
 
 public class GameServer extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
@@ -28,7 +30,8 @@ public class GameServer extends Thread implements Commons, Serializer{
 	ServerSocket TCPWelcomeSocket;
 	Socket TCPSocket;
 	int connectedPlayersCount = 0;
-	int[] port = new int[2];
+	InetAddress IP;
+	public int[] port = new int[2];
 	DataInputStream[] inputStream = new DataInputStream[2];
 	DataOutputStream[] outputStream = new DataOutputStream[2];
 	GameScene game;
@@ -40,7 +43,10 @@ public class GameServer extends Thread implements Commons, Serializer{
 		
 		try {
 			UDPSocket = new DatagramSocket(UDPPort);
+			IP = InetAddress.getByName("localhost");
 		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		
@@ -48,43 +54,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 			TCPWelcomeSocket = new ServerSocket(TCPPort);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-	}
-	
-	public void run(){
-		TCPInit();
-		EventMsg out = (EventMsg) receiveViaTCP(0);
-		port[0] = out.value;
-		System.out.println(port[0]);
-		TCPInit();
-		out = (EventMsg) receiveViaTCP(1);
-		port[1] = out.value;
-		System.out.println(port[1]);
-		while(true){
-			/*InputMessage in = (InputMessage) receiveViaUDP();
-			System.out.println("From User: "+in.flag+" "+in.owner+" "+in.value);
-			
-			InputMessage msg = new InputMessage(10,24,false);
-			InetAddress local = null;
-			try {
-				local = InetAddress.getByName("localhost");
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-			sendViaUDP(msg,local);*/
-			//System.out.println("From User: "+out.flag+" "+out.owner+" "+out.value);
-			InputMessage msg = new InputMessage(10,24,false);
-			try {
-				sendViaUDP(msg,InetAddress.getByName("localhost"),port[0]);
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			/*sendViaTCP(msg,0);
-			if(connectedPlayersCount>1){
-				sendViaTCP(msg,1);
-			}*/
 		}
 		
 	}
@@ -139,9 +108,12 @@ public class GameServer extends Thread implements Commons, Serializer{
 		}
 	}
 	
-	public Serializable receiveViaTCP(int playerID){
+	public Serializable receiveViaTCP(int playerID, boolean blockingMode){
 		byte[] data = null;
 		try {
+			if(!blockingMode)
+				if(inputStream[playerID].available()==0)
+					return null;
 			int len = inputStream[playerID].readInt();
 			data = new byte[len];
 			if(len > 0)
@@ -150,6 +122,60 @@ public class GameServer extends Thread implements Commons, Serializer{
 			e.printStackTrace();
 		}
 		return Serializer.deserializeObject(data);
+	}
+	
+	public void sendPositionMsg(int id, int x, int y, double rot){
+		sendViaUDP(new PositionMsg(id,x,y,rot),IP,port[0]);
+		sendViaUDP(new PositionMsg(id,x,y,rot),IP,port[1]);
+	}
+	
+	public void run(){
+		Serializable in;
+		TCPInit();
+		EventMsg out = (EventMsg) receiveViaTCP(0,true);
+		port[0] = out.value;
+		System.out.println(port[0]);
+		TCPInit();
+		out = (EventMsg) receiveViaTCP(1,true);
+		port[1] = out.value;
+		System.out.println(port[1]);
+		while(true){
+			in = receiveViaTCP(0,false);
+			if(in!=null)
+				resolveMessage(in, 1);
+			in = receiveViaTCP(1,false);
+			if(in!=null)
+				resolveMessage(in, 2);
+		}
+		
+	}
+	
+	public void resolveMessage(Serializable msg, int owner){
+		if(msg.getClass()==InputMsg.class){
+			InputMsg tmp = (InputMsg) msg;
+			if(tmp.flag==IS_MOVING){
+				game.setFlag(IS_MOVING,tmp.state,owner);
+			} else if(tmp.flag==IS_MOVING_BACK){
+				game.setFlag(IS_MOVING_BACK,tmp.state,owner);
+			} else if(tmp.flag==IS_MOVING_LEFT){
+				game.setFlag(IS_MOVING_LEFT,tmp.state,owner);
+			} else if(tmp.flag==IS_MOVING_RIGHT){
+				game.setFlag(IS_MOVING_RIGHT,tmp.state,owner);
+			} else if(tmp.flag==IS_MOVING_RIGHT){
+				game.setFlag(IS_MOVING_RIGHT,tmp.state,owner);
+			} else if(tmp.flag==IS_CASTING_SPELL_1){
+				game.setFlag(IS_CASTING_SPELL_1,tmp.state,owner);
+			} else if(tmp.flag==IS_CASTING_SPELL_2){
+				game.setFlag(IS_CASTING_SPELL_2,tmp.state,owner);
+			} else if(tmp.flag==IS_CASTING_SPELL_3){
+				game.setFlag(IS_CASTING_SPELL_3,tmp.state,owner);
+			} else if(tmp.flag==IS_CASTING_SUPER_SPELL){
+				game.setFlag(IS_CASTING_SUPER_SPELL,tmp.state,owner);
+			} else if(tmp.flag==IS_ROTATING){
+				game.setFlag(IS_ROTATING,tmp.state,owner);
+				game.setMousePos(tmp.x, tmp.y, owner);
+			}
+		}
 	}
 	
 }

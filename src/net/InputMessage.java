@@ -4,20 +4,18 @@ import java.io.Serializable;
 
 import engine.Commons;
 
-public class Packet implements Serializable, Commons {
+public class InputMessage implements Serializable, Commons {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6616602629077668129L;
-	public int packet_type;
-	public int data_type;
+	public int flag;
 	public int owner;
-	public byte[] data;
+	public boolean value;
 	
-	public Packet(int p, int d, int o, byte[] array){
-		packet_type = p;
-		data_type = d;
-		owner = o;
-		data = array;
+	public InputMessage(int fl, int ow, boolean val){
+		flag = fl;
+		owner = ow;
+		value = val;
 	}
 }

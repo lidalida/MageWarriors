@@ -6,7 +6,7 @@ import java.util.List;
 
 public class LocalGameScene {
 	
-	private List<Drawable> models = new ArrayList<Drawable>();
+	public List<Drawable> models = new ArrayList<Drawable>();
 	private Model m;
 	
 	

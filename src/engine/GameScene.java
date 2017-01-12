@@ -2,6 +2,8 @@ package engine;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -11,10 +13,14 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
+import net.GameServer;
+import net.PositionMsg;
+
 
 public class GameScene implements Commons, GameCommons, ActionListener{
 		
 	public List<Drawable> models = new ArrayList<Drawable>();
+	public GameServer gameServer;
 
 	public boolean[] player1_flags = new boolean[FLAG_COUNT];
 	boolean[] player2_flags = new boolean[FLAG_COUNT];
@@ -52,7 +58,14 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		gameUpdate();	
+		gameUpdate();
+		if(gameServer==null)
+			return;
+		for(int i=0;i<models.size();i++){
+			Model tmp = (Model) models.get(i);
+			gameServer.sendPositionMsg(tmp.getID(),tmp.getX(),tmp.getY(),tmp.getRotation());
+		}
+			
 	}
 	
 	
@@ -459,7 +472,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				else
 					System.out.println("Not enough mana points!!!");
 				player1_flags[IS_CASTING_SPELL_1] = false;
-				player1_flags[IS_SPELL_CRAFTED] = true;
 			}
 			
 			if(player1_flags[IS_CASTING_SPELL_2])
@@ -474,7 +486,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				else
 					System.out.println("Not enough mana points!!!");
 				player1_flags[IS_CASTING_SPELL_2] = false;
-				player1_flags[IS_SPELL_CRAFTED] = true;
 			}
 			
 			if(player1_flags[IS_CASTING_SPELL_3])
@@ -489,7 +500,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				else
 					System.out.println("Not enough mana points!!!");
 				player1_flags[IS_CASTING_SPELL_3] = false;
-				player1_flags[IS_SPELL_CRAFTED] = true;
 			}
 			
 			//super spells

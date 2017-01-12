@@ -13,6 +13,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import engine.Commons;
+import engine.LocalGameScene;
+import engine.Model;
+import engine.Player;
 
 public class GameClient extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
@@ -24,8 +27,10 @@ public class GameClient extends Thread implements Commons, Serializer{
 	DataOutputStream outputStream;
 	DataInputStream inputStream;
 	InetAddress IPAddress;
+	LocalGameScene game;
 	
-	public GameClient(){
+	public GameClient(LocalGameScene lgs){
+		game = lgs;
 		
 		try {
 			UDPSocket = new DatagramSocket();
@@ -39,20 +44,6 @@ public class GameClient extends Thread implements Commons, Serializer{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void run(){
-		EventMsg msg = new EventMsg(0,LOGIN,UDPSocket.getLocalPort());
-		sendViaTCP(msg);
-		
-		//InputMessage msg = new InputMessage(UDPSocket.getLocalPort(),2,true);
-		//sendViaUDP(msg);
-		InputMessage out = (InputMessage) receiveViaUDP();
-		System.out.println("From Server: "+out.flag+" "+out.owner+" "+out.value);
-		//while(true){
-		/*sendViaUDP(msg);
-		InputMessage out = (InputMessage) receiveViaUDP();
-		System.out.println("From Server: "+out.flag+" "+out.owner+" "+out.value);//}*/
 	}
 	
 	public void sendViaUDP(Serializable msg){
@@ -101,4 +92,23 @@ public class GameClient extends Thread implements Commons, Serializer{
 		}
 		return Serializer.deserializeObject(data);
 	}
+	
+	public void run(){
+		EventMsg msg = new EventMsg(0,LOGIN,UDPSocket.getLocalPort());
+		sendViaTCP(msg);
+		
+		while(true){
+			PositionMsg in = (PositionMsg) receiveViaUDP();
+			Model tmp = (Model) game.findModelByID(in.id);
+			
+			if(tmp==null)
+				continue;
+			
+			tmp.setX(in.x);
+			tmp.setY(in.y);
+			tmp.setRotation(in.rot);
+				
+		}
+	}
+	
 }
