@@ -51,7 +51,7 @@ public class SwingView extends JPanel implements Commons{
 	public GameScene gameScene;
 	public LocalGameScene localGameScene;
 	
-	private Player player, enemy;
+	private Player player1, player2;
 	public static final int WIDTH=WINDOW_WIDTH, HEIGHT=ARENA_HEIGHT;
 	private TexturePaint paint;
     private BufferedImage bi;
@@ -84,12 +84,14 @@ public class SwingView extends JPanel implements Commons{
 	public void setGameScene(LocalGameScene lgs, GameScene gs){
 		localGameScene = lgs;
 		gameScene= gs;
-		player = new Player();
-		enemy = new Player();
-		enemy.setPosition(100, 110);
-		gameScene.addModel(player);
-		localGameScene.addModel(player);
-		gameScene.addModel(enemy);
+		player1 = new Player();
+		player2 = new Player();
+		player1.setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
+		player2.setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
+		gameScene.addModel(player1);
+		localGameScene.addModel(player1);
+		gameScene.addModel(player2);
+		localGameScene.addModel(player2);
 		gameScene.makeBars();
 	}
 	
