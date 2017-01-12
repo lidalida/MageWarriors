@@ -6,14 +6,14 @@ public class EventMsg implements Serializable{
 
 	private static final long serialVersionUID = 7769300176771980978L;
 	int id;
-	int attr; //który atrybut zmieniæ, jakaœ konkretna wartoœæ tego parametru bêdzie oznacza³a usuniêcie modelu a nie zmianê
-	int val; //na jak¹ wartoœæ
+	int name;
+	int value;
 	
 	public EventMsg(int i, int a, int v)
 	{
 		id=i;
-		attr=a;
-		val=v;
+		name=a;
+		value=v;
 	}
 	
 

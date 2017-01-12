@@ -43,7 +43,7 @@ public class Main implements Commons{
 				public void run(){
 					createGUI();					
 				}
-			});		
+			});
 				
 	}
 }

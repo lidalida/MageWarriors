@@ -52,6 +52,7 @@ public interface Commons {
 	public static final int MANA_BAR = 1;
 	
 	// NETWORK
+	// EventMsg
 	public static final int LOGIN = 0;
 	
 	public static final int MAX_PLAYERS = 2;

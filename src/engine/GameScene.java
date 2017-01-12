@@ -52,7 +52,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		gameUpdate();		
+		gameUpdate();	
 	}
 	
 	
@@ -86,7 +86,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	public void addModel(Drawable model)
 	{
 		((Model)model).setID(++models_count);
-		System.out.println(((Model)model).getID());
 		models.add(model);
 		if(models.size()==1)
 			player1 = (Player)model;
