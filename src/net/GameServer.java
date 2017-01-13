@@ -30,7 +30,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	ServerSocket TCPWelcomeSocket;
 	Socket TCPSocket;
 	int connectedPlayersCount = 0;
-	InetAddress IP;
+	InetAddress[] IPs = new InetAddress[2];
 	public int[] port = new int[2];
 	DataInputStream[] inputStream = new DataInputStream[2];
 	DataOutputStream[] outputStream = new DataOutputStream[2];
@@ -43,7 +43,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 		
 		try {
 			UDPSocket = new DatagramSocket(UDPPort);
-			IP = InetAddress.getByName("localhost");
+			IPs[0] = InetAddress.getByName("localhost");
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
@@ -91,6 +91,8 @@ public class GameServer extends Thread implements Commons, Serializer{
 			TCPSocket= TCPWelcomeSocket.accept();
 			inputStream[connectedPlayersCount] = new DataInputStream(TCPSocket.getInputStream());
 			outputStream[connectedPlayersCount] = new DataOutputStream(TCPSocket.getOutputStream());
+			if(connectedPlayersCount==1)
+				IPs[1] = TCPSocket.getInetAddress();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -125,8 +127,8 @@ public class GameServer extends Thread implements Commons, Serializer{
 	}
 	
 	public void sendPositionMsg(int id, int x, int y, double rot){
-		sendViaUDP(new PositionMsg(id,x,y,rot),IP,port[0]);
-		sendViaUDP(new PositionMsg(id,x,y,rot),IP,port[1]);
+		sendViaUDP(new PositionMsg(id,x,y,rot),IPs[0],port[0]);
+		sendViaUDP(new PositionMsg(id,x,y,rot),IPs[1],port[1]);
 	}
 	
 	public void sendEventMsg(int id, int name, int value){
