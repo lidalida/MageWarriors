@@ -107,12 +107,9 @@ public class GameClient extends Thread implements Commons, Serializer{
 				resolveMessage(ev);
 			
 			PositionMsg in = (PositionMsg) receiveViaUDP();
-			if(in.id>2)
-				System.out.println(in.id);
 			Model tmp = (Model) game.findModelByID(in.id);
 			
 			if(tmp==null){
-				System.out.println("null");
 				continue;
 			}
 				

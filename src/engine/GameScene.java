@@ -79,6 +79,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	public void gameUpdate()
 	{		
+			if(!gameServer.gameReady)
+				return;
 			checkMoves();
 			checkSpells();			
 			checkCollisions();
