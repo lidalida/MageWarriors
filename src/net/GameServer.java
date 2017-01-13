@@ -35,7 +35,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 	DataInputStream[] inputStream = new DataInputStream[2];
 	DataOutputStream[] outputStream = new DataOutputStream[2];
 	GameScene game;
-	public boolean gameReady = false;
 	
 	public List<InetAddress> playersIPs = new ArrayList<InetAddress>();
 	
@@ -146,7 +145,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 		out = (EventMsg) receiveViaTCP(1,true);
 		port[1] = out.value;
 		
-		gameReady=true;
+		game.startGame();
 		
 		while(true){
 			in = receiveViaTCP(0,false);
