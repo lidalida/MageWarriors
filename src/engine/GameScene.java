@@ -292,9 +292,15 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					{			
 						item=(Item)m;
 						if(item.type==MANA)
+						{
 							player1.restoreMana();
+							gameServer.sendEventMsg(player1.getID(), CHANGE_MP, player1.getMP());
+						}
 						else if(item.type==HP)
+						{
 							player1.addHP();
+							gameServer.sendEventMsg(player1.getID(), CHANGE_HP, player1.getHP());
+						}
 						else if(item.type==SPEEDUP)
 							player1.setSuperSpell(SPEEDUP);
 						else if(item.type==TELEPORT)
@@ -311,9 +317,15 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					{			
 						item=(Item)m;
 						if(item.type==MANA)
+						{
 							player2.restoreMana();
+							gameServer.sendEventMsg(player2.getID(), CHANGE_MP, player2.getMP());
+						}
 						else if(item.type==HP)
+						{
 							player2.addHP();
+							gameServer.sendEventMsg(player2.getID(), CHANGE_HP, player2.getHP());
+						}
 						else if(item.type==SPEEDUP)
 							player2.setSuperSpell(SPEEDUP);
 						else if(item.type==TELEPORT)
