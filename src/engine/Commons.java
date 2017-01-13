@@ -59,10 +59,10 @@ public interface Commons {
 	public static final int DELETE_OBJECT = 3;
 	public static final int CHANGE_HP = 4;
 	public static final int CHANGE_MP = 5;
-	public static final int CHANGE_SUPER_SPELL = 6;
-
-
-
+	public static final int CHANGE_IMG = 6;
+	
+	public static final int REGULAR_IMG = 0;
+	public static final int FROZEN_IMG = 1;
 
 	
 	public static final int MAX_PLAYERS = 2;

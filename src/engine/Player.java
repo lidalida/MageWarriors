@@ -96,6 +96,41 @@ public class Player implements Drawable, Model, Commons {
 		image=img;
 	}
 	
+	public void setImage(int i)
+	{
+		if(i==REGULAR_IMG)
+		{
+			if(id==1)
+			{	
+				ImageIcon ii = new ImageIcon("src/res/player.png");
+				image=ii.getImage();
+			}
+			else if(id==2)
+			{	
+				ImageIcon ii = new ImageIcon("src/res/player2.png");
+				image=ii.getImage();
+			}
+		}
+		else if(i==FROZEN_IMG)
+		{
+			if(id==1)
+			{	
+				ImageIcon ii = new ImageIcon("src/res/player1_frozen.png");
+				image=ii.getImage();
+				System.out.println("id 1");
+			}
+			else if(id==2)
+			{	
+				ImageIcon ii = new ImageIcon("src/res/player2_frozen.png");
+				image=ii.getImage();
+				System.out.println("id 2");
+			}
+			System.out.println("dupa");
+
+
+		}
+	}
+	
 	public void setID(int i)
 	{
 		id=i;

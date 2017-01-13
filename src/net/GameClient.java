@@ -137,6 +137,8 @@ public class GameClient extends Thread implements Commons, Serializer{
 				((Player)game.findModelByID(tmp.id)).setHP(tmp.value);
 			} else if(tmp.name==CHANGE_MP){
 				((Player)game.findModelByID(tmp.id)).setMP(tmp.value);
+			} else if(tmp.name==CHANGE_IMG){
+				((Player)game.findModelByID(tmp.id)).setImage(tmp.value);
 			}
 				
 			
