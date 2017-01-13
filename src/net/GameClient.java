@@ -64,7 +64,7 @@ public class GameClient extends Thread implements Commons, Serializer{
 	}
 	
 	public Serializable receiveViaUDP(){
-		byte[] data = new byte[1024];
+		byte[] data = new byte[76];
 		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
 			UDPSocket.receive(packet);
@@ -107,6 +107,8 @@ public class GameClient extends Thread implements Commons, Serializer{
 		EventMsg msg = new EventMsg(0,LOGIN,UDPSocket.getLocalPort());
 		sendViaTCP(msg);
 		
+		sendViaUDP("wut");
+		
 		while(true){
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
 			if(ev!=null)
@@ -118,7 +120,6 @@ public class GameClient extends Thread implements Commons, Serializer{
 			if(tmp==null){
 				continue;
 			}
-				
 			
 			tmp.setX(in.x);
 			tmp.setY(in.y);
