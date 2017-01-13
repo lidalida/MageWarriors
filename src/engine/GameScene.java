@@ -474,6 +474,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				if(player1.takeMana(SPELL1_COST)){
 					missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25),player1.getRotation());
 					addModel(missile);
+					gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
+					gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 				}
 				else
 					System.out.println("Not enough mana points!!!");

@@ -55,6 +55,7 @@ public interface Commons {
 	// EventMsg
 	public static final int LOGIN = 0;
 	public static final int ADD_ITEM = 1;
+	public static final int ADD_MISSILE = 2;
 	public static final int DELETE_OBJECT = 3;
 
 	

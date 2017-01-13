@@ -15,6 +15,7 @@ import java.net.UnknownHostException;
 import engine.Commons;
 import engine.Item;
 import engine.LocalGameScene;
+import engine.Missile;
 import engine.Model;
 import engine.Player;
 
@@ -128,6 +129,8 @@ public class GameClient extends Thread implements Commons, Serializer{
 			EventMsg tmp = (EventMsg) msg;
 			if(tmp.name==ADD_ITEM){
 				game.addModel(new Item(0,0,tmp.value),tmp.id);
+			} else if(tmp.name==ADD_MISSILE){
+				game.addModel(new Missile(0,0,0),tmp.id);
 			} else if(tmp.name==DELETE_OBJECT){
 				game.removeModel(tmp.id);
 			}

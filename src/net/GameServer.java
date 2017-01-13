@@ -173,7 +173,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 				game.setFlag(IS_MOVING_RIGHT,tmp.state,owner);
 			} else if(tmp.flag==IS_CASTING_SPELL_1){
 				game.setFlag(IS_CASTING_SPELL_1,tmp.state,owner);
-				//sendEventMsg(3,DELETE_OBJECT,0);
 			} else if(tmp.flag==IS_CASTING_SPELL_2){
 				game.setFlag(IS_CASTING_SPELL_2,tmp.state,owner);
 			} else if(tmp.flag==IS_CASTING_SPELL_3){
