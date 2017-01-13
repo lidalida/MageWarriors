@@ -60,6 +60,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	
 	public void sendViaUDP(Serializable msg, InetAddress ip,int p){
 		byte[] data = Serializer.serializeObject(msg);
+		System.out.println(data.length);
 		DatagramPacket packet = new DatagramPacket(data,data.length,ip,p);
 		try {
 			UDPSocket.send(packet);
@@ -69,7 +70,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	}
 	
 	public Serializable receiveViaUDP(){
-		byte[] data = new byte[1024];
+		byte[] data = new byte[128];
 		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
 			UDPSocket.receive(packet);
@@ -146,6 +147,10 @@ public class GameServer extends Thread implements Commons, Serializer{
 		TCPInit();
 		out = (EventMsg) receiveViaTCP(1,true);
 		port[1] = out.value;
+		
+
+		String s = (String) receiveViaUDP();
+		System.out.println(s);
 		
 		game.startGame();
 		
