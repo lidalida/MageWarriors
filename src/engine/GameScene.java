@@ -179,7 +179,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					(item_y>player2.getY() && item_y<player2.getY()+50));		
 			Item item=new Item(item_x, item_y);
 			addModel(item);
-			gameServer.sendEventMsg(item.getID(), ADD_ITEM, 0);
+			gameServer.sendEventMsg(item.getID(), ADD_ITEM, item.getType());
 			gameServer.sendPositionMsg(item.getID(), item.getX(), item.getY(), 0);
 		}
 	}

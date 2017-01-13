@@ -62,13 +62,30 @@ public class Item implements Drawable, Model, Commons{
 		y=item_y;
 		type=t;
 		if(type==SPEEDUP)
-			{ImageIcon ii = new ImageIcon("src/res/speedup.png");
+		{
+			ImageIcon ii = new ImageIcon("src/res/speedup.png");
 			image=ii.getImage();
-}
+		}
 		else if (type==TELEPORT)
-			{ImageIcon ii = new ImageIcon("src/res/teleport.png");
+		{
+			ImageIcon ii = new ImageIcon("src/res/teleport.png");
 			image=ii.getImage();
-}
+		}
+		else if (type==FREEZE)
+		{
+			ImageIcon ii = new ImageIcon("src/res/freeze.png");
+			image=ii.getImage();
+		}
+		else if (type==MANA)
+		{
+			ImageIcon ii = new ImageIcon("src/res/mana.png");
+			image=ii.getImage();
+		}
+		else if (type==HP)
+		{
+			ImageIcon ii = new ImageIcon("src/res/hp.png");
+			image=ii.getImage();
+		}
 	}
 
 	@Override
@@ -90,6 +107,11 @@ public class Item implements Drawable, Model, Commons{
 	
 	public void setY(int y){
 		this.y=y;
+	}
+	
+	public int getType()
+	{
+		return type;
 	}
 	
 	public double getRotation(){

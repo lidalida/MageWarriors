@@ -127,7 +127,7 @@ public class GameClient extends Thread implements Commons, Serializer{
 		if(msg.getClass()==EventMsg.class){
 			EventMsg tmp = (EventMsg) msg;
 			if(tmp.name==ADD_ITEM)
-				game.addModel(new Item(0,0),tmp.id);
+				game.addModel(new Item(0,0,tmp.value),tmp.id);
 				
 		}
 	}
