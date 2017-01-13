@@ -80,10 +80,10 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 
 
 		
-		/*localGameScene.getBar(1,0).draw(g1);
+		localGameScene.getBar(1,0).draw(g1);
 		localGameScene.getBar(1,1).draw(g1);
 		localGameScene.getBar(2,0).draw(g1);
-		localGameScene.getBar(2,1).draw(g1);*/
+		localGameScene.getBar(2,1).draw(g1);
 		
 	    Toolkit.getDefaultToolkit().sync();
     }
