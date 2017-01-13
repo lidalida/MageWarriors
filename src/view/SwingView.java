@@ -63,8 +63,7 @@ public class SwingView extends JPanel implements Commons{
 	
 
 	public SwingView(){
-        addKeyListener(new CustomKeyListener());
-        addMouseMotionListener(new CustomMouseListener());
+       
 		setSize(WINDOW_WIDTH, ARENA_HEIGHT);
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, ARENA_HEIGHT));
 
@@ -81,35 +80,24 @@ public class SwingView extends JPanel implements Commons{
 
 	}
 	
-	public void setGameScene(LocalGameScene lgs, GameScene gs){
+	public void setGameScene(LocalGameScene lgs){
 		localGameScene = lgs;
-		gameScene= gs;
 		player1 = new Player();
 		player2 = new Player();
-		player1.setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
-		player2.setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
-		gameScene.addModel(player1);
-		localGameScene.addModel(player1);
-		gameScene.addModel(player2);
-		localGameScene.addModel(player2);
-		gameScene.makeBars();
+		
+		player1.setID(1);
+		player2.setID(2);
+		//gameScene.addModel(player1);
+		localGameScene.addModel(player1,1);		
+		//gameScene.addModel(player2);
+		localGameScene.addModel(player2,2);
+		//gameScene.makeBars();
 	}
 	
 	public void startGame()
-	{
-		if (JOptionPane.showConfirmDialog(this, "Do you want to run the server") == 0){
-			gameScene.gameServer = new GameServer(gameScene);
-			gameScene.gameServer.start();
-		}
-		else
-		{
-			gameScene = null;
-			System.out.println("You can't play now");
-		}
-		gameClient = new GameClient(localGameScene);
-		gameClient.start();
-		
-		
+	{		
+		addKeyListener(new CustomKeyListener());
+	    addMouseMotionListener(new CustomMouseListener());
 		timer=new Timer(FRAMETIME, new ActionListener(){
 
 			@Override
@@ -132,12 +120,14 @@ public class SwingView extends JPanel implements Commons{
        
         Graphics2D g = (Graphics2D) g1;
         g.setPaint(paint);
-        g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);       
-
+        g.fillRect(0, 0, WINDOW_WIDTH, ARENA_HEIGHT);
+        
+        synchronized(localGameScene.models){
 		for(Iterator<Drawable> it = localGameScene.models.iterator(); it.hasNext();)
 		{
 			Drawable d = it.next();
 			d.draw(g1);
+		}
 		}
 		if(gameScene!=null)
 			gameScene.setPainted(true);
@@ -150,8 +140,8 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(gameScene==null)
-				return;
+			//if(gameScene==null)
+				//return;
 			
 			if(e.getKeyCode() == KeyEvent.VK_W) {
 	            gameClient.sendViaTCP(new InputMsg(IS_MOVING,true,0,0));
@@ -188,8 +178,8 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if(gameScene==null)
-				return;
+			//if(gameScene==null)
+				//return;
 			
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
 				gameClient.sendViaTCP(new InputMsg(IS_MOVING,false,0,0));
@@ -234,8 +224,8 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			if(gameScene==null)
-				return;
+			//if(gameScene==null)
+				//return;
             gameClient.sendViaTCP(new InputMsg(IS_ROTATING,true,e.getX(),e.getY()));
 		
 		}

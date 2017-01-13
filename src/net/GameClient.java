@@ -13,6 +13,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import engine.Commons;
+import engine.Item;
 import engine.LocalGameScene;
 import engine.Model;
 import engine.Player;
@@ -79,10 +80,13 @@ public class GameClient extends Thread implements Commons, Serializer{
 		}
 	}
 	
-	public Serializable receiveViaTCP(){
+	public Serializable receiveViaTCP(boolean blockingMode){
 		byte[] data = null;
 		try {
 			inputStream = new DataInputStream(TCPSocket.getInputStream());
+			if(!blockingMode)
+				if(inputStream.available()==0)
+					return null;
 			int len = inputStream.readInt();
 			data = new byte[len];
 			if(len > 0)
@@ -98,17 +102,33 @@ public class GameClient extends Thread implements Commons, Serializer{
 		sendViaTCP(msg);
 		
 		while(true){
+			EventMsg ev = (EventMsg) receiveViaTCP(false);
+			if(ev!=null)
+				resolveMessage(ev);
 			PositionMsg in = (PositionMsg) receiveViaUDP();
 			Model tmp = (Model) game.findModelByID(in.id);
 			
 			if(tmp==null)
 				continue;
+			//System.out.println("13");
 			
 			tmp.setX(in.x);
 			tmp.setY(in.y);
 			tmp.setRotation(in.rot);
+
+		}
+	}
+	
+	public void resolveMessage(Serializable msg){
+		//System.out.println(msg.getClass());
+		synchronized(game.models){
+		if(msg.getClass()==EventMsg.class){
+			EventMsg tmp = (EventMsg) msg;
+			if(tmp.name==ADD_ITEM)
+				game.addModel(new Item(0,0),tmp.id);
 				
 		}
+	}
 	}
 	
 }

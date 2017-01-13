@@ -21,7 +21,7 @@ public class LocalGameScene {
 		return null;
 	}
 	
-	public void addModel(Drawable model)
+	public void addModel(Drawable model, int id)
 	{
 		models.add(model);
 	}

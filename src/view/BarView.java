@@ -18,7 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import engine.Commons;
-import engine.GameScene;
+import engine.LocalGameScene;
 import engine.Player;
 
 public class BarView extends JPanel implements Commons, PropertyChangeListener {
@@ -30,7 +30,7 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
     private BufferedImage bi_sb;
     private ImageIcon ii;
     private Image image_p1, image_p2, image_bar_border;
-    private GameScene gameScene;
+    private LocalGameScene localGameScene;
 
 	public BarView()
 	{
@@ -56,11 +56,11 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 		
 	}
 	
-	public void setGameScene(GameScene gs)
+	public void setLocalGameScene(LocalGameScene gs)
 	{
-		gameScene=gs;
-		 ((Player)gameScene.models.get(0)).addPropertyChangeListener(this);
-		 ((Player)gameScene.models.get(1)).addPropertyChangeListener(this);
+		localGameScene=gs;
+		 ((Player)localGameScene.models.get(0)).addPropertyChangeListener(this);
+		 ((Player)localGameScene.models.get(1)).addPropertyChangeListener(this);
 		 
 	}
 	
@@ -80,10 +80,10 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 
 
 		
-		gameScene.getBar(1,0).draw(g1);
-		gameScene.getBar(1,1).draw(g1);
-		gameScene.getBar(2,0).draw(g1);
-		gameScene.getBar(2,1).draw(g1);
+		/*localGameScene.getBar(1,0).draw(g1);
+		localGameScene.getBar(1,1).draw(g1);
+		localGameScene.getBar(2,0).draw(g1);
+		localGameScene.getBar(2,1).draw(g1);*/
 		
 	    Toolkit.getDefaultToolkit().sync();
     }

@@ -59,8 +59,16 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		gameUpdate();
+		//System.out.println("11");
 		if(gameServer==null)
 			return;
+		if(player1_flags[0]){
+			System.out.println("12");
+			Model tmp = (Model) models.get(0);
+			System.out.println(tmp.getID()+": "+tmp.getX() + " " + tmp.getY());
+		}
+			
+		
 		for(int i=0;i<models.size();i++){
 			Model tmp = (Model) models.get(i);
 			gameServer.sendPositionMsg(tmp.getID(),tmp.getX(),tmp.getY(),tmp.getRotation());
@@ -171,6 +179,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					(item_y>player2.getY() && item_y<player2.getY()+50));		
 			Item item=new Item(item_x, item_y);
 			addModel(item);
+			gameServer.sendEventMsg(item.getID(), ADD_ITEM, 0);
+			gameServer.sendPositionMsg(item.getID(), item.getX(), item.getY(), 0);
 		}
 	}
 	
@@ -363,8 +373,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	private void checkMoves()
 	{
-		if(painted)
-		{
 			if(player1_flags[IS_MOVING])
 			{
 				player1.move();
@@ -451,9 +459,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					player2_flags[IS_ROTATING]=false;
 				}
 				
-			}
-			painted=false;
-		}
+			}		
 	}
 
 	private void checkSpells()

@@ -54,6 +54,8 @@ public interface Commons {
 	// NETWORK
 	// EventMsg
 	public static final int LOGIN = 0;
+	public static final int ADD_ITEM = 1;
+
 	
 	public static final int MAX_PLAYERS = 2;
 }

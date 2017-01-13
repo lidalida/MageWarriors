@@ -90,7 +90,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 		try {
 			TCPSocket= TCPWelcomeSocket.accept();
 			inputStream[connectedPlayersCount] = new DataInputStream(TCPSocket.getInputStream());
-			outputStream[connectedPlayersCount] = new DataOutputStream(TCPSocket.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,6 +99,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	public void sendViaTCP(Serializable msg, int playerID){
 		try {
 			byte[] data = Serializer.serializeObject(msg);
+			outputStream[playerID] = new DataOutputStream(TCPSocket.getOutputStream());
 			outputStream[playerID].writeInt(data.length);
 			if(data.length>0)
 				outputStream[playerID].write(data);
@@ -129,14 +129,26 @@ public class GameServer extends Thread implements Commons, Serializer{
 		sendViaUDP(new PositionMsg(id,x,y,rot),IP,port[1]);
 	}
 	
+	public void sendEventMsg(int id, int name, int value){
+		sendViaTCP(new EventMsg(id,name,value),0);
+		sendViaTCP(new EventMsg(id,name,value),1);
+	}
+	
 	public void run(){
 		Serializable in;
 		TCPInit();
+		System.out.println("1.");
 		EventMsg out = (EventMsg) receiveViaTCP(0,true);
+		System.out.println("2.");
+
 		port[0] = out.value;
 		System.out.println(port[0]);
 		TCPInit();
+		System.out.println("3.");
+
 		out = (EventMsg) receiveViaTCP(1,true);
+		System.out.println("4.");
+
 		port[1] = out.value;
 		System.out.println(port[1]);
 		while(true){
@@ -151,6 +163,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	}
 	
 	public void resolveMessage(Serializable msg, int owner){
+		//System.out.println(msg.getClass());
 		if(msg.getClass()==InputMsg.class){
 			InputMsg tmp = (InputMsg) msg;
 			if(tmp.flag==IS_MOVING){

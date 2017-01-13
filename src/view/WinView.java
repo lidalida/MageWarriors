@@ -106,9 +106,9 @@ public class WinView extends JPanel implements Commons{
 		Main.gameScene=new GameScene();
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
-		v.setGameScene(tmp,Main.gameScene);
+		v.setGameScene(tmp);
 		BarView bv = new BarView();
-		bv.setGameScene(Main.gameScene);
+		bv.setLocalGameScene(v.localGameScene);
 		Main.frame.getContentPane().remove(this);
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));

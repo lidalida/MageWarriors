@@ -18,12 +18,17 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import engine.Commons;
 import engine.GameScene;
 import engine.LocalGameScene;
+import engine.Model;
+import engine.Player;
 import main.Main;
+import net.GameClient;
+import net.GameServer;
 
 public class StartView extends JPanel implements Commons {
 	
@@ -71,6 +76,7 @@ public class StartView extends JPanel implements Commons {
 		button_join.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
+				join();
 			}
 		});
 		
@@ -131,12 +137,28 @@ public class StartView extends JPanel implements Commons {
 	}
 	private void createGame()
 	{
+
 		Main.gameScene=new GameScene();
+		Main.gameScene.gameServer=new GameServer(Main.gameScene);
+		Main.gameScene.gameServer.start();
+
+		Main.gameScene.addModel(new Player());
+		Main.gameScene.addModel(new Player());
+		Main.gameScene.makeBars();
+		((Player)Main.gameScene.models.get(0)).setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
+		((Player)Main.gameScene.models.get(1)).setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
+
+		
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
-		v.setGameScene(tmp,Main.gameScene);
+		v.setGameScene(tmp);
+		v.gameClient=new GameClient(v.localGameScene);
+		v.gameClient.start();
+
+		
 		BarView bv = new BarView();
-		bv.setGameScene(Main.gameScene);
+		bv.setLocalGameScene(v.localGameScene);
+		
 		Main.frame.getContentPane().remove(this);
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -149,6 +171,8 @@ public class StartView extends JPanel implements Commons {
 		bv.repaint();
 		v.revalidate();
 		bv.revalidate();
+		
+		
 		Main.gameScene.startGame();
 		v.startGame();
 		
@@ -162,6 +186,36 @@ public class StartView extends JPanel implements Commons {
 		v.requestFocus();
 		v.repaint();
 		v.revalidate();
+	}
+	
+	private void join()
+	{
+		String ip = JOptionPane.showInputDialog(Main.frame, "Enter the host's IP", "", JOptionPane.PLAIN_MESSAGE);
+		
+		LocalGameScene tmp = new LocalGameScene();
+		SwingView v = new SwingView();
+		v.setGameScene(tmp);
+		v.gameClient=new GameClient(v.localGameScene);
+		v.gameClient.start();
+
+		
+		BarView bv = new BarView();
+		bv.setLocalGameScene(v.localGameScene);
+		
+		Main.frame.getContentPane().remove(this);
+		JPanel container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		container.add(bv);
+		container.add(v);
+		Main.frame.getContentPane().add(container);
+		Main.frame.setVisible(true);
+		v.requestFocus();
+		v.repaint();
+		bv.repaint();
+		v.revalidate();
+		bv.revalidate();
+		
+		v.startGame();
 	}
 
 
