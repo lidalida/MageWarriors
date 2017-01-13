@@ -24,6 +24,7 @@ public class LocalGameScene {
 	public void addModel(Drawable model, int id)
 	{
 		models.add(model);
+		((Model)model).setID(id);
 	}
 	
 	public void removeModel(int i)

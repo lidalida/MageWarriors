@@ -105,12 +105,17 @@ public class GameClient extends Thread implements Commons, Serializer{
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
 			if(ev!=null)
 				resolveMessage(ev);
+			
 			PositionMsg in = (PositionMsg) receiveViaUDP();
+			if(in.id>2)
+				System.out.println(in.id);
 			Model tmp = (Model) game.findModelByID(in.id);
 			
-			if(tmp==null)
+			if(tmp==null){
+				System.out.println("null");
 				continue;
-			//System.out.println("13");
+			}
+				
 			
 			tmp.setX(in.x);
 			tmp.setY(in.y);
