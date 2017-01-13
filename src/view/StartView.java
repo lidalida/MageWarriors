@@ -154,6 +154,7 @@ public class StartView extends JPanel implements Commons {
 		v.setGameScene(tmp);
 		v.gameClient=new GameClient(v.localGameScene);
 		v.gameClient.start();
+		v.localGameScene.makeBars();
 
 		
 		BarView bv = new BarView();
@@ -197,6 +198,7 @@ public class StartView extends JPanel implements Commons {
 		v.setGameScene(tmp);
 		v.gameClient=new GameClient(v.localGameScene);
 		v.gameClient.start();
+		v.localGameScene.makeBars();
 
 		
 		BarView bv = new BarView();
