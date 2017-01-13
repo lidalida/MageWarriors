@@ -37,9 +37,11 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	ImageIcon ii;
 	private int item_x=0, item_y=0;
 	double time_p1, time_p2, time_start_p1, time_start_p2, t_items, t_start_items;
-	public int game_over=0; //1-p1 przegral, 2-p2 przegral
 	private Timer timer;
 	private int models_count;
+	
+	public boolean gameOver=false;
+	public int winnerID;
 	
 	public GameScene()
 	{
@@ -59,14 +61,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		gameUpdate();
-		//System.out.println("11");
 		if(gameServer==null)
 			return;
-		if(player1_flags[0]){
-			System.out.println("12");
-			Model tmp = (Model) models.get(0);
-			System.out.println(tmp.getID()+": "+tmp.getX() + " " + tmp.getY());
-		}
 			
 		
 		for(int i=0;i<models.size();i++){
@@ -157,11 +153,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	public void setPainted(boolean value)
 	{
 		painted=value;
-	}
-	
-	public int getGameOver()
-	{
-		return game_over;
 	}
 	
 	public void generateItems()
@@ -270,8 +261,11 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						models.remove(missile);
 						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
 						missile = null;
-						if(player1.getHP()<=0)
-							game_over=1;
+						if(player1.getHP()<=0){
+							gameOver = true;
+							winnerID = player2.getID();
+							gameServer.sendEventMsg(0, GAME_OVER, winnerID);
+						}
 					}
 					
 					else if(player2.collider.collides(((Missile)m).collider))	//kolizja playera z missile
@@ -282,8 +276,11 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						models.remove(missile);
 						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
 						missile = null;
-						if(player2.getHP()<=0)
-							game_over=2;
+						if(player2.getHP()<=0){
+							gameOver = true;
+							winnerID = player1.getID();
+							gameServer.sendEventMsg(0, GAME_OVER, winnerID);
+						}
 					}
 				}
 				else if(m.getClass()==Item.class)		//kolizja playera z itemem
@@ -329,9 +326,9 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						else if(item.type==SPEEDUP)
 							player2.setSuperSpell(SPEEDUP);
 						else if(item.type==TELEPORT)
-							player1.setSuperSpell(TELEPORT);
+							player2.setSuperSpell(TELEPORT);
 						else if(item.type==FREEZE)
-							player1.setSuperSpell(FREEZE);
+							player2.setSuperSpell(FREEZE);
 						it.remove();
 						models.remove(item);
 						gameServer.sendEventMsg(item.getID(), DELETE_OBJECT, 0);
@@ -374,6 +371,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				player1_modificator=0;
 				ii = new ImageIcon("src/res/player.png");
 				player1.setImage(ii.getImage());
+				gameServer.sendEventMsg(player1.getID(), CHANGE_IMG, REGULAR_IMG);
 			}
 		}
 		
@@ -385,6 +383,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				player2_modificator=0;
 				ii = new ImageIcon("src/res/player.png");
 				player2.setImage(ii.getImage());
+				gameServer.sendEventMsg(player2.getID(), CHANGE_IMG, REGULAR_IMG);
 			}
 		}
 		
@@ -394,38 +393,53 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	{
 			if(player1_flags[IS_MOVING])
 			{
-				player1.move();
-				if(player1_modificator==SPEEDUP)
-						player1.move();
+				if(player1_modificator!=FREEZE)
+				{
+					player1.move();
+					if(player1_modificator==SPEEDUP)
+							player1.move();
+				}
 			}
 			
 			if(player1_flags[IS_MOVING_BACK])
 			{
-				player1.moveBack();
-				if(player1_modificator==SPEEDUP)
-						player1.moveBack();
+				if(player1_modificator!=FREEZE)
+				{
+					player1.moveBack();
+					if(player1_modificator==SPEEDUP)
+							player1.moveBack();
+				}
 			}
 			
 			if(player1_flags[IS_MOVING_LEFT])
 			{
-				player1.moveLeft();
-				if(player1_modificator==SPEEDUP)
-						player1.moveLeft();
+				if(player1_modificator!=FREEZE)
+				{
+					player1.moveLeft();
+					if(player1_modificator==SPEEDUP)
+							player1.moveLeft();
+				}
 			}
 			
 			if(player1_flags[IS_MOVING_RIGHT])
 			{
-				player1.moveRight();
-				if(player1_modificator==SPEEDUP)
-						player1.moveRight();
+				if(player1_modificator!=FREEZE)
+				{
+					player1.moveRight();
+					if(player1_modificator==SPEEDUP)
+							player1.moveRight();
+				}
 			}					
 							
 			if(player1_flags[IS_ROTATING])
 			{
-				player1.setMouseX(targetX_p1);
-				player1.setMouseY(targetY_p1);
-				player1.rotate();
-				player1_flags[IS_ROTATING]=false;
+				if(player1_modificator!=FREEZE)
+				{
+					player1.setMouseX(targetX_p1);
+					player1.setMouseY(targetY_p1);
+					player1.rotate();
+					player1_flags[IS_ROTATING]=false;
+				}
 			}
 			
 			if(player2_flags[IS_MOVING])				
@@ -568,6 +582,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					time_start_p2=System.currentTimeMillis();
 					ii = new ImageIcon("src/res/player2_frozen.png");
 					player2.setImage(ii.getImage());
+					gameServer.sendEventMsg(player2.getID(), CHANGE_IMG, FROZEN_IMG);
 					player1_flags[IS_CASTING_SUPER_SPELL]=false;
 				
 				}
@@ -663,6 +678,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					time_start_p1=System.currentTimeMillis();
 					ii = new ImageIcon("src/res/player2_frozen.png");
 					player1.setImage(ii.getImage());
+					gameServer.sendEventMsg(player1.getID(), CHANGE_IMG, FROZEN_IMG);
 					player2_flags[IS_CASTING_SUPER_SPELL]=false;
 				
 				}

@@ -60,6 +60,7 @@ public interface Commons {
 	public static final int CHANGE_HP = 4;
 	public static final int CHANGE_MP = 5;
 	public static final int CHANGE_IMG = 6;
+	public static final int GAME_OVER = 7;
 	
 	public static final int REGULAR_IMG = 0;
 	public static final int FROZEN_IMG = 1;

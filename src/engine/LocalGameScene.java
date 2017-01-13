@@ -9,6 +9,7 @@ public class LocalGameScene implements Commons {
 	public List<Drawable> models = new ArrayList<Drawable>();
 	private Model m;
 	Bar p1_hp, p1_mp, p2_hp, p2_mp;
+	public int gameOver=0;
 	
 	
 	public Drawable findModelByID(int i)

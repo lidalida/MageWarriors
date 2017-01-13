@@ -24,6 +24,8 @@ import engine.Commons;
 import engine.GameScene;
 import engine.LocalGameScene;
 import main.Main;
+import net.GameClient;
+import net.GameServer;
 
 public class WinView extends JPanel implements Commons{
 
@@ -33,6 +35,9 @@ public class WinView extends JPanel implements Commons{
 	private TexturePaint paint;
 	private ImageIcon ii;
 	private Image img;
+	public GameServer gameServer;
+	public GameClient gameClient1, gameClient2;
+	
 	public WinView(int i)
 	{
 		try {
@@ -44,9 +49,9 @@ public class WinView extends JPanel implements Commons{
 		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
 		 
 		if(i==1)
-			ii=new ImageIcon("src/res/p2_won.png");
-		else
 			ii=new ImageIcon("src/res/p1_won.png");
+		else
+			ii=new ImageIcon("src/res/p2_won.png");
 
         img=ii.getImage();
 		 

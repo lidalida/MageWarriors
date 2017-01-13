@@ -87,6 +87,7 @@ public class SwingView extends JPanel implements Commons{
 		
 		player1.setID(1);
 		player2.setID(2);
+		player2.setImage(0);
 		//gameScene.addModel(player1);
 		localGameScene.addModel(player1,1);		
 		//gameScene.addModel(player2);
@@ -105,9 +106,8 @@ public class SwingView extends JPanel implements Commons{
 				t=System.currentTimeMillis();				
 				repaint();
 				//gameScene.gameUpdate();
-				if(gameScene!=null)
-				if(gameScene.getGameOver()!=0)
-					gameOver();
+				if(localGameScene.gameOver!=0)
+					gameOver(localGameScene.gameOver);
 			}
 			
 		});
@@ -232,11 +232,11 @@ public class SwingView extends JPanel implements Commons{
     	
     }
     
-    private void gameOver()
+    private void gameOver(int id)
     {
     	timer.stop();
     	Main.frame.getContentPane().removeAll();
-    	WinView v = new WinView(gameScene.getGameOver());    	
+    	WinView v = new WinView(id);    	
     	Main.frame.getContentPane().add(v);
     	v.requestFocus();
     	v.repaint();
