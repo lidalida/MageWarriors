@@ -281,6 +281,13 @@ public class Player implements Drawable, Model, Commons {
 		firePropertyChange("MP", old_mp, mp);	
 	}
 	
+	public void setMP(int mana)
+	{
+		old_mp=mp;
+		mp=mana;
+		firePropertyChange("MP", old_mp, mp);	
+	}
+	
 	public void checkBorders(){
 		
 		Rectangle player = getBordersAfterMove();

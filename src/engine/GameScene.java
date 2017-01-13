@@ -258,6 +258,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					if(++missile.lifetime>100){
 						it.remove();
 						models.remove(missile);
+						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
 						missile = null;
 					}
 						
@@ -266,6 +267,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						player1.takeDamage(DAMAGE);
 						it.remove();
 						models.remove(missile);
+						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
 						missile = null;
 						if(player1.getHP()<=0)
 							game_over=1;
@@ -276,6 +278,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						player2.takeDamage(DAMAGE);						
 						it.remove();
 						models.remove(missile);
+						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
 						missile = null;
 						if(player2.getHP()<=0)
 							game_over=2;
@@ -298,6 +301,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 							player1.setSuperSpell(FREEZE);
 						it.remove();
 						models.remove(item);
+						gameServer.sendEventMsg(item.getID(), DELETE_OBJECT, 0);
 						item = null;
 
 					}
@@ -316,6 +320,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 							player1.setSuperSpell(FREEZE);
 						it.remove();
 						models.remove(item);
+						gameServer.sendEventMsg(item.getID(), DELETE_OBJECT, 0);
 						item = null;
 					}
 					
@@ -488,6 +493,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					for(int i=0;i<4;i++){
 						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25+i*25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25+i*25),player1.getRotation());
 						addModel(missile);
+						gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
+						gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 					}
 					
 				}
@@ -502,6 +509,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					for(int i=-6;i<7;i++){
 						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player1.getY(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),player1.getRotation()+(double)i*5*DEG_TO_RAD);
 						addModel(missile);
+						gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
+						gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 					}
 					
 				}
@@ -560,6 +569,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 				if(player2.takeMana(SPELL1_COST)){
 					missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation(),25),Missile.getYOnRadius(player2.getY(),player2.getRotation(),25),player2.getRotation());
 					addModel(missile);
+					gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
+					gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 				}
 				else
 					System.out.println("Not enough mana points!!!");
@@ -573,6 +584,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					for(int i=0;i<4;i++){
 						missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation(),25+i*25),Missile.getYOnRadius(player2.getY(),player2.getRotation(),25+i*25),player2.getRotation());
 						addModel(missile);
+						gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
+						gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 					}
 					
 				}
@@ -588,6 +601,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					for(int i=-6;i<7;i++){
 						missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player2.getY(),player2.getRotation()+(double)i*5*DEG_TO_RAD,50),player2.getRotation()+(double)i*5*DEG_TO_RAD);
 						addModel(missile);
+						gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
+						gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 					}
 					
 				}

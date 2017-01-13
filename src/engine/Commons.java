@@ -57,6 +57,12 @@ public interface Commons {
 	public static final int ADD_ITEM = 1;
 	public static final int ADD_MISSILE = 2;
 	public static final int DELETE_OBJECT = 3;
+	public static final int CHANGE_HP = 4;
+	public static final int CHANGE_MANA = 5;
+	public static final int CHANGE_SUPER_SPELL = 6;
+
+
+
 
 	
 	public static final int MAX_PLAYERS = 2;
