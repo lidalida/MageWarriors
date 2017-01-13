@@ -246,7 +246,10 @@ public class Player implements Drawable, Model, Commons {
 	}
 	
 	public void setHP(int health){
+		old_hp=hp;
 		hp=health;
+		firePropertyChange("HP", old_hp, hp);
+
 	}
 	
 	public void addHP()

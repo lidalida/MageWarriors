@@ -265,6 +265,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					else if(player1.collider.collides(((Missile)m).collider))	//kolizja playera z missile
 					{				
 						player1.takeDamage(DAMAGE);
+						gameServer.sendEventMsg(player1.getID(), CHANGE_HP, player1.getHP());
 						it.remove();
 						models.remove(missile);
 						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
@@ -275,7 +276,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					
 					else if(player2.collider.collides(((Missile)m).collider))	//kolizja playera z missile
 					{
-						player2.takeDamage(DAMAGE);						
+						player2.takeDamage(DAMAGE);	
+						gameServer.sendEventMsg(player2.getID(), CHANGE_HP, player2.getHP());
 						it.remove();
 						models.remove(missile);
 						gameServer.sendEventMsg(missile.getID(), DELETE_OBJECT, 0);
@@ -477,6 +479,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			if(player1_flags[IS_CASTING_SPELL_1])
 			{
 				if(player1.takeMana(SPELL1_COST)){
+					gameServer.sendEventMsg(player1.getID(), CHANGE_MP, player1.getMP());
 					missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25),player1.getRotation());
 					addModel(missile);
 					gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
@@ -490,6 +493,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			if(player1_flags[IS_CASTING_SPELL_2])
 			{
 				if(player1.takeMana(SPELL2_COST)){
+					gameServer.sendEventMsg(player1.getID(), CHANGE_MP, player1.getMP());
 					for(int i=0;i<4;i++){
 						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation(),25+i*25),Missile.getYOnRadius(player1.getY(),player1.getRotation(),25+i*25),player1.getRotation());
 						addModel(missile);
@@ -506,6 +510,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			if(player1_flags[IS_CASTING_SPELL_3])
 			{
 				if(player1.takeMana(SPELL3_COST)){
+					gameServer.sendEventMsg(player1.getID(), CHANGE_MP, player1.getMP());
 					for(int i=-6;i<7;i++){
 						missile = new Missile(Missile.getXOnRadius(player1.getX(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player1.getY(),player1.getRotation()+(double)i*5*DEG_TO_RAD,50),player1.getRotation()+(double)i*5*DEG_TO_RAD);
 						addModel(missile);
@@ -567,6 +572,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			if(player2_flags[IS_CASTING_SPELL_1])
 			{
 				if(player2.takeMana(SPELL1_COST)){
+					gameServer.sendEventMsg(player2.getID(), CHANGE_MP, player2.getMP());
 					missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation(),25),Missile.getYOnRadius(player2.getY(),player2.getRotation(),25),player2.getRotation());
 					addModel(missile);
 					gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
@@ -581,6 +587,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			if(player2_flags[IS_CASTING_SPELL_2])
 			{
 				if(player2.takeMana(SPELL2_COST)){
+					gameServer.sendEventMsg(player2.getID(), CHANGE_MP, player2.getMP());
 					for(int i=0;i<4;i++){
 						missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation(),25+i*25),Missile.getYOnRadius(player2.getY(),player2.getRotation(),25+i*25),player2.getRotation());
 						addModel(missile);
@@ -598,6 +605,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			if(player2_flags[IS_CASTING_SPELL_3])
 			{
 				if(player2.takeMana(SPELL3_COST)){
+					gameServer.sendEventMsg(player2.getID(), CHANGE_MP, player2.getMP());
 					for(int i=-6;i<7;i++){
 						missile = new Missile(Missile.getXOnRadius(player2.getX(),player2.getRotation()+(double)i*5*DEG_TO_RAD,50),Missile.getYOnRadius(player2.getY(),player2.getRotation()+(double)i*5*DEG_TO_RAD,50),player2.getRotation()+(double)i*5*DEG_TO_RAD);
 						addModel(missile);
