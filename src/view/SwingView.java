@@ -144,34 +144,36 @@ public class SwingView extends JPanel implements Commons{
 				//return;
 			
 			if(e.getKeyCode() == KeyEvent.VK_W) {
-	            gameClient.sendViaTCP(new InputMsg(IS_MOVING,true,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING,true,0,0));
+	            //gameClient.sendViaTCP(new InputMsg(IS_MOVING,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,true,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,true,0,0));
+	            //gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameClient.sendViaTCP(new InputMsg(IS_MOVING_LEFT,true,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameClient.sendViaTCP(new InputMsg(IS_MOVING_RIGHT,true,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING_RIGHT,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 				if(!isSpellCrafted)
-					gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_1,true,0,0));
+					gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_1,true,0,0));
 				isSpellCrafted = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_R){
 				if(!isSpellCrafted)
-					gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_2,true,0,0));
+					gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_2,true,0,0));
 				isSpellCrafted = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_T){
 				if(!isSpellCrafted)
-					gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_3,true,0,0));
+					gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_3,true,0,0));
 				isSpellCrafted = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
-				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SUPER_SPELL,true,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_CASTING_SUPER_SPELL,true,0,0));
 			}
             
 		}
@@ -182,27 +184,29 @@ public class SwingView extends JPanel implements Commons{
 				//return;
 			
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
-				gameClient.sendViaTCP(new InputMsg(IS_MOVING,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING,false,0,0));
+				//gameClient.sendViaTCP(new InputMsg(IS_MOVING,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
-	            gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,false,0,0));
+				//gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameClient.sendViaTCP(new InputMsg(IS_MOVING_LEFT,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameClient.sendViaTCP(new InputMsg(IS_MOVING_RIGHT,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_MOVING_RIGHT,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
-				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_1,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_1,false,0,0));
 				isSpellCrafted = false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_R){
-				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_2,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_2,false,0,0));
 	            isSpellCrafted = false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_T){
-				gameClient.sendViaTCP(new InputMsg(IS_CASTING_SPELL_3,false,0,0));
+				gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_3,false,0,0));
 	            isSpellCrafted = false;
 			}			
 		}
