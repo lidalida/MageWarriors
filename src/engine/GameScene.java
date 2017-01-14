@@ -82,7 +82,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			checkCollisions();
 			checkSuperSpellTime();	
 			t_items=System.currentTimeMillis();
-			if(t_items-t_start_items>1000)
+			if(t_items-t_start_items>100000)
 			{
 				generateItems();
 				t_start_items=t_items;
@@ -174,6 +174,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			addModel(item);
 			gameServer.sendEventMsg(item.getID(), ADD_ITEM, item.getType());
 			gameServer.sendPositionMsg(item.getID(), item.getX(), item.getY(), 0);
+			gameServer.sendPositionMsg(item.getID(), item.getX(), item.getY(), 0);
+			System.out.println(models.size());
 		}
 	}
 	
