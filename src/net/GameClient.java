@@ -31,7 +31,7 @@ public class GameClient extends Thread implements Commons, Serializer{
 	InetAddress IPAddress;
 	LocalGameScene game;
 	
-	public GameClient(LocalGameScene lgs, boolean host){
+	public GameClient(LocalGameScene lgs, String host){
 		game = lgs;
 		
 		try {
@@ -41,13 +41,8 @@ public class GameClient extends Thread implements Commons, Serializer{
 			e.printStackTrace();
 		}
 		try {
-			if(host){
-				IPAddress = InetAddress.getByName("localhost");
-				TCPSocket = new Socket("localhost",TCPPort);
-			} else{
-				IPAddress = InetAddress.getByName("79.185.75.119");
-				TCPSocket = new Socket("79.185.75.119",TCPPort);
-			}
+			IPAddress = InetAddress.getByName(host);
+			TCPSocket = new Socket(host,TCPPort);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

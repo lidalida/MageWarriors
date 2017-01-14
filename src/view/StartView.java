@@ -152,7 +152,7 @@ public class StartView extends JPanel implements Commons {
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
 		v.setGameScene(tmp);
-		v.gameClient=new GameClient(v.localGameScene,true);
+		v.gameClient=new GameClient(v.localGameScene,"localhost");
 		v.gameClient.start();
 		v.localGameScene.makeBars();
 
@@ -196,7 +196,7 @@ public class StartView extends JPanel implements Commons {
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
 		v.setGameScene(tmp);
-		v.gameClient=new GameClient(v.localGameScene,false);
+		v.gameClient=new GameClient(v.localGameScene,ip);
 		v.gameClient.start();
 		v.localGameScene.makeBars();
 
