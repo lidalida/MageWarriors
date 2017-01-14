@@ -94,7 +94,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 		
 		try {
 			TCPSocket= TCPWelcomeSocket.accept();
-			((Socket)TCPSocket).setTcpNoDelay(false);
+			((Socket)TCPSocket).setTcpNoDelay(true);
 			inputStream[connectedPlayersCount] = new DataInputStream(TCPSocket.getInputStream());
 			outputStream[connectedPlayersCount] = new DataOutputStream(TCPSocket.getOutputStream());
 			if(connectedPlayersCount==1)
