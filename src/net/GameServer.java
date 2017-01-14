@@ -76,7 +76,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 			UDPSocket.receive(packet);
 			if(port[0]==0)
 				port[0] = packet.getPort();
-			else
+			else if (port[1]==0)
 				port[1] = packet.getPort();
 		} catch (IOException e) {
 			e.printStackTrace();
