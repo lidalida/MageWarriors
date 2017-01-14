@@ -226,7 +226,7 @@ public class SwingView extends JPanel implements Commons{
 		public void mouseMoved(MouseEvent e) {
 			//if(gameScene==null)
 				//return;
-            gameClient.sendViaTCP(new InputMsg(IS_ROTATING,true,e.getX(),e.getY()));
+            gameClient.sendViaUDP(new InputMsg(IS_ROTATING,true,e.getX(),e.getY()));
 		
 		}
     	

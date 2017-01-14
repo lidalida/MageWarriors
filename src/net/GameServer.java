@@ -161,6 +161,9 @@ public class GameServer extends Thread implements Commons, Serializer{
 			in = receiveViaTCP(1,false);
 			if(in!=null)
 				resolveMessage(in, 2);
+			in = receiveViaUDP();
+			if(in!=null)
+				resolveMessage(in, 2);
 		}
 		
 	}
