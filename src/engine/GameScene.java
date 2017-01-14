@@ -67,6 +67,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 		
 		for(int i=0;i<models.size();i++){
 			Model tmp = (Model) models.get(i);
+			if(tmp.getClass()==Item.class)
+				continue;
 			gameServer.sendPositionMsg(tmp.getID(),tmp.getX(),tmp.getY(),tmp.getRotation());
 		}
 			
