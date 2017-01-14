@@ -35,6 +35,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	DataInputStream[] inputStream = new DataInputStream[2];
 	DataOutputStream[] outputStream = new DataOutputStream[2];
 	GameScene game;
+	int lastPlayer;
 	
 	public List<InetAddress> playersIPs = new ArrayList<InetAddress>();
 	
@@ -76,8 +77,12 @@ public class GameServer extends Thread implements Commons, Serializer{
 			UDPSocket.receive(packet);
 			if(port[0]==0)
 				port[0] = packet.getPort();
-			else
+			else if(port[1]==0)
 				port[1] = packet.getPort();
+			else if(port[0]==packet.getPort())
+				lastPlayer = 1;
+			else
+				lastPlayer = 2;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -163,7 +168,8 @@ public class GameServer extends Thread implements Commons, Serializer{
 				resolveMessage(in, 2);
 			in = receiveViaUDP();
 			if(in!=null)
-				resolveMessage(in, 2);
+				
+					resolveMessage(in, lastPlayer);
 		}
 		
 	}
