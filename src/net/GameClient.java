@@ -43,6 +43,7 @@ public class GameClient extends Thread implements Commons, Serializer{
 		try {
 			IPAddress = InetAddress.getByName(host);
 			TCPSocket = new Socket(host,TCPPort);
+			TCPSocket.setTcpNoDelay(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
