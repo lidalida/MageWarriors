@@ -45,7 +45,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 		
 		try {
 			UDPSocket = new DatagramSocket(UDPPort);
-			UDPSocket.setSoTimeout(10);
 			IPs[0] = InetAddress.getByName("localhost");
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -76,6 +75,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 		byte[] data = new byte[128];
 		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
+			UDPSocket.setSoTimeout(10);
 			UDPSocket.receive(packet);
 			if(port[0]==0)
 				port[0] = packet.getPort();
