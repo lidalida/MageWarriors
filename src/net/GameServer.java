@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 		
 		try {
 			UDPSocket = new DatagramSocket(UDPPort);
+			UDPSocket.setSoTimeout(10);
 			IPs[0] = InetAddress.getByName("localhost");
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -84,7 +86,8 @@ public class GameServer extends Thread implements Commons, Serializer{
 			else
 				lastPlayer = 2;
 		} catch (IOException e) {
-			e.printStackTrace();
+			return null;
+			//e.printStackTrace();
 		}
 		return Serializer.deserializeObject(packet.getData());
 	}
@@ -168,8 +171,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 				resolveMessage(in, 2);
 			in = receiveViaUDP();
 			if(in!=null)
-				
-					resolveMessage(in, lastPlayer);
+				resolveMessage(in, lastPlayer);
 		}
 		
 	}
