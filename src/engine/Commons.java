@@ -6,7 +6,7 @@ public interface Commons {
 	public static final double DEG_TO_RAD = 0.01745;
 	
 	public static final int MOVE_DELTA = 5;
-	public static final int MISSILE_MOVE_DELTA=8;
+	public static final int MISSILE_MOVE_DELTA=9;
 	public static final int DELAY = 10;
 	public static final int WINDOW_HEIGHT = 600;
 	public static final int WINDOW_WIDTH = 800;
@@ -36,7 +36,7 @@ public interface Commons {
 	public static final int SPELL1_COST = 10;
 	public static final int SPELL2_COST = 30;
 	public static final int SPELL3_COST = 80;
-	public static final int DAMAGE = 10;
+	public static final int DAMAGE = 3;
 
 	
 	//types of items & super spells
