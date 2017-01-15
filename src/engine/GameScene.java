@@ -82,7 +82,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			checkCollisions();
 			checkSuperSpellTime();	
 			t_items=System.currentTimeMillis();
-			if(t_items-t_start_items>1000)
+			if(t_items-t_start_items>ITEM_SPAWN_TIME)
 			{
 				generateItems();
 				t_start_items=t_items;

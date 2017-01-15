@@ -48,8 +48,7 @@ public interface Commons {
 	
 	public static final int FREEZE_TIME = 1200;
 	public static final int SPEEDUP_TIME = 3600;
-
-	
+	public static final int HP_ADDED = 15;
 
 	
 	// GUI
@@ -78,6 +77,10 @@ public interface Commons {
 	public static final double SPAWN_2 = 0.7;
 	public static final double SPAWN_3 = 0.8;
 	public static final double SPAWN_4 = 0.9;
+	
+	public static final double ITEM_SPAWN_TIME = 750;
+
+	
 
 	
 	

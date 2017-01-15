@@ -290,7 +290,7 @@ public class Player implements Drawable, Model, Commons {
 	public void addHP()
 	{
 		old_hp=hp;
-		hp+=20;
+		hp+=HP_ADDED;
 		if(hp>100)
 			hp=100;
 		firePropertyChange("HP", old_hp, hp);
