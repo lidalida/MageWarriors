@@ -45,6 +45,11 @@ public interface Commons {
 	public static final int SPEEDUP = 2;
 	public static final int TELEPORT = 3;
 	public static final int FREEZE = 4;
+	
+	public static final int FREEZE_TIME = 1200;
+	public static final int SPEEDUP_TIME = 3600;
+
+	
 
 	
 	// GUI
@@ -67,4 +72,13 @@ public interface Commons {
 
 	
 	public static final int MAX_PLAYERS = 2;
+	
+	//spawning items-probability
+	public static final double SPAWN_1 = 0.2;
+	public static final double SPAWN_2 = 0.7;
+	public static final double SPAWN_3 = 0.8;
+	public static final double SPAWN_4 = 0.9;
+
+	
+	
 }

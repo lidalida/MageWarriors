@@ -21,31 +21,31 @@ public class Item implements Drawable, Model, Commons{
 		x=item_x;
 		y=item_y;
 		rnd=Math.random();
-		if(rnd<0.2)
+		if(rnd<SPAWN_1)
 		{
 			type=HP;
 			ImageIcon ii = new ImageIcon("src/res/hp.png");
 			image=ii.getImage();
 		}
-		else if(rnd>=0.2 && rnd<0.7)
+		else if(rnd>=SPAWN_1 && rnd<SPAWN_2)
 		{
 			type=MANA;
 			ImageIcon ii = new ImageIcon("src/res/mana.png");
 			image=ii.getImage();
 		}
-		else if(rnd>=0.7 && rnd<0.8)
+		else if(rnd>=SPAWN_2 && rnd<SPAWN_3)
 		{
 			type=FREEZE;
 			ImageIcon ii = new ImageIcon("src/res/freeze.png");
 			image=ii.getImage();
 		}
-		else if(rnd>=0.8 && rnd<0.9)
+		else if(rnd>=SPAWN_3 && rnd<SPAWN_4)
 		{
 			type=SPEEDUP;
 			ImageIcon ii = new ImageIcon("src/res/speedup.png");
 			image=ii.getImage();
 		}
-		else if(rnd>=0.9)
+		else if(rnd>=SPAWN_4)
 		{
 			type=TELEPORT;
 			ImageIcon ii = new ImageIcon("src/res/teleport.png");

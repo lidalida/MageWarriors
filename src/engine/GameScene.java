@@ -356,25 +356,24 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 		if(player1_modificator==SPEEDUP)
 		{
 			time_p1=System.currentTimeMillis();
-			if(time_p1-time_start_p1>FRAMETIME*200)
+			if(time_p1-time_start_p1>SPEEDUP_TIME)
 				player1_modificator=0;
 		}
 		
 		if(player2_modificator==SPEEDUP)
 		{
 			time_p2=System.currentTimeMillis();
-			if(time_p2-time_start_p2>FRAMETIME*200)
+			if(time_p2-time_start_p2>SPEEDUP_TIME)
 				player2_modificator=0;
 		}
 		
 		if(player1_modificator==FREEZE)
 		{
 			time_p1=System.currentTimeMillis();
-			if(time_p1-time_start_p1>FRAMETIME*200)
+			if(time_p1-time_start_p1>FREEZE_TIME)
 			{
 				player1_modificator=0;
-				ii = new ImageIcon("src/res/player.png");
-				player1.setImage(ii.getImage());
+				player1.setImage(REGULAR_IMG);
 				gameServer.sendEventMsg(player1.getID(), CHANGE_IMG, REGULAR_IMG);
 			}
 		}
@@ -382,11 +381,10 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 		if(player2_modificator==FREEZE)
 		{
 			time_p2=System.currentTimeMillis();
-			if(time_p2-time_start_p2>FRAMETIME*200)
+			if(time_p2-time_start_p2>FREEZE_TIME)
 			{
 				player2_modificator=0;
-				ii = new ImageIcon("src/res/player.png");
-				player2.setImage(ii.getImage());
+				player1.setImage(REGULAR_IMG);
 				gameServer.sendEventMsg(player2.getID(), CHANGE_IMG, REGULAR_IMG);
 			}
 		}
