@@ -64,10 +64,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println(player2_flags[IS_ROTATING]);
-		if(player1_flags[IS_ROTATING] || player2_flags[IS_ROTATING])
-			System.out.println(targetX_p1 + " " + targetX_p2);
-		
+
 		gameUpdate();
 		if(gameServer==null)
 			return;

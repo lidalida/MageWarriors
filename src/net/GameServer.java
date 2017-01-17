@@ -146,8 +146,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	public void sendPositionMsg(int id, int x, int y, double rot){
 		sendViaUDP(new PositionMsg(id,x,y,rot),IPs[0],port[0]);
 		sendViaUDP(new PositionMsg(id,x,y,rot),IPs[1],port[1]);
-		/*System.out.println(IPs[0] + "<======>" + IPs[1]);
-		System.out.println(port[0] + "<======>" + port[1]);*/
+
 	}
 	
 	public void sendEventMsg(int id, int name, int value){
@@ -159,7 +158,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 		Serializable in;
 		
 		TCPInit();
-		System.out.println("Hellllllo");
 		EventMsg out = (EventMsg) receiveViaTCP(0,true);
 		port[0] = out.value;
 		
@@ -167,26 +165,9 @@ public class GameServer extends Thread implements Commons, Serializer{
 		out = (EventMsg) receiveViaTCP(1,true);
 		port[1] = out.value;
 		
-
-		//String s = (String) receiveViaUDP();
-		//System.out.println(s);
-		
-		/*in = receiveViaUDP();
-		System.out.println(in);
-		in = receiveViaUDP();
-		System.out.println(in);
-		
-		sendPositionMsg(1,3000,4,5);*/
-		
 		game.startGame();
 		
 		while(true){
-			/*in = receiveViaTCP(0,false);
-			if(in!=null)
-				resolveMessage(in, 1);
-			in = receiveViaTCP(1,false);
-			if(in!=null)
-				resolveMessage(in, 2);*/
 			in = receiveViaUDP();
 			if(in!=null)
 				resolveMessage(in, lastPlayer);
@@ -219,7 +200,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 				game.setFlag(IS_ROTATING,tmp.state,owner);
 				game.setMousePos(tmp.x, tmp.y, owner);
 			} else if(tmp.flag==PLAY_AGAIN){
-				System.out.println("dupa");
 				sendEventMsg(0, PLAY_AGAIN, 0);
 			}
 		}
