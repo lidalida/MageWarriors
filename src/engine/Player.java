@@ -22,7 +22,7 @@ public class Player implements Drawable, Model, Commons {
 	private int mousex;
 	private int mousey;
 	private Image image;
-	public Collider collider;
+	Collider collider;
 	private double rotation, tmp_rotation;
 	private double forbidden_rotation=1000;
 	private int super_spell;
@@ -284,7 +284,6 @@ public class Player implements Drawable, Model, Commons {
 		old_hp=hp;
 		hp=health;
 		firePropertyChange("HP", old_hp, hp);
-
 	}
 	
 	public void addHP()

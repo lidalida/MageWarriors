@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import engine.Commons;
 import engine.GameScene;
 import engine.LocalGameScene;
-import engine.Model;
 import engine.Player;
 import main.Main;
 import net.GameClient;
@@ -137,22 +136,22 @@ public class StartView extends JPanel implements Commons {
 	}
 	private void createGame()
 	{
-
 		Main.gameScene=new GameScene();
-		Main.gameScene.gameServer=new GameServer(Main.gameScene);
+		Main.gameServer=new GameServer(Main.gameScene);
+		Main.gameScene.gameServer=Main.gameServer;
 		Main.gameScene.gameServer.start();
 
 		Main.gameScene.addModel(new Player());
 		Main.gameScene.addModel(new Player());
 		Main.gameScene.makeBars();
-		((Player)Main.gameScene.models.get(0)).setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
-		((Player)Main.gameScene.models.get(1)).setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
+		((Player)Main.gameScene.getModel(0)).setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
+		((Player)Main.gameScene.getModel(1)).setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
 
-		
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
 		v.setGameScene(tmp);
-		v.gameClient=new GameClient(v.localGameScene,"localhost");
+		Main.gameClient=new GameClient(v.localGameScene,"localhost");
+		v.gameClient=Main.gameClient;
 		v.gameClient.start();
 		v.localGameScene.makeBars();
 
@@ -173,8 +172,6 @@ public class StartView extends JPanel implements Commons {
 		v.revalidate();
 		bv.revalidate();
 		
-		
-		//Main.gameScene.startGame();
 		v.startGame();
 		
 	}
@@ -193,10 +190,13 @@ public class StartView extends JPanel implements Commons {
 	{
 		String ip = JOptionPane.showInputDialog(Main.frame, "Enter the host's IP", "", JOptionPane.PLAIN_MESSAGE);
 		
+		Main.gameServer=null;
+		
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
 		v.setGameScene(tmp);
-		v.gameClient=new GameClient(v.localGameScene,ip);
+		Main.gameClient=new GameClient(v.localGameScene,ip);
+		v.gameClient=Main.gameClient;
 		v.gameClient.start();
 		v.localGameScene.makeBars();
 

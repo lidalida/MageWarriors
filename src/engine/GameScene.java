@@ -2,55 +2,59 @@ package engine;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 import net.GameServer;
-import net.PositionMsg;
-
 
 public class GameScene implements Commons, GameCommons, ActionListener{
 		
-	public List<Drawable> models = new ArrayList<Drawable>();
+	private List<Drawable> models = new ArrayList<Drawable>();
 	public GameServer gameServer;
 
-	public boolean[] player1_flags = new boolean[FLAG_COUNT];
-	boolean[] player2_flags = new boolean[FLAG_COUNT];
-	public int targetX_p1, targetY_p1, targetX_p2, targetY_p2;
-	public boolean painted = false;
-	private int player1_modificator, player2_modificator;
-	Player player1, player2;
-	Bar p1_hp, p1_mp, p2_hp, p2_mp;
-	Missile missile;
-	double a, b, c, d, rot1, rot2;
-	Model m;
-	Item item;
-	Random rnd;
-	ImageIcon ii;
-	private int item_x=0, item_y=0;
-	double time_p1, time_p2, time_start_p1, time_start_p2, t_items, t_start_items;
-	private Timer timer;
-	private int models_count;
+	private boolean[] player1_flags = new boolean[FLAG_COUNT];
+	private boolean[] player2_flags = new boolean[FLAG_COUNT];	
+	private int targetX_p1, targetY_p1, targetX_p2, targetY_p2;
 	
-	public boolean gameOver=false;
+	private int models_count;	
+	public boolean gameOver;
 	public int winnerID;
+	
+	private int player1_modificator, player2_modificator;
+	private double a, b, c, d, rot1, rot2;
+	private int item_x=0, item_y=0;
+	private double time_p1, time_p2, time_start_p1, time_start_p2, t_items, t_start_items;
+	
+	private Player player1, player2;
+	private Bar p1_hp, p1_mp, p2_hp, p2_mp;
+	private Missile missile;	
+	private Model m;
+	private Item item;
+	private Random rnd;
+	
+	public Timer timer;
+	
 	
 	public GameScene()
 	{
+		init();		
+	}
+	
+	public void init()
+	{
+		models.clear();
+		models_count=0;
+		gameOver=false;
+		winnerID=0;
 		player1=new Player();
 		player2=new Player();
 		rnd=new Random();
 		t_start_items=System.currentTimeMillis();
 		timer = new Timer(FRAMETIME, this);
-
 	}
 	
 	public void startGame()
@@ -60,15 +64,19 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		System.out.println(player2_flags[IS_ROTATING]);
+		if(player1_flags[IS_ROTATING] || player2_flags[IS_ROTATING])
+			System.out.println(targetX_p1 + " " + targetX_p2);
+		
 		gameUpdate();
 		if(gameServer==null)
 			return;
-			
-		
+					
 		for(int i=0;i<models.size();i++){
 			Model tmp = (Model) models.get(i);
 			if(tmp.getClass()==Item.class)
 				continue;
+
 			gameServer.sendPositionMsg(tmp.getID(),tmp.getX(),tmp.getY(),tmp.getRotation());
 		}
 			
@@ -113,6 +121,11 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			player2 = (Player)model;
 	}
 	
+	public Drawable getModel(int i)
+	{
+		return models.get(i);
+	}
+	
 	public void makeBars(){
 		p1_hp = new Bar(200,20,HEALTH_BAR,PLAYER_HEALTH,player1);
 		p1_mp = new Bar(200,60,MANA_BAR,PLAYER_MANA,player1);
@@ -151,12 +164,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			return player2_flags[i];
 
 	}
-	
-	public void setPainted(boolean value)
-	{
-		painted=value;
-	}
-	
+		
 	public void generateItems()
 	{
 		int r=rnd.nextInt(2);
@@ -175,10 +183,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			gameServer.sendEventMsg(item.getID(), ADD_ITEM, item.getType());
 			gameServer.sendPositionMsg(item.getID(), item.getX(), item.getY(), 0);
 			gameServer.sendPositionMsg(item.getID(), item.getX(), item.getY(), 0);
-			System.out.println(models.size());
 		}
-	}
-	
+	}	
 	
 	
 	private void checkCollisions()
@@ -269,6 +275,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 							gameOver = true;
 							winnerID = player2.getID();
 							gameServer.sendEventMsg(0, GAME_OVER, winnerID);
+
 						}
 					}
 					
@@ -284,6 +291,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 							gameOver = true;
 							winnerID = player1.getID();
 							gameServer.sendEventMsg(0, GAME_OVER, winnerID);
+
 						}
 					}
 				}
@@ -337,19 +345,11 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						models.remove(item);
 						gameServer.sendEventMsg(item.getID(), DELETE_OBJECT, 0);
 						item = null;
-					}
-					
-				}
-				
-				
-			}
-			
-		}
-			
-	}
-	
-			
-	
+					}					
+				}				
+			}			
+		}			
+	}	
 	
 	private void checkSuperSpellTime()
 	{
@@ -488,6 +488,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 			{
 				if(player2_modificator!=FREEZE)
 				{
+					System.out.println("hellothere");
 					player2.setMouseX(targetX_p2);
 					player2.setMouseY(targetY_p2);
 					player2.rotate();
@@ -513,8 +514,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
 					gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 				}
-				else
-					System.out.println("Not enough mana points!!!");
 				player1_flags[IS_CASTING_SPELL_1] = false;
 			}
 			
@@ -530,8 +529,6 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					}
 					
 				}
-				else
-					System.out.println("Not enough mana points!!!");
 				player1_flags[IS_CASTING_SPELL_2] = false;
 			}
 			
@@ -544,12 +541,9 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						addModel(missile);
 						gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
 						gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
-					}
-					
+					}					
 				}
-				else
-					System.out.println("Not enough mana points!!!");
-				player1_flags[IS_CASTING_SPELL_3] = false;
+			player1_flags[IS_CASTING_SPELL_3] = false;
 			}
 			
 			//super spells
@@ -582,15 +576,13 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					player2_modificator=FREEZE;
 					player1.setSuperSpell(0);
 					time_start_p2=System.currentTimeMillis();
-					ii = new ImageIcon("src/res/player2_frozen.png");
-					player2.setImage(ii.getImage());
+					player2.setImage(FROZEN_IMG);
 					gameServer.sendEventMsg(player2.getID(), CHANGE_IMG, FROZEN_IMG);
 					player1_flags[IS_CASTING_SUPER_SPELL]=false;
 				
 				}
 				else
-					player1_flags[IS_CASTING_SUPER_SPELL]=false;
-					
+					player1_flags[IS_CASTING_SUPER_SPELL]=false;					
 			}
 		}
 		
@@ -607,10 +599,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
 					gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
 				}
-				else
-					System.out.println("Not enough mana points!!!");
 				player2_flags[IS_CASTING_SPELL_1] = false;
-				player2_flags[IS_SPELL_CRAFTED] = true;
 			}
 			
 			if(player2_flags[IS_CASTING_SPELL_2])
@@ -622,13 +611,9 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 						addModel(missile);
 						gameServer.sendEventMsg(missile.getID(),ADD_MISSILE,0);
 						gameServer.sendPositionMsg(missile.getID(), missile.getX(), missile.getY(), 0);
-					}
-					
+					}					
 				}
-				else
-					System.out.println("Not enough mana points!!!");
 				player2_flags[IS_CASTING_SPELL_2] = false;
-				player2_flags[IS_SPELL_CRAFTED] = true;
 			}
 			
 			if(player2_flags[IS_CASTING_SPELL_3])
@@ -643,12 +628,8 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					}
 					
 				}
-				else
-					System.out.println("Not enough mana points!!!");
 				player2_flags[IS_CASTING_SPELL_3] = false;
-				player2_flags[IS_SPELL_CRAFTED] = true;
-			}
-			
+			}			
 			
 			//super spells
 			
@@ -678,22 +659,15 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 					player1_modificator=FREEZE;
 					player2.setSuperSpell(0);
 					time_start_p1=System.currentTimeMillis();
-					ii = new ImageIcon("src/res/player2_frozen.png");
-					player1.setImage(ii.getImage());
+					player1.setImage(FROZEN_IMG);
 					gameServer.sendEventMsg(player1.getID(), CHANGE_IMG, FROZEN_IMG);
 					player2_flags[IS_CASTING_SUPER_SPELL]=false;
 				
-				}
-				
+				}				
 				else
-					player2_flags[IS_CASTING_SUPER_SPELL]=false;
-					
+					player2_flags[IS_CASTING_SUPER_SPELL]=false;					
 			}
-		}		
-	
-				
+		}						
 	}
-
-	
 
 }

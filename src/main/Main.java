@@ -1,22 +1,20 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 import engine.Commons;
 import engine.GameScene;
+import net.GameClient;
+import net.GameServer;
 import view.StartView;
-import view.SwingView;
 
 public class Main implements Commons{
 	
 	public static GameScene gameScene;
+	public static GameServer gameServer;
+	public static GameClient gameClient;
 	public static StartView v;
 	static Random rnd;
 	public static JFrame frame;
@@ -38,12 +36,13 @@ public class Main implements Commons{
 	
 	
 	public static void main(String[] args){
-		gameScene=new GameScene();
 			javax.swing.SwingUtilities.invokeLater(new Runnable(){
 				public void run(){
 					createGUI();					
 				}
 			});
+			
+		
 				
 	}
 }

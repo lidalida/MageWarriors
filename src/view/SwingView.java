@@ -1,31 +1,21 @@
 package view;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import engine.Bar;
-import engine.BarElement;
 import engine.Commons;
 import engine.Drawable;
 import engine.GameScene;
-import engine.Item;
 import engine.LocalGameScene;
 import engine.Player;
 import main.Main;
-import net.Flag;
 import net.GameClient;
-import net.GameServer;
 import net.InputMsg;
-import net.PositionMsg;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.Toolkit;
@@ -36,26 +26,20 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class SwingView extends JPanel implements Commons{
 
 	private static final long serialVersionUID = 1L;
-	public GameScene gameScene;
-	public LocalGameScene localGameScene;
+	GameScene gameScene;
+	LocalGameScene localGameScene;
 	
 	private Player player1, player2;
 	public static final int WIDTH=WINDOW_WIDTH, HEIGHT=ARENA_HEIGHT;
 	private TexturePaint paint;
     private BufferedImage bi;
-    long t, t_start;
     private Timer timer;
     private boolean isSpellCrafted=false;
     
@@ -74,9 +58,7 @@ public class SwingView extends JPanel implements Commons{
 				// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
-				 
-		 t_start=System.currentTimeMillis();		 
+		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));		 
 
 	}
 	
@@ -88,11 +70,8 @@ public class SwingView extends JPanel implements Commons{
 		player1.setID(1);
 		player2.setID(2);
 		player2.setImage(0);
-		//gameScene.addModel(player1);
 		localGameScene.addModel(player1,1);		
-		//gameScene.addModel(player2);
 		localGameScene.addModel(player2,2);
-		//gameScene.makeBars();
 	}
 	
 	public void startGame()
@@ -100,18 +79,17 @@ public class SwingView extends JPanel implements Commons{
 		addKeyListener(new CustomKeyListener());
 	    addMouseMotionListener(new CustomMouseListener());
 		timer=new Timer(FRAMETIME, new ActionListener(){
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				t=System.currentTimeMillis();				
 				repaint();
-				//gameScene.gameUpdate();
 				if(localGameScene.gameOver!=0)
 					gameOver(localGameScene.gameOver);
 			}
 			
 		});
 		timer.start();
+		gameClient.sendLogin();
 	}
 	
 	@Override
@@ -129,8 +107,7 @@ public class SwingView extends JPanel implements Commons{
 			d.draw(g1);
 		}
 		}
-		if(gameScene!=null)
-			gameScene.setPainted(true);
+
 	    Toolkit.getDefaultToolkit().sync();
     }
 
@@ -140,16 +117,12 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			//if(gameScene==null)
-				//return;
 			
 			if(e.getKeyCode() == KeyEvent.VK_W) {
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING,true,0,0));
-	            //gameClient.sendViaTCP(new InputMsg(IS_MOVING,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,true,0,0));
-	            //gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,true,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,true,0,0));
@@ -180,16 +153,12 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			//if(gameScene==null)
-				//return;
 			
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING,false,0,0));
-				//gameClient.sendViaTCP(new InputMsg(IS_MOVING,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,false,0,0));
-				//gameClient.sendViaTCP(new InputMsg(IS_MOVING_BACK,false,0,0));
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,false,0,0));
@@ -228,8 +197,7 @@ public class SwingView extends JPanel implements Commons{
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			//if(gameScene==null)
-				//return;
+
             gameClient.sendViaUDP(new InputMsg(IS_ROTATING,true,e.getX(),e.getY()));
 		
 		}
@@ -240,7 +208,7 @@ public class SwingView extends JPanel implements Commons{
     {
     	timer.stop();
     	Main.frame.getContentPane().removeAll();
-    	WinView v = new WinView(id);    	
+    	WinView v = new WinView(id);  
     	Main.frame.getContentPane().add(v);
     	v.requestFocus();
     	v.repaint();

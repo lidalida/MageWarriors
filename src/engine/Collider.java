@@ -15,7 +15,7 @@ public class Collider {
 	public boolean collides(Collider otherCollider)
 	{
 		dist = Math.sqrt(Math.pow((x+r)-(otherCollider.x+otherCollider.r), 2)+Math.pow((y+r)-(otherCollider.y+otherCollider.r), 2));
-		if (dist<= Math.abs(r+otherCollider.r))// || dist >=Math.abs(r-otherCollider.r))
+		if (dist<= Math.abs(r+otherCollider.r))
 			return true;
 		return false;
 	}

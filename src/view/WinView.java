@@ -19,15 +19,16 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import engine.Commons;
-import engine.GameScene;
-import engine.LocalGameScene;
+import engine.Player;
 import main.Main;
 import net.GameClient;
 import net.GameServer;
+import net.InputMsg;
 
-public class WinView extends JPanel implements Commons{
+public class WinView extends JPanel implements Commons, ActionListener{
 
 	private static final long serialVersionUID = 7369417166220359256L;
 	private JButton button_play, button_menu;
@@ -36,10 +37,14 @@ public class WinView extends JPanel implements Commons{
 	private ImageIcon ii;
 	private Image img;
 	public GameServer gameServer;
-	public GameClient gameClient1, gameClient2;
+	public GameClient gameClient;
+	private Timer timer;
 	
 	public WinView(int i)
 	{
+		if(Main.gameScene!=null)
+			Main.gameScene.timer.stop();
+	
 		try {
 			bi = ImageIO.read(new File("src/res/texture.png"));
 		} catch (IOException e) {
@@ -65,7 +70,7 @@ public class WinView extends JPanel implements Commons{
 		button_play.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
-				createGame();
+				Main.gameClient.sendViaUDP(new InputMsg(PLAY_AGAIN, false, 0, 0));
 			}
 		});
 		
@@ -92,6 +97,8 @@ public class WinView extends JPanel implements Commons{
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.add(box);		
 		setFocusable(true);
+		timer=new Timer(FRAMETIME, this);
+		timer.start();
 	}
 	
 	@Override
@@ -108,13 +115,27 @@ public class WinView extends JPanel implements Commons{
 	
 	private void createGame()
 	{
-		Main.gameScene=new GameScene();
-		LocalGameScene tmp = new LocalGameScene();
+		
+		if(Main.gameServer!=null)
+		{
+			Main.gameScene.init();
+			
+			Main.gameScene.addModel(new Player());
+			Main.gameScene.addModel(new Player());
+			Main.gameScene.makeBars();
+			((Player)Main.gameScene.getModel(0)).setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
+			((Player)Main.gameScene.getModel(1)).setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
+		}
+		
+		Main.gameClient.game.init();
 		SwingView v = new SwingView();
-		v.setGameScene(tmp);
+		v.setGameScene(Main.gameClient.game);
+		v.localGameScene.makeBars();
+		v.gameClient=Main.gameClient;
+		
 		BarView bv = new BarView();
 		bv.setLocalGameScene(v.localGameScene);
-		Main.frame.getContentPane().remove(this);
+		Main.frame.getContentPane().removeAll();
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		container.add(bv);
@@ -127,15 +148,39 @@ public class WinView extends JPanel implements Commons{
 		v.revalidate();
 		bv.revalidate();
 		v.startGame();
+		
+		if(Main.gameServer!=null)
+		{	
+			Main.gameScene.startGame();			
+		}
+		
 				
 	}
 	
 	private void returnToMenu()
 	{
+		timer.stop();
+		Main.gameClient.play_again=false;
+		if(Main.gameServer!=null)
+			Main.gameServer.dispose();
+		Main.gameServer=null;
+		Main.gameClient=null;
+		Main.gameScene=null;
 		Main.frame.getContentPane().remove(this);
-		Main.frame.getContentPane().add(Main.v);
-		Main.v.repaint();
-		Main.v.revalidate();
+		StartView v = new StartView();
+		Main.frame.getContentPane().add(v);
+		v.repaint();
+		v.revalidate();
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(Main.gameClient.play_again)
+		{	
+			createGame();
+			Main.gameClient.play_again=false;
+		}
 	}
 	
 	

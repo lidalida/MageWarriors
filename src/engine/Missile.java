@@ -15,7 +15,7 @@ public class Missile implements Drawable, Model, Commons {
 	private int y;
 	private int id;
 	private Image image;
-	public Collider collider;
+	Collider collider;
 	private double rotation;
 	int lifetime;
 	

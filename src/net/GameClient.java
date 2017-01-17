@@ -7,10 +7,8 @@ import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 
 import engine.Commons;
 import engine.Item;
@@ -23,16 +21,17 @@ public class GameClient extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
 	public final static int TCPPort = 7331;
 	
-	DatagramSocket UDPSocket;
-	DatagramSocket UDPSocket2;
-	Socket TCPSocket;
-	DataOutputStream outputStream;
-	DataInputStream inputStream;
-	InetAddress IPAddress;
-	LocalGameScene game;
+	private DatagramSocket UDPSocket;
+	private Socket TCPSocket;
+	private DataOutputStream outputStream;
+	private DataInputStream inputStream;
+	private InetAddress IPAddress;
+	public LocalGameScene game;
+	public boolean play_again=false;
 	
 	public GameClient(LocalGameScene lgs, String host){
 		game = lgs;
+		play_again=false;
 		
 		try {
 			UDPSocket = new DatagramSocket();
@@ -45,6 +44,18 @@ public class GameClient extends Thread implements Commons, Serializer{
 			TCPSocket = new Socket(host,TCPPort);
 			TCPSocket.setTcpNoDelay(true);
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void dispose()
+	{
+		try {
+			
+			TCPSocket.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -99,33 +110,36 @@ public class GameClient extends Thread implements Commons, Serializer{
 		return Serializer.deserializeObject(data);
 	}
 	
-	public void run(){
+	public void sendLogin(){
 		EventMsg msg = new EventMsg(0,LOGIN,UDPSocket.getLocalPort());
 		sendViaTCP(msg);
-		
-		sendViaUDP("wut");
+	}
+	
+	public void run(){
 		
 		while(true){
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
 			if(ev!=null)
 				resolveMessage(ev);
 			
-			PositionMsg in = (PositionMsg) receiveViaUDP();
-			Model tmp = (Model) game.findModelByID(in.id);
-			
-			if(tmp==null){
-				continue;
+			if(game.gameOver==0)
+			{
+				
+				PositionMsg in = (PositionMsg) receiveViaUDP();
+				Model tmp = (Model) game.findModelByID(in.id);
+				
+				if(tmp==null){
+					continue;
+				}
+				tmp.setX(in.x);
+				tmp.setY(in.y);
+				tmp.setRotation(in.rot);
 			}
-			
-			tmp.setX(in.x);
-			tmp.setY(in.y);
-			tmp.setRotation(in.rot);
 
 		}
 	}
 	
 	public void resolveMessage(Serializable msg){
-		//System.out.println(msg.getClass());
 		synchronized(game.models){
 		if(msg.getClass()==EventMsg.class){
 			EventMsg tmp = (EventMsg) msg;
@@ -143,6 +157,8 @@ public class GameClient extends Thread implements Commons, Serializer{
 				((Player)game.findModelByID(tmp.id)).setImage(tmp.value);
 			} else if(tmp.name==GAME_OVER){
 				game.gameOver = tmp.value;
+			} else if(tmp.name==PLAY_AGAIN){
+				play_again=true;
 			}
 				
 			
