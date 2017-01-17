@@ -113,14 +113,19 @@ public class GameClient extends Thread implements Commons, Serializer{
 	public void sendLogin(){
 		EventMsg msg = new EventMsg(0,LOGIN,UDPSocket.getLocalPort());
 		sendViaTCP(msg);
+		sendViaUDP("wut");
+
 	}
 	
 	public void run(){
+		
+		sendLogin();		
 		
 		while(true){
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
 			if(ev!=null)
 				resolveMessage(ev);
+			
 			
 			if(game.gameOver==0)
 			{

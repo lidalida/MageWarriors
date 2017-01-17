@@ -89,7 +89,6 @@ public class SwingView extends JPanel implements Commons{
 			
 		});
 		timer.start();
-		gameClient.sendLogin();
 	}
 	
 	@Override
