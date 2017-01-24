@@ -2,29 +2,28 @@ package engine;
 
 public class Collider {
 	
-	private int x, y, r;
-	private double dist, a, b;
+	private int x, y, radius;
 
 	public Collider(int xx, int yy, int rr)
 	{
 		x=xx;
 		y=yy;
-		r=rr;
+		radius=rr;
 	}
 	
 	public boolean collides(Collider otherCollider)
 	{
-		dist = Math.sqrt(Math.pow((x+r)-(otherCollider.x+otherCollider.r), 2)+Math.pow((y+r)-(otherCollider.y+otherCollider.r), 2));
-		if (dist<= Math.abs(r+otherCollider.r))// || dist >=Math.abs(r-otherCollider.r))
+		double dist = Math.sqrt(Math.pow((x+radius)-(otherCollider.x+otherCollider.radius), 2)+Math.pow((y+radius)-(otherCollider.y+otherCollider.radius), 2));
+		if (dist<= Math.abs(radius+otherCollider.radius))
 			return true;
 		return false;
 	}
 	
 	public boolean containsPoint(int xx, int yy)
 	{
-		a=Math.pow((xx-(x+r)), 2.0);
-		b=Math.pow((yy-(y+r)), 2.0);
-		if(a+b<=Math.pow(r, 2.0))
+		double a=Math.pow((xx-(x+radius)), 2.0);
+		double b=Math.pow((yy-(y+radius)), 2.0);
+		if(a+b<=Math.pow(radius, 2.0))
 			return true;
 		return false;
 			

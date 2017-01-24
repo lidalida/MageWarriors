@@ -1,7 +1,5 @@
 package engine;
 
-import java.awt.Color;
-
 public interface Commons {
 	public static final double DEG_TO_RAD = 0.01745;
 	

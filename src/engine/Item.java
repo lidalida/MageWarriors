@@ -12,7 +12,6 @@ public class Item implements Drawable, Model, Commons{
 	public int id;
 	public int type;
 	private double rotation;
-	public double rnd;
 	private Image image;
 	public Collider collider;
 	
@@ -20,7 +19,7 @@ public class Item implements Drawable, Model, Commons{
 	{
 		x=item_x;
 		y=item_y;
-		rnd=Math.random();
+		double rnd=Math.random();
 		if(rnd<SPAWN_1)
 		{
 			type=HP;

@@ -24,11 +24,10 @@ public class Player implements Drawable, Model, Commons {
 	private Image image;
 	public Collider collider;
 	private double rotation, tmp_rotation;
-	private double forbidden_rotation=1000;
-	private int super_spell;
-	
-	private int old_hp, hp;
-	private int old_mp, mp;
+	private double forbidden_rotation;
+	private int super_spell;	
+	private int hp;
+	private int mp;
 	
 	public Player(){
 		x=0;
@@ -40,6 +39,7 @@ public class Player implements Drawable, Model, Commons {
 		super_spell=0;
 		hp=PLAYER_HEALTH;
 		mp=PLAYER_MANA;
+		forbidden_rotation=1000;
 		ImageIcon ii = new ImageIcon("src/res/player.png");
 		image=ii.getImage();
 		collider=new Collider(x,y,image.getWidth(null)/2);
@@ -281,7 +281,7 @@ public class Player implements Drawable, Model, Commons {
 	}
 	
 	public void setHP(int health){
-		old_hp=hp;
+		int old_hp=hp;
 		hp=health;
 		firePropertyChange("HP", old_hp, hp);
 
@@ -289,7 +289,7 @@ public class Player implements Drawable, Model, Commons {
 	
 	public void addHP()
 	{
-		old_hp=hp;
+		int old_hp=hp;
 		hp+=HP_ADDED;
 		if(hp>100)
 			hp=100;
@@ -297,7 +297,7 @@ public class Player implements Drawable, Model, Commons {
 	}
 
 	public void takeDamage(int dmg){
-		old_hp=hp;
+		int old_hp=hp;
 		hp -= dmg;
 		firePropertyChange("HP", old_hp, hp);
 	}
@@ -305,7 +305,7 @@ public class Player implements Drawable, Model, Commons {
 	public boolean takeMana(int mana){
 		if(mp >= mana)
 		{
-			old_mp=mp;
+			int old_mp=mp;
 			mp -= mana;	
 			firePropertyChange("MP", old_mp, mp);
 			return true;
@@ -314,14 +314,14 @@ public class Player implements Drawable, Model, Commons {
 	}
 	
 	public void restoreMana(){
-		old_mp=mp;
+		int old_mp=mp;
 		mp = 100;
 		firePropertyChange("MP", old_mp, mp);	
 	}
 	
 	public void setMP(int mana)
 	{
-		old_mp=mp;
+		int old_mp=mp;
 		mp=mana;
 		firePropertyChange("MP", old_mp, mp);	
 	}
