@@ -15,7 +15,6 @@ import engine.Item;
 import engine.LocalGameScene;
 import engine.Player;
 import main.Main;
-import net.Flag;
 import net.GameClient;
 import net.GameServer;
 import net.InputMsg;
