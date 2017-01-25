@@ -14,8 +14,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import engine.Commons;
 import engine.GameScene;
+import main.Main;
 
 public class GameServer extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
@@ -110,7 +113,12 @@ public class GameServer extends Thread implements Commons, Serializer{
 			if(data.length>0)
 				outputStream[playerID].write(data);
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(Main.frame,
+				    "Player disconnected, closing game",
+				    "Warning",
+				    JOptionPane.PLAIN_MESSAGE);
+			System.exit(1);
+			//e.printStackTrace();
 		}
 	}
 	

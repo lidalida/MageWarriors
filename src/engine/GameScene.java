@@ -11,7 +11,6 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 import net.GameServer;
 
@@ -51,6 +50,11 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 		models_count=0;
 		gameOver=false;
 		winnerID=0;
+		for(int i=0; i<FLAG_COUNT; i++)
+		{
+			player1_flags[i]=false;
+			player2_flags[i]=false;
+		}
 		player1=new Player();
 		player2=new Player();
 		rnd=new Random();

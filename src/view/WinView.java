@@ -22,8 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import engine.Commons;
-import engine.GameScene;
-import engine.LocalGameScene;
+
 import engine.Player;
 import main.Main;
 import net.GameClient;
@@ -61,33 +60,8 @@ public class WinView extends JPanel implements Commons, ActionListener{
 
         img=ii.getImage();
 		 
-		ImageIcon i1 = new ImageIcon("src/res/button_play.png");
-		button_play = new JButton(i1);
-		button_play.setContentAreaFilled(false);
-		button_play.setFocusPainted(false);
-		button_play.setBorderPainted(false);
-		button_play.setMargin(new Insets(0,0,0,0));
-		button_play.setRolloverIcon(new ImageIcon("src/res/button_play_hover.png"));
-		button_play.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e)
-			{
-				Main.gameClient.sendViaUDP(new InputMsg(PLAY_AGAIN, false, 0, 0));
-			}
-		});
-		
-		ImageIcon i2 = new ImageIcon("src/res/button_menu.png");
-		button_menu = new JButton(i2);
-		button_menu.setContentAreaFilled(false);
-		button_menu.setFocusPainted(false);
-		button_menu.setBorderPainted(false);
-		button_menu.setMargin(new Insets(0,0,0,0));
-		button_menu.setRolloverIcon(new ImageIcon("src/res/button_menu_hover.png"));
-		button_menu.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e)
-			{
-				returnToMenu();
-			}
-		});
+		createButtonPlay();
+		createButtonMenu();		
 		
 		Box box = Box.createVerticalBox();
 		box.add(Box.createVerticalStrut(320));
@@ -103,6 +77,40 @@ public class WinView extends JPanel implements Commons, ActionListener{
 		timer.start();
 	}
 	
+	private void createButtonPlay()
+	{
+		ImageIcon i1 = new ImageIcon("src/res/button_play.png");
+		button_play = new JButton(i1);
+		button_play.setContentAreaFilled(false);
+		button_play.setFocusPainted(false);
+		button_play.setBorderPainted(false);
+		button_play.setMargin(new Insets(0,0,0,0));
+		button_play.setRolloverIcon(new ImageIcon("src/res/button_play_hover.png"));
+		button_play.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				Main.gameClient.sendViaUDP(new InputMsg(PLAY_AGAIN, false, 0, 0));
+			}
+		});
+	}
+	
+	private void createButtonMenu()
+	{
+		ImageIcon i2 = new ImageIcon("src/res/button_menu.png");
+		button_menu = new JButton(i2);
+		button_menu.setContentAreaFilled(false);
+		button_menu.setFocusPainted(false);
+		button_menu.setBorderPainted(false);
+		button_menu.setMargin(new Insets(0,0,0,0));
+		button_menu.setRolloverIcon(new ImageIcon("src/res/button_menu_hover.png"));
+		button_menu.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				returnToMenu();
+			}
+		});
+	}
+	
 	@Override
     public void paintComponent(Graphics g1) {
 		super.paintComponent(g1);
@@ -115,30 +123,43 @@ public class WinView extends JPanel implements Commons, ActionListener{
         
 	}
 	
+	private void createGameScene()
+	{
+		Main.gameScene.init();
+		
+		Main.gameScene.addModel(new Player());
+		Main.gameScene.addModel(new Player());
+		Main.gameScene.makeBars();
+		((Player)Main.gameScene.models.get(0)).setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
+		((Player)Main.gameScene.models.get(1)).setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
+	}
+	
+	private SwingView createSwingView()
+	{
+		SwingView v = new SwingView();
+		v.setGameScene(Main.gameClient.game);
+		v.localGameScene.makeBars();
+		v.gameClient=Main.gameClient;
+		return v;
+	}
+	
+	private BarView createBarView(SwingView v)
+	{
+		BarView bv = new BarView();
+		bv.setLocalGameScene(v.localGameScene);
+		return bv;
+	}
 	private void createGame()
 	{
 		timer.stop();
 		if(Main.gameServer!=null)
 		{
-			Main.gameScene.init();
-			
-			Main.gameScene.addModel(new Player());
-			Main.gameScene.addModel(new Player());
-			Main.gameScene.makeBars();
-			((Player)Main.gameScene.models.get(0)).setPosition(WINDOW_WIDTH*1/4, ARENA_HEIGHT/2);
-			((Player)Main.gameScene.models.get(1)).setPosition(WINDOW_WIDTH*3/4, ARENA_HEIGHT/2);
+			createGameScene();
 		}
 		
 		Main.gameClient.game.init();	
-		
-		
-		SwingView v = new SwingView();
-		v.setGameScene(Main.gameClient.game);
-		v.localGameScene.makeBars();
-		v.gameClient=Main.gameClient;
-		
-		BarView bv = new BarView();
-		bv.setLocalGameScene(v.localGameScene);
+		SwingView v = createSwingView();		
+		BarView bv=createBarView(v);		
 		
 		Main.frame.getContentPane().removeAll();
 		JPanel container = new JPanel();
