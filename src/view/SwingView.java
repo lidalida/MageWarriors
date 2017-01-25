@@ -43,6 +43,7 @@ public class SwingView extends JPanel implements Commons{
     long t, t_start;
     private Timer timer;
     private boolean isSpellCrafted=false;
+    private boolean moving_key_pressed=false;
     
     GameClient gameClient;
 	
@@ -119,17 +120,23 @@ public class SwingView extends JPanel implements Commons{
 		@Override
 		public void keyPressed(KeyEvent e) {
 
-			if(e.getKeyCode() == KeyEvent.VK_W) {
-				gameClient.sendViaUDP(new InputMsg(IS_MOVING,true,0,0));
-			}
-			if(e.getKeyCode() == KeyEvent.VK_S) {
-				gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,true,0,0));
-			}
-			if(e.getKeyCode() == KeyEvent.VK_A){
-				gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,true,0,0));
-			}
-			if(e.getKeyCode() == KeyEvent.VK_D){
-				gameClient.sendViaUDP(new InputMsg(IS_MOVING_RIGHT,true,0,0));
+			if(!moving_key_pressed){
+				if(e.getKeyCode() == KeyEvent.VK_W) {
+					gameClient.sendViaUDP(new InputMsg(IS_MOVING,true,0,0));
+					moving_key_pressed=true;
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_S) {
+					gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,true,0,0));
+					moving_key_pressed=true;
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_A){
+					gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,true,0,0));
+					moving_key_pressed=true;
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_D){
+					gameClient.sendViaUDP(new InputMsg(IS_MOVING_RIGHT,true,0,0));
+					moving_key_pressed=true;
+				}
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 				if(!isSpellCrafted)
@@ -148,8 +155,7 @@ public class SwingView extends JPanel implements Commons{
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SPACE){
 				gameClient.sendViaUDP(new InputMsg(IS_CASTING_SUPER_SPELL,true,0,0));
-			}
-            
+			}            
 		}
 
 		@Override
@@ -157,15 +163,19 @@ public class SwingView extends JPanel implements Commons{
 
 			if(e.getKeyCode() == KeyEvent.VK_W) {			
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING,false,0,0));
+				moving_key_pressed=false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_S) {
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_BACK,false,0,0));
+				moving_key_pressed=false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_LEFT,false,0,0));
+				moving_key_pressed=false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_D){
 				gameClient.sendViaUDP(new InputMsg(IS_MOVING_RIGHT,false,0,0));
+				moving_key_pressed=false;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 				gameClient.sendViaUDP(new InputMsg(IS_CASTING_SPELL_1,false,0,0));
