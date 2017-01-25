@@ -34,7 +34,7 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	ImageIcon ii;
 	private int item_x=0, item_y=0;
 	double super_spell_time_p1, super_spell_time_p2, super_spell_start_time_p1, super_spell_start_time_p2, items_generating_time, items_generating_time_prev;
-	private Timer timer;
+	public Timer timer;
 	
 	private int models_count;	
 	public boolean gameOver=false;
@@ -42,6 +42,15 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 	
 	public GameScene()
 	{
+		init();
+	}
+	
+	public void init()
+	{
+		models.clear();
+		models_count=0;
+		gameOver=false;
+		winnerID=0;
 		player1=new Player();
 		player2=new Player();
 		rnd=new Random();
@@ -125,17 +134,12 @@ public class GameScene implements Commons, GameCommons, ActionListener{
 		{
 			targetX_p1=x;
 			targetY_p1=y;
-			System.out.println("player1, " + targetX_p1+ " " + targetY_p1);
-
-			
 		}
 		
 		else if(player_id==2)
 		{
 			targetX_p2=x;
 			targetY_p2=y;
-			System.out.println("player2, " + targetX_p2+ " " + targetY_p2);
-
 		}
 	}
 	

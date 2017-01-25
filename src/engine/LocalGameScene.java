@@ -11,6 +11,16 @@ public class LocalGameScene implements Commons {
 	Bar p1_hp, p1_mp, p2_hp, p2_mp;
 	public int gameOver=0;
 	
+	public LocalGameScene()
+	{
+		init();
+	}
+	
+	public void init()
+	{
+		models.clear();
+		gameOver=0;
+	}
 	
 	public Drawable findModelByID(int i)
 	{

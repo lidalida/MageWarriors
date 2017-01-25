@@ -138,7 +138,9 @@ public class StartView extends JPanel implements Commons {
 	{
 
 		Main.gameScene=new GameScene();
-		Main.gameScene.gameServer=new GameServer(Main.gameScene);
+		//Main.gameScene.gameServer=new GameServer(Main.gameScene);
+		Main.gameServer=new GameServer(Main.gameScene);
+		Main.gameScene.gameServer=Main.gameServer;
 		Main.gameScene.gameServer.start();
 
 		Main.gameScene.addModel(new Player());
@@ -151,8 +153,10 @@ public class StartView extends JPanel implements Commons {
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
 		v.setGameScene(tmp);
-		v.gameClient=new GameClient(v.localGameScene,"localhost");
-		v.gameClient.start();
+		//v.gameClient=new GameClient(v.localGameScene,"localhost");
+		Main.gameClient=new GameClient(v.localGameScene, "localhost");
+		v.gameClient=Main.gameClient;
+		Main.gameClient.start();
 		v.localGameScene.makeBars();
 
 		
@@ -192,11 +196,15 @@ public class StartView extends JPanel implements Commons {
 	{
 		String ip = JOptionPane.showInputDialog(Main.frame, "Enter the host's IP", "", JOptionPane.PLAIN_MESSAGE);
 		
+		Main.gameServer=null;
+		
 		LocalGameScene tmp = new LocalGameScene();
 		SwingView v = new SwingView();
 		v.setGameScene(tmp);
-		v.gameClient=new GameClient(v.localGameScene,ip);
-		v.gameClient.start();
+		//v.gameClient=new GameClient(v.localGameScene,ip);
+		Main.gameClient=new GameClient(v.localGameScene, ip);
+		v.gameClient=Main.gameClient;
+		Main.gameClient.start();
 		v.localGameScene.makeBars();
 
 		

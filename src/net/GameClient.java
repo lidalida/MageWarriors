@@ -29,10 +29,15 @@ public class GameClient extends Thread implements Commons, Serializer{
 	DataInputStream inputStream;
 	
 	InetAddress IPAddress;
-	LocalGameScene game;
+	public LocalGameScene game;
+	public boolean play_again;
+	public boolean gameOver;
+
 	
 	public GameClient(LocalGameScene lgs, String host){
 		game = lgs;
+		play_again=false;
+		gameOver=false;
 		
 		try {
 			UDPSocket = new DatagramSocket();
@@ -109,8 +114,18 @@ public class GameClient extends Thread implements Commons, Serializer{
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
 			if(ev!=null)
 				resolveMessage(ev);
+			System.out.println("client odebral event message");
 			
+			if(gameOver)
+			{
+				EventMsg evm = (EventMsg) receiveViaTCP(true);
+				if(evm!=null)
+					resolveMessage(evm);
+				gameOver=false;
+			}
 			PositionMsg in = (PositionMsg) receiveViaUDP();
+			System.out.println("client odebral position message");
+
 			Model tmp = (Model) game.findModelByID(in.id);
 			
 			if(tmp==null){
@@ -143,7 +158,11 @@ public class GameClient extends Thread implements Commons, Serializer{
 					((Player)game.findModelByID(tmp.id)).setImage(tmp.value);
 				} else if(tmp.name==GAME_OVER){
 					game.gameOver = tmp.value;
-				}	
+					gameOver=true;
+				} else if(tmp.name==PLAY_AGAIN){
+					play_again=true;
+					System.out.println("client received play again");
+				}
 			}
 			
 		}

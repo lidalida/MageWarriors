@@ -32,7 +32,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 	DataInputStream[] inputStream = new DataInputStream[2];
 	DataOutputStream[] outputStream = new DataOutputStream[2];
 	
-	GameScene game;
+	public GameScene game;
 	int lastPlayer;
 	
 	public List<InetAddress> playersIPs = new ArrayList<InetAddress>();
@@ -185,6 +185,9 @@ public class GameServer extends Thread implements Commons, Serializer{
 			} else if(tmp.flag==IS_ROTATING){
 				game.setFlag(IS_ROTATING,tmp.state,owner);
 				game.setMousePos(tmp.mouseX, tmp.mouseY, owner);
+			} else if(tmp.flag==PLAY_AGAIN){
+				System.out.println("server received play again");
+				sendEventMsg(0, PLAY_AGAIN, 0);
 			}
 		}
 	}

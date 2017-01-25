@@ -237,7 +237,8 @@ public class SwingView extends JPanel implements Commons{
     {
     	timer.stop();
     	Main.frame.getContentPane().removeAll();
-    	WinView v = new WinView(id);    	
+    	WinView v = new WinView(id);   
+    	v.gameClient=Main.gameClient;
     	Main.frame.getContentPane().add(v);
     	v.requestFocus();
     	v.repaint();
