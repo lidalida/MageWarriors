@@ -115,24 +115,29 @@ public class GameClient extends Thread implements Commons, Serializer{
 			if(ev!=null)
 				resolveMessage(ev);
 			
-			if(gameOver)
+			
+			if(!gameOver)
+			{
+				PositionMsg in = (PositionMsg) receiveViaUDP();
+				Model tmp = (Model) game.findModelByID(in.id);
+				
+				if(tmp==null){
+					continue;
+				}
+				
+				tmp.setX(in.x);
+				tmp.setY(in.y);
+				tmp.setRotation(in.rot);
+
+			}
+			else
 			{
 				EventMsg evm = (EventMsg) receiveViaTCP(true);
 				if(evm!=null)
 					resolveMessage(evm);
 				gameOver=false;
 			}
-			PositionMsg in = (PositionMsg) receiveViaUDP();
-			Model tmp = (Model) game.findModelByID(in.id);
 			
-			if(tmp==null){
-				continue;
-			}
-			
-			tmp.setX(in.x);
-			tmp.setY(in.y);
-			tmp.setRotation(in.rot);
-
 		}
 	}
 	
