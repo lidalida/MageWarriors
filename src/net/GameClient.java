@@ -114,7 +114,6 @@ public class GameClient extends Thread implements Commons, Serializer{
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
 			if(ev!=null)
 				resolveMessage(ev);
-			System.out.println("client odebral event message");
 			
 			if(gameOver)
 			{
@@ -124,8 +123,6 @@ public class GameClient extends Thread implements Commons, Serializer{
 				gameOver=false;
 			}
 			PositionMsg in = (PositionMsg) receiveViaUDP();
-			System.out.println("client odebral position message");
-
 			Model tmp = (Model) game.findModelByID(in.id);
 			
 			if(tmp==null){
@@ -161,7 +158,6 @@ public class GameClient extends Thread implements Commons, Serializer{
 					gameOver=true;
 				} else if(tmp.name==PLAY_AGAIN){
 					play_again=true;
-					System.out.println("client received play again");
 				}
 			}
 			
