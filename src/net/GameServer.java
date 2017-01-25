@@ -1,11 +1,8 @@
 package net;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -19,8 +16,6 @@ import java.util.List;
 
 import engine.Commons;
 import engine.GameScene;
-import engine.Model;
-import engine.Player;
 
 public class GameServer extends Thread implements Commons, Serializer{
 	public final static int UDPPort = 1337;
@@ -29,11 +24,14 @@ public class GameServer extends Thread implements Commons, Serializer{
 	DatagramSocket UDPSocket;
 	ServerSocket TCPWelcomeSocket;
 	Socket TCPSocket;
+	
 	int connectedPlayersCount = 0;
 	InetAddress[] IPs = new InetAddress[2];
 	public int[] port = new int[2];
+	
 	DataInputStream[] inputStream = new DataInputStream[2];
 	DataOutputStream[] outputStream = new DataOutputStream[2];
+	
 	GameScene game;
 	int lastPlayer;
 	
@@ -135,8 +133,6 @@ public class GameServer extends Thread implements Commons, Serializer{
 	public void sendPositionMsg(int id, int x, int y, double rot){
 		sendViaUDP(new PositionMsg(id,x,y,rot),IPs[0],port[0]);
 		sendViaUDP(new PositionMsg(id,x,y,rot),IPs[1],port[1]);
-		/*System.out.println(IPs[0] + "<======>" + IPs[1]);
-		System.out.println(port[0] + "<======>" + port[1]);*/
 	}
 	
 	public void sendEventMsg(int id, int name, int value){
@@ -155,26 +151,9 @@ public class GameServer extends Thread implements Commons, Serializer{
 		out = (EventMsg) receiveViaTCP(1,true);
 		port[1] = out.value;
 		
-
-		//String s = (String) receiveViaUDP();
-		//System.out.println(s);
-		
-		/*in = receiveViaUDP();
-		System.out.println(in);
-		in = receiveViaUDP();
-		System.out.println(in);
-		
-		sendPositionMsg(1,3000,4,5);*/
-		
 		game.startGame();
 		
 		while(true){
-			/*in = receiveViaTCP(0,false);
-			if(in!=null)
-				resolveMessage(in, 1);
-			in = receiveViaTCP(1,false);
-			if(in!=null)
-				resolveMessage(in, 2);*/
 			in = receiveViaUDP();
 			if(in!=null)
 				resolveMessage(in, lastPlayer);
@@ -205,7 +184,7 @@ public class GameServer extends Thread implements Commons, Serializer{
 				game.setFlag(IS_CASTING_SUPER_SPELL,tmp.state,owner);
 			} else if(tmp.flag==IS_ROTATING){
 				game.setFlag(IS_ROTATING,tmp.state,owner);
-				game.setMousePos(tmp.x, tmp.y, owner);
+				game.setMousePos(tmp.mouseX, tmp.mouseY, owner);
 			}
 		}
 	}

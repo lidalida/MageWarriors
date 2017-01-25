@@ -44,7 +44,6 @@ public class StartView extends JPanel implements Commons {
 		try {
 			bi = ImageIO.read(new File("src/res/texture.png"));
 		} catch (IOException e) {
-				// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		 this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));

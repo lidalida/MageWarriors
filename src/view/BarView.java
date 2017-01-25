@@ -41,7 +41,6 @@ public class BarView extends JPanel implements Commons, PropertyChangeListener {
 		try {
 			bi_sb = ImageIO.read(new File("src/res/texture_scoreboard.png"));
 		} catch (IOException e) {
-				// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.paint_scoreboard = new TexturePaint(bi_sb, new Rectangle(0, 0, bi_sb.getWidth(), bi_sb.getHeight()));

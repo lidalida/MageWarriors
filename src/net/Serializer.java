@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public interface Serializer {
+	
 	public static Serializable deserializeObject(byte[] array){
 		ByteArrayInputStream bis = new ByteArrayInputStream(array);
 		ObjectInput in = null;
@@ -41,7 +42,6 @@ public interface Serializer {
 			out.flush();
 			return bos.toByteArray();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
         return null;

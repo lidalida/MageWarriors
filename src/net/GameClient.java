@@ -7,10 +7,8 @@ import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 
 import engine.Commons;
 import engine.Item;
@@ -26,8 +24,10 @@ public class GameClient extends Thread implements Commons, Serializer{
 	DatagramSocket UDPSocket;
 	DatagramSocket UDPSocket2;
 	Socket TCPSocket;
+	
 	DataOutputStream outputStream;
 	DataInputStream inputStream;
+	
 	InetAddress IPAddress;
 	LocalGameScene game;
 	
@@ -103,7 +103,7 @@ public class GameClient extends Thread implements Commons, Serializer{
 		EventMsg msg = new EventMsg(0,LOGIN,UDPSocket.getLocalPort());
 		sendViaTCP(msg);
 		
-		sendViaUDP("wut");
+		//sendViaUDP("wut");
 		
 		while(true){
 			EventMsg ev = (EventMsg) receiveViaTCP(false);
@@ -125,30 +125,28 @@ public class GameClient extends Thread implements Commons, Serializer{
 	}
 	
 	public void resolveMessage(Serializable msg){
-		//System.out.println(msg.getClass());
 		synchronized(game.models){
-		if(msg.getClass()==EventMsg.class){
-			EventMsg tmp = (EventMsg) msg;
-			if(tmp.name==ADD_ITEM){
-				game.addModel(new Item(-100,-100,tmp.value),tmp.id);
-			} else if(tmp.name==ADD_MISSILE){
-				game.addModel(new Missile(-100,-100,0),tmp.id);
-			} else if(tmp.name==DELETE_OBJECT){
-				game.removeModel(tmp.id);
-			} else if(tmp.name==CHANGE_HP){
-				((Player)game.findModelByID(tmp.id)).setHP(tmp.value);
-			} else if(tmp.name==CHANGE_MP){
-				((Player)game.findModelByID(tmp.id)).setMP(tmp.value);
-			} else if(tmp.name==CHANGE_IMG){
-				((Player)game.findModelByID(tmp.id)).setImage(tmp.value);
-			} else if(tmp.name==GAME_OVER){
-				game.gameOver = tmp.value;
-			}
-				
 			
-				
+			if(msg.getClass()==EventMsg.class){
+				EventMsg tmp = (EventMsg) msg;
+				if(tmp.name==ADD_ITEM){
+					game.addModel(new Item(-100,-100,tmp.value),tmp.id);
+				} else if(tmp.name==ADD_MISSILE){
+					game.addModel(new Missile(-100,-100,0),tmp.id);
+				} else if(tmp.name==DELETE_OBJECT){
+					game.removeModel(tmp.id);
+				} else if(tmp.name==CHANGE_HP){
+					((Player)game.findModelByID(tmp.id)).setHP(tmp.value);
+				} else if(tmp.name==CHANGE_MP){
+					((Player)game.findModelByID(tmp.id)).setMP(tmp.value);
+				} else if(tmp.name==CHANGE_IMG){
+					((Player)game.findModelByID(tmp.id)).setImage(tmp.value);
+				} else if(tmp.name==GAME_OVER){
+					game.gameOver = tmp.value;
+				}	
+			}
+			
 		}
-	}
 	}
 	
 }
