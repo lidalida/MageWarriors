@@ -129,8 +129,6 @@ public class SwingView extends JPanel implements Commons{
 			d.draw(g1);
 		}
 		}
-		if(gameScene!=null)
-			gameScene.setPainted(true);
 	    Toolkit.getDefaultToolkit().sync();
     }
 
